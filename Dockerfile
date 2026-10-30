@@ -1,6 +1,6 @@
 FROM node:22-alpine
 WORKDIR /app
-RUN apk add --no-cache unzip ffmpeg font-dejavu espeak-ng
+RUN apk add --no-cache unzip ffmpeg font-dejavu espeak-ng python3
 COPY UTDSS_Website_Download_Again.zip /tmp/utdss.zip
 RUN unzip -q /tmp/utdss.zip -d /app && rm /tmp/utdss.zip
 COPY patch-site.mjs /tmp/patch-site.mjs
