@@ -73,3 +73,12 @@ if(!server.includes('const aiSystem=`'))throw Error('Missing system prompt');
 server=server.replace('const aiSystem=`','const aiSystem=`'+prompt);
 fs.writeFileSync(serverFile,server,'utf8');
 console.log('Professional assistant upgrade applied');
+// Crisp local artwork replaces small thumbnail photographs, no external image URLs.
+const hdNames=['hero-ship','hero-air','cleaning','paper','bins','safety','marine','aviation','office','provisions','hardware','electrical'];
+let hdHtml=fs.readFileSync('index.html','utf8');
+for(const name of hdNames)hdHtml=hdHtml.replaceAll('assets/'+name+'.webp','assets/'+name+'.svg');
+hdHtml=hdHtml.replaceAll('language:langSelect.value','language:({English:"en",Chinese:"zh",Malay:"ms",Tamil:"ta"})[langSelect.value]||"en"');
+hdHtml=hdHtml.replace('<div class="online">Online</div>','<div class="online">Virtual assistant · available 24/7</div>');
+hdHtml=hdHtml.replace('Welcome to United Shipping Services! I’m your virtual service assistant.','Welcome to United Shipping Services. I’m your virtual customer-service assistant.');
+fs.writeFileSync('index.html',hdHtml,'utf8');
+console.log('Switched to HD resolution-independent originals and corrected neural voice locales');
