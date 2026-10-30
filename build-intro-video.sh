@@ -14,5 +14,12 @@ make_scene 03 hardware.webp "SHARE YOUR PART NUMBER" "NSN, MPN, model and specif
 make_scene 04 hero-air.webp "MULTI-SECTOR ENQUIRIES" "Marine, industrial, energy and aviation." "#0d3559"
 make_scene 05 office.webp "CHALLENGE US WITH YOUR REQUIREMENT" "utdss@singnet.com.sg" "#0d3559"
 printf "file '/tmp/utdss-video/01.mp4'\nfile '/tmp/utdss-video/02.mp4'\nfile '/tmp/utdss-video/03.mp4'\nfile '/tmp/utdss-video/04.mp4'\nfile '/tmp/utdss-video/05.mp4'\n" > /tmp/utdss-video/list.txt
-ffmpeg -hide_banner -loglevel error -y -f concat -safe 0 -i /tmp/utdss-video/list.txt -c copy -movflags +faststart /app/media/utdss-why-choose-us.mp4
+ffmpeg -hide_banner -loglevel error -y -f concat -safe 0 -i /tmp/utdss-video/list.txt -c copy /tmp/utdss-video/silent.mp4
+# Original ambient soundtrack: layered sine-wave chord with gentle pulse and fades.
+ffmpeg -hide_banner -loglevel error -y -i /tmp/utdss-video/silent.mp4 \
+  -f lavfi -i "sine=frequency=174.61:sample_rate=44100:duration=22.5" \
+  -f lavfi -i "sine=frequency=261.63:sample_rate=44100:duration=22.5" \
+  -f lavfi -i "sine=frequency=349.23:sample_rate=44100:duration=22.5" \
+  -filter_complex "[1:a]volume=0.12[a1];[2:a]volume=0.07[a2];[3:a]volume=0.045[a3];[a1][a2][a3]amix=inputs=3:duration=shortest:normalize=0,afade=t=in:st=0:d=1.2,afade=t=out:st=20.5:d=2[a]" \
+  -map 0:v -map "[a]" -c:v copy -c:a aac -b:a 128k -ar 44100 -shortest -movflags +faststart /app/media/utdss-why-choose-us.mp4
 echo "UTDSS promotional video generated: /app/media/utdss-why-choose-us.mp4"
