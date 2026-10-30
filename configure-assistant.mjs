@@ -5,4 +5,5 @@ s=s.replace("const locale=lang.split('-')[0].toLowerCase();","const locale=lang.
 s=s.replace("Speak in the same language as this text (${locale}).","Speak in the same language as the provided text, including when the language is auto-detected.");
 s=s.replace("Speak as a warm, experienced Singapore-based customer support colleague","Use a natural, feminine-sounding, warm Singapore-based customer support speaking style");
 s=s.replace("Most replies should be one or two short paragraphs","Respond in the same language the customer uses when possible, including languages not in a preset list. When the message mixes languages, follow the primary language. Most replies should be one or two short paragraphs");
+if(!s.includes("'/api/contact/status'"))s=s.replace("const mailReady=mailEnv.every(k=>Boolean(process.env[k]));","const mailReady=mailEnv.every(k=>Boolean(process.env[k]));\napp.get('/api/contact/status',(req,res)=>res.json({configured:mailReady}));");
 fs.writeFileSync(p,s,'utf8');console.log('Assistant voice and multilingual server preferences updated');
