@@ -21,5 +21,10 @@ ffmpeg -hide_banner -loglevel error -y -i /tmp/utdss-video/silent.mp4 \
   -f lavfi -i "sine=frequency=261.63:sample_rate=44100:duration=22.5" \
   -f lavfi -i "sine=frequency=349.23:sample_rate=44100:duration=22.5" \
   -filter_complex "[1:a]volume=0.12[a1];[2:a]volume=0.07[a2];[3:a]volume=0.045[a3];[a1][a2][a3]amix=inputs=3:duration=shortest:normalize=0,afade=t=in:st=0:d=1.2,afade=t=out:st=20.5:d=2[a]" \
-  -map 0:v -map "[a]" -c:v copy -c:a aac -b:a 128k -ar 44100 -shortest -movflags +faststart /app/media/utdss-why-choose-us.mp4
+  -map 0:v -map "[a]" -c:v copy -c:a aac -b:a 128k -ar 44100 -shortest /tmp/utdss-video/music.mp4
+# Spoken synthetic narration layered above the original instrumental soundtrack.
+espeak-ng -v en-us+f3 -s 165 -p 44 -a 175 -w /tmp/utdss-video/narration.wav "Hard to find? Let U T D S S take a closer look. When usual sourcing channels come up short, send us your specialised requirements. Share the part number, specifications, quantity and destination. Across marine, industrial, energy and aviation enquiries, our team will review what is possible. Challenge us with your requirement today."
+ffmpeg -hide_banner -loglevel error -y -i /tmp/utdss-video/music.mp4 -i /tmp/utdss-video/narration.wav \
+  -filter_complex "[0:a]volume=0.34[bed];[1:a]volume=2.1,adelay=650|650,apad=pad_dur=2[voice];[bed][voice]amix=inputs=2:duration=first:normalize=0,alimiter=limit=0.92[mix]" \
+  -map 0:v -map "[mix]" -c:v copy -c:a aac -b:a 160k -ar 44100 -t 22.5 -movflags +faststart /app/media/utdss-why-choose-us.mp4
 echo "UTDSS promotional video generated: /app/media/utdss-why-choose-us.mp4"
