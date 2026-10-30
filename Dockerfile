@@ -1,6 +1,6 @@
 FROM node:22-alpine
 WORKDIR /app
-RUN apk add --no-cache unzip
+RUN apk add --no-cache unzip ffmpeg font-dejavu
 COPY UTDSS_Website_Download_Again.zip /tmp/utdss.zip
 RUN unzip -q /tmp/utdss.zip -d /app && rm /tmp/utdss.zip
 COPY patch-site.mjs /tmp/patch-site.mjs
@@ -11,8 +11,10 @@ COPY assets/customer-support-lady.svg /app/assets/customer-support-lady.svg
 COPY assets/energy-offshore-hd.svg /app/assets/energy-offshore-hd.svg
 COPY configure-assistant.mjs /tmp/configure-assistant.mjs
 COPY website-language.js /app/website-language.js
+COPY build-intro-video.sh /tmp/build-intro-video.sh
 COPY defence.html maritime.html energy.html industrial.html aviation.html about.html services.html products.html agencies.html contact.html /app/
 RUN cp /tmp/reference-layout.html /app/index.html && node /tmp/configure-assistant.mjs
+RUN sh /tmp/build-intro-video.sh
 RUN cd /app/server && npm install --omit=dev --no-audit --no-fund
 ENV NODE_ENV=production
 ENV PORT=3000
