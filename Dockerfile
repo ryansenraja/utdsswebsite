@@ -9,7 +9,7 @@ COPY generate-hd-images.mjs /tmp/generate-hd-images.mjs
 COPY reference-layout.html /tmp/reference-layout.html
 COPY assets/customer-support-lady.svg /app/assets/customer-support-lady.svg
 COPY configure-assistant.mjs /tmp/configure-assistant.mjs
-COPY defence.html maritime.html energy.html industrial.html aviation.html /app/
+COPY defence.html maritime.html energy.html industrial.html aviation.html about.html services.html products.html agencies.html contact.html /app/
 RUN cp /tmp/reference-layout.html /app/index.html && node /tmp/configure-assistant.mjs
 RUN cd /app/server && npm install --omit=dev --no-audit --no-fund
 ENV NODE_ENV=production
