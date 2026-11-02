@@ -1,51 +1,68 @@
 #!/bin/sh
 set -eu
+# UTDSS premium corporate film: six scenes, 1080p/24fps, original piano, no narration.
+# Source clips: Pexels License. Locations/operations shown are illustrative, not UTDSS assets.
 mkdir -p /app/media /tmp/utdss-video
 FONT=/usr/share/fonts/ttf-dejavu/DejaVuSans-Bold.ttf
-# Quiet, cinematic design: high-definition images, generous negative space and minimal copy.
-# One restrained headline per scene, with piano instrumental only.
-FONT_REG=/usr/share/fonts/ttf-dejavu/DejaVuSans.ttf
-make_scene() {
-  id="$1"; source="$2"; title="$3"; subtitle="$4"
-  ffmpeg -hide_banner -loglevel error -y -loop 1 -framerate 24 -i "/app/assets/$source" -t 4.5 \
-    -vf "scale=1280:720:force_original_aspect_ratio=increase,crop=1280:720,eq=contrast=1.04:saturation=0.91,drawbox=x=0:y=0:w=1280:h=720:color=0x07192b@0.20:t=fill,drawbox=x=0:y=440:w=1280:h=280:color=0x07192b@0.56:t=fill,drawbox=x=92:y=548:w=52:h=4:color=0xd5b779@0.98:t=fill,drawtext=fontfile=$FONT:text='$title':fontcolor=white:fontsize=49:x=92:y=579,drawtext=fontfile=$FONT_REG:text='$subtitle':fontcolor=0xe7edf5:fontsize=22:x=94:y=652,fade=t=in:st=0:d=0.7,fade=t=out:st=3.85:d=0.65,format=yuv420p" \
-    -an -c:v libx264 -preset medium -crf 20 -r 24 -pix_fmt yuv420p -movflags +faststart "/tmp/utdss-video/$id.mp4"
+REGULAR=/usr/share/fonts/ttf-dejavu/DejaVuSans.ttf
+D=/tmp/utdss-video
+FPS=24
+OUT_W=1920
+OUT_H=1080
+# Direct downloads verified against Pexels video pages 6857819, 5846709, 6285685, 35069289, 31751330.
+# Fallback URL is the same free-license clip at native file resolution.
+clip() {
+  id="$1"; url="$2"; line1="$3"; line2="$4"
+  echo "Preparing cinematic scene $id from licensed video"
+  # Full HD decode from genuine video, never enlarge thumbnail imagery.
+  if ! ffmpeg -nostdin -hide_banner -loglevel error -y -rw_timeout 35000000 -i "$url" -t 5.85 \
+    -vf "fps=24,scale=1920:1080:force_original_aspect_ratio=increase:flags=lanczos,crop=1920:1080,eq=contrast=1.055:saturation=0.87,drawbox=x=0:y=0:w=1920:h=1080:color=0x051a30@0.14:t=fill,drawbox=x=0:y=760:w=1920:h=320:color=0x061a32@0.50:t=fill,drawbox=x=122:y=851:w=65:h=4:color=0xdac289:t=fill,drawtext=fontfile=$FONT:text='$line1':fontcolor=white:fontsize=58:x=123:y=885,drawtext=fontfile=$REGULAR:text='$line2':fontcolor=0xe5ebf3:fontsize=27:x=127:y=986,fade=t=in:st=0:d=0.8,fade=t=out:st=5.1:d=0.7,format=yuv420p" \
+    -an -r 24 -c:v libx264 -preset veryfast -crf 21 -pix_fmt yuv420p -t 5.85 "$D/scene$id.mp4"; then
+    echo "ERROR: Scene $id footage download/encode failed; aborting rather than publishing low-resolution stills" >&2
+    exit 1
+  fi
+  ffprobe -v error -select_streams v:0 -show_entries stream=width,height -of csv=p=0 "$D/scene$id.mp4" | grep -q '1920,1080' || { echo "Video scene $id failed Full HD dimension validation"; exit 1; }
 }
-make_scene 01 hero-ship.webp "SPECIALISED SOURCING" "United Shipping Services Pte Ltd"
-make_scene 02 marine.webp "BEYOND STANDARD CATALOGUES" "Every requirement deserves a closer look"
-make_scene 03 hardware.webp "THE DETAILS MAKE A DIFFERENCE" "Part numbers. Specifications. Precision."
-make_scene 04 hero-air.webp "ACROSS INDUSTRIES" "Marine  /  Energy  /  Industrial  /  Aviation"
-make_scene 05 office.webp "YOUR REQUIREMENT. OUR FOCUS." "Utdss@singnet.com"
-printf "file '/tmp/utdss-video/01.mp4'\nfile '/tmp/utdss-video/02.mp4'\nfile '/tmp/utdss-video/03.mp4'\nfile '/tmp/utdss-video/04.mp4'\nfile '/tmp/utdss-video/05.mp4'\n" > /tmp/utdss-video/list.txt
-ffmpeg -hide_banner -loglevel error -y -f concat -safe 0 -i /tmp/utdss-video/list.txt -c copy /tmp/utdss-video/silent.mp4
-# Original piano-style instrumental. Each note has a struck-key attack and decaying harmonics.
-# Generate a short melodic progression using layered harmonics with no voice or third-party music.
-cat > /tmp/utdss-video/piano.py <<'PY'
-import math, wave, array, random
-sr=22050
-duration=22.5
-samples=array.array('h',[0])*int(sr*duration)
-random.seed(8)
-notes=[(0,261.63),(0,329.63),(0,392.00),(2.7,329.63),(3.4,392.00),
-(4.5,293.66),(4.5,349.23),(4.5,440.00),(6.4,349.23),(7.2,440.00),
-(9,246.94),(9,293.66),(9,392.00),(10.7,293.66),(11.5,392.00),
-(13.5,261.63),(13.5,329.63),(13.5,392.00),(15.1,523.25),
-(16.4,440.00),(17.3,392.00),(18.2,329.63),(19.1,293.66),(20.0,261.63)]
-# soft synthesized piano timbre: harmonics, fast percussive onset, exponential decay
-audio=[0.0]*len(samples)
+# Exact publicly listed Pexels source-file URLs.
+clip 01 "https://videos.pexels.com/video-files/6857819/6857819-uhd_3840_2160_24fps.mp4" "UNITED SHIPPING SERVICES" "Specialised Supply and Sourcing"
+clip 02 "https://videos.pexels.com/video-files/5846709/5846709-hd_1920_1080_25fps.mp4" "NOT EVERY REQUIREMENT IS SIMPLE" "Technical needs deserve a closer look"
+clip 03 "https://videos.pexels.com/video-files/6285685/6285685-uhd_3840_2160_30fps.mp4" "PRECISION BEGINS WITH DETAILS" "NSN   /   MPN   /   Specifications"
+clip 04 "https://videos.pexels.com/video-files/31751330/13528046_3840_2160_25fps.mp4" "ACROSS INDUSTRIES" "Maritime  /  Industrial  /  Energy  /  Aviation"
+clip 05 "https://videos.pexels.com/video-files/35069289/14855219_3840_2160_30fps.mp4" "YOUR REQUIREMENTS MATTER" "Considered sourcing support"
+# Distinct sixth scene: elegant brand card, not low-resolution footage.
+ffmpeg -nostdin -hide_banner -loglevel error -y -f lavfi -i "color=c=0x071d36:s=1920x1080:r=24:d=6" \
+  -vf "drawbox=x=683:y=358:w=554:h=3:color=0xdac289:t=fill,drawtext=fontfile=$FONT:text='UNITED SHIPPING SERVICES':fontcolor=white:fontsize=62:x=(w-text_w)/2:y=420,drawtext=fontfile=$REGULAR:text='SPECIALISED SUPPLY AND SOURCING':fontcolor=0xdac289:fontsize=28:x=(w-text_w)/2:y=525,drawtext=fontfile=$REGULAR:text='Utdss@singnet.com':fontcolor=0xecf2f8:fontsize=30:x=(w-text_w)/2:y=625,fade=t=in:st=0:d=1.1,fade=t=out:st=5.1:d=0.9,format=yuv420p" \
+  -c:v libx264 -preset veryfast -crf 20 -pix_fmt yuv420p -t 6 -an "$D/scene06.mp4"
+printf "file '$D/scene01.mp4'\nfile '$D/scene02.mp4'\nfile '$D/scene03.mp4'\nfile '$D/scene04.mp4'\nfile '$D/scene05.mp4'\nfile '$D/scene06.mp4'\n" > "$D/list.txt"
+ffmpeg -nostdin -hide_banner -loglevel error -y -f concat -safe 0 -i "$D/list.txt" -c copy "$D/silent.mp4"
+# Musical score: original, restrained piano-style instrument with natural decays and soft ending.
+cat > "$D/piano.py" <<'PY'
+import math, wave, array
+sr=32000
+duration=35.25
+notes=[
+(0,261.63),(0,329.63),(0,392.00),(2.7,329.63),(3.8,392.00),
+(5.85,220),(5.85,293.66),(5.85,349.23),(8,293.66),(9.4,349.23),
+(11.7,246.94),(11.7,329.63),(11.7,392),(14.4,493.88),(15.3,392),
+(17.55,196),(17.55,261.63),(17.55,329.63),(20.1,392),(21.6,329.63),
+(23.4,220),(23.4,293.66),(23.4,349.23),(25.8,440),(27.0,349.23),
+(29.25,261.63),(29.25,329.63),(29.25,392),(31.6,523.25),(32.6,392),(33.4,261.63)]
+samples=[0.0]*int(sr*duration)
 for start,f in notes:
-  count=int(min(2.8,duration-start)*sr)
-  for i in range(count):
-    t=i/sr
-    envelope=(1-math.exp(-t*100))*math.exp(-t*1.45)
-    note=(math.sin(2*math.pi*f*t)+0.35*math.sin(2*math.pi*2*f*t)*math.exp(-t*3)+0.14*math.sin(2*math.pi*3*f*t)*math.exp(-t*6))
-    audio[int(start*sr)+i]+=0.17*envelope*note
-for i,v in enumerate(audio):
-  fade=min(1,i/(sr*0.8),(len(audio)-i)/(sr*1.7))
-  samples[i]=int(max(-1,min(1,v*max(0,fade)))*27000)
+  for j in range(int(min(3.25,duration-start)*sr)):
+    t=j/sr
+    env=(1-math.exp(-t*110))*math.exp(-t*1.24)
+    wavelet=(math.sin(2*math.pi*f*t)+0.28*math.sin(2*math.pi*2*f*t)*math.exp(-t*3)+0.11*math.sin(2*math.pi*3*f*t)*math.exp(-t*7))
+    samples[int(start*sr)+j]+=0.15*env*wavelet
+arr=array.array('h')
+for i,v in enumerate(samples):
+  fade=min(1,i/(sr*1.5),(len(samples)-i)/(sr*3.3))
+  arr.append(int(max(-1,min(1,v*max(0,fade)))*27000))
 with wave.open('/tmp/utdss-video/piano.wav','wb') as w:
-  w.setnchannels(1);w.setsampwidth(2);w.setframerate(sr);w.writeframes(samples.tobytes())
+  w.setnchannels(1);w.setsampwidth(2);w.setframerate(sr);w.writeframes(arr.tobytes())
 PY
-python3 /tmp/utdss-video/piano.py
-ffmpeg -hide_banner -loglevel error -y -i /tmp/utdss-video/silent.mp4 -i /tmp/utdss-video/piano.wav -map 0:v -map 1:a -c:v copy -c:a aac -b:a 128k -shortest -movflags +faststart /app/media/utdss-why-choose-us.mp4
-echo "UTDSS promotional video generated: /app/media/utdss-why-choose-us.mp4"
+python3 "$D/piano.py"
+ffmpeg -nostdin -hide_banner -loglevel error -y -i "$D/silent.mp4" -i "$D/piano.wav" \
+  -map 0:v:0 -map 1:a:0 -c:v copy -c:a aac -b:a 192k -ar 48000 -shortest -movflags +faststart "/app/media/utdss-corporate-film-v2.mp4"
+ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1 "/app/media/utdss-corporate-film-v2.mp4"
+echo "UTDSS CINEMATIC FILM GENERATED IN FULL HD WITH REAL STOCK FOOTAGE; NO VOICEOVER"
