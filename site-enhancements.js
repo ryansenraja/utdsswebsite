@@ -2,6 +2,9 @@
 const main=document.querySelector('main');if(main&&!main.id)main.id='main-content';
 const skip=document.createElement('a');skip.className='utdss-skip';skip.href='#main-content';skip.textContent='Skip to main content';document.body.prepend(skip);
 const pathname=location.pathname==='/'?'/':location.pathname.replace(/\/$/,'');document.querySelectorAll('header nav a').forEach(link=>{try{const url=new URL(link.getAttribute('href'),location.origin);if(url.pathname===pathname&&(!url.hash||pathname!=='/'))link.setAttribute('aria-current','page')}catch{}});
+// Make the guided sourcing desk discoverable from every page.
+const nav=document.querySelector('header nav');
+if(nav&&!nav.querySelector('a[href="/sourcing.html"]')){const link=document.createElement('a');link.href='/sourcing.html';link.textContent='Smart Sourcing Desk';const quoteLink=[...nav.querySelectorAll('a')].find(a=>a.getAttribute('href')?.includes('quote'));if(quoteLink)nav.insertBefore(link,quoteLink);else nav.append(link);}
 document.querySelectorAll('img:not([loading])').forEach((img,i)=>{if(i>2)img.loading='lazy';img.decoding='async';if(!img.alt)img.alt='Illustrative UTDSS sector imagery'});
 document.querySelectorAll('a[target="_blank"]').forEach(a=>a.rel='noopener noreferrer');
 const quote=document.querySelector('.quote');const table=quote?.querySelector('table');if(table&&!table.closest('.quote-scroll')){const wrapper=document.createElement('div');wrapper.className='quote-scroll';wrapper.setAttribute('role','region');wrapper.setAttribute('aria-label','Quotation item details, scroll horizontally on small screens');wrapper.tabIndex=0;table.parentElement.insertBefore(wrapper,table);wrapper.append(table);const note=document.createElement('p');note.className='quote-helper';note.textContent='Add several products using Add Row. On smaller screens, scroll the item table sideways to view all fields.';wrapper.insertAdjacentElement('afterend',note)}
