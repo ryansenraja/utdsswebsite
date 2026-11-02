@@ -2,6 +2,7 @@
 'use strict';
 const TO='Utdss@singnet.com';
 const KEY='utdss.smartdesk.draft.v1';
+const EMAIL_LINK_LIMIT=7200;
 const $=id=>document.getElementById(id);
 const categories=[
 {sector:'Maritime',name:'Vessel and deck supplies',terms:'deck mooring vessel rope marine marine hardware fastener',hint:'Deck equipment, marine fittings, vessel consumables'},
@@ -23,7 +24,10 @@ let dirty=false;
 function markUnsaved(){dirty=true;const status=$('draftStatus');if(status&&status.classList.contains('success')&&status.textContent.includes('saved'))setStatus('draftStatus','You have changes that are not in your saved draft. Save again to keep them.');}
 const defaults=()=>({description:'',quantity:'1',unit:'Pieces',brand:'',model:'',nsn:'',mpn:'',specs:'',remarks:''});
 const trim=x=>String(x??'').replace(/[\r\n]+/g,' ').trim();
-function setStatus(id,text,kind=''){const el=$(id);el.textContent=text;el.className='status '+kind;}
+function setStatus(id,text,kind=''){const el=$(id);if(!el)return;el.textContent=text;el.className='status '+kind;}
+function savedDraftInfo(){try{const d=JSON.parse(localStorage.getItem(KEY)||'null');return d?.version===1&&Array.isArray(d.data?.items)?d:null;}catch{return null;}}
+function formatSavedDate(iso){const d=new Date(iso);return Number.isNaN(d.getTime())?'an earlier session':d.toLocaleString('en-SG',{dateStyle:'medium',timeStyle:'short'});}
+function refreshDraftPrompt(){const d=savedDraftInfo();const node=$('draftAvailable');if(!node)return;node.textContent=d?'Saved draft available from '+formatSavedDate(d.savedAt)+'. Restore it when ready.':'No saved draft is stored in this browser.';}
 function inputRow(key,title,placeholder='',span=''){const tag=key==='unit'?'select':'input';const options=['Pieces','Sets','Pairs','Boxes','Cartons','Metres','Litres','Other'];return '<label class="'+span+'">'+title+(tag==='select'?'<select data-key="'+key+'">'+options.map(x=>'<option>'+x+'</option>').join('')+'</select>':'<input data-key="'+key+'" '+(key==='quantity'?'type="number" min="1" step="1" max="99999999" inputmode="numeric"':'maxlength="'+(key==='specs'?500:200)+'"')+' placeholder="'+placeholder+'">')+'</label>';}
 function createItem(data=defaults()){
 if(itemsEl.children.length>=MAX_ITEMS){setStatus('draftStatus','Maximum of '+MAX_ITEMS+' products per enquiry. Split larger enquiries into separate lists.','error');return null;}
@@ -74,7 +78,7 @@ for(const [key,description] of [['name','your contact name'],['company','your or
 for(const [i,x] of d.items.entries()){
 const card=itemsEl.children[i];
 if(!x.description){card.querySelector('[data-key="description"]').focus();return 'Product '+(i+1)+' requires a description.';}
-if(!/^\d+$/.test(x.quantity)||Number(x.quantity)<1){card.querySelector('[data-key="quantity"]').focus();return 'Product '+(i+1)+' requires a valid quantity.';}
+if(!/^\d+$/.test(x.quantity)||Number(x.quantity)<1||Number(x.quantity)>99999999){card.querySelector('[data-key="quantity"]').focus();return 'Product '+(i+1)+' requires a valid quantity.';}
 if(![x.brand,x.model,x.nsn,x.mpn,x.specs].some(Boolean)){card.querySelector('[data-key="specs"]').focus();return 'Product '+(i+1)+' requires at least one identifying detail.';}
 }return '';
 }
@@ -83,14 +87,25 @@ out.forEach(cat=>{const card=document.createElement('article');card.className='c
 $('catalogSearch').addEventListener('input',renderCategories);
 $('addItem').addEventListener('click',()=>{const card=createItem();if(card){markUnsaved();card.querySelector('[data-key="description"]').focus();}});
 fields.forEach(k=>{$(k).addEventListener('input',()=>{markUnsaved();refresh();});$(k).addEventListener('change',()=>{markUnsaved();refresh();});});
-$('saveDraft').addEventListener('click',()=>{try{const data=getData();localStorage.setItem(KEY,JSON.stringify({version:1,savedAt:new Date().toISOString(),data}));dirty=false;setStatus('draftStatus','Draft saved to this browser on this device. It has not been sent.','success');}catch{setStatus('draftStatus','Could not save draft (browser storage unavailable or full). Use Copy full enquiry instead.','error');}});
-$('loadDraft').addEventListener('click',()=>{let parsed;try{parsed=JSON.parse(localStorage.getItem(KEY)||'null');}catch{}if(!parsed?.data||!Array.isArray(parsed.data.items)){setStatus('draftStatus','No saved draft found in this browser.','error');return;}for(const k of fields)$(k).value=String(parsed.data[k]||'');itemsEl.replaceChildren();parsed.data.items.slice(0,80).forEach(item=>createItem(item));if(!itemsEl.children.length)createItem();dirty=false;refresh();setStatus('draftStatus','Saved draft restored. Please check details before preparing your email.','success');});
-$('clearDraft').addEventListener('click',()=>{if(!confirm('Clear all entered details and the saved draft on this device?'))return;try{localStorage.removeItem(KEY);}catch{}for(const k of fields)$(k).value='';$('files').value='';itemsEl.replaceChildren();createItem();dirty=false;refresh();setStatus('draftStatus','Current form and saved draft cleared.');});
-$('outlook').addEventListener('click',()=>{const d=getData();const err=validate(d);if(err){setStatus('status',err,'error');return;}const url='mailto:'+TO+'?subject='+encodeURIComponent(subject(d))+'&body='+encodeURIComponent(compose(d));if(url.length>7200){setStatus('status','This enquiry is too long for a reliable email link. Use Copy full enquiry and paste it into a new email to '+TO+'.','error');return;}dirty=false;location.href=url;setStatus('status','Your email application has been requested. Check the recipient, attach files manually and click Send. Nothing has been sent by the website.','');});
+$('saveDraft').addEventListener('click',()=>{try{const data=getData();localStorage.setItem(KEY,JSON.stringify({version:1,savedAt:new Date().toISOString(),data}));dirty=false;refreshDraftPrompt();setStatus('draftStatus','Draft saved to this browser on this device. It has not been sent.','success');}catch{setStatus('draftStatus','Could not save draft (browser storage unavailable or full). Use Copy full enquiry instead.','error');}});
+$('loadDraft').addEventListener('click',()=>{
+const parsed=savedDraftInfo();
+if(!parsed){setStatus('draftStatus','No saved draft found in this browser.','error');return;}
+if(dirty&&!confirm('Restoring the saved draft will replace your current unsaved changes. Continue?'))return;
+const d=parsed.data;for(const k of fields)$(k).value=String(d[k]||'').slice(0,2000);
+itemsEl.replaceChildren();
+d.items.slice(0,MAX_ITEMS).forEach(item=>createItem(item));
+if(!itemsEl.children.length)createItem();
+$('files').value='';dirty=false;refresh();refreshDraftPrompt();
+setStatus('draftStatus','Draft from '+formatSavedDate(parsed.savedAt)+' restored. Attach supporting documents again before sending.','success');
+});
+$('clearDraft').addEventListener('click',()=>{if(!confirm('Clear all entered details and the saved draft on this device?'))return;try{localStorage.removeItem(KEY);}catch{}for(const k of fields)$(k).value='';$('files').value='';itemsEl.replaceChildren();createItem();dirty=false;refresh();refreshDraftPrompt();setStatus('draftStatus','Current form and saved draft cleared.');});
+$('outlook').addEventListener('click',()=>{const d=getData();const err=validate(d);if(err){setStatus('status',err,'error');return;}const url='mailto:'+TO+'?subject='+encodeURIComponent(subject(d))+'&body='+encodeURIComponent(compose(d));if(url.length>EMAIL_LINK_LIMIT){setStatus('status','The enquiry is too long for a reliable email-app link. Use Copy full enquiry or Download email draft, then paste the contents into Outlook and send to '+TO+'.','error');return;}dirty=false;location.href=url;setStatus('status','Your email application has been requested. Check the recipient, attach files manually and click Send. Nothing has been sent by the website.','');});
+$('downloadEmail').addEventListener('click',()=>{const d=getData();const err=validate(d);if(err){setStatus('status',err,'error');return;}const content='To: '+TO+'\nSubject: '+subject(d)+'\n\n'+compose(d);const blob=new Blob([content],{type:'text/plain;charset=utf-8'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='UTDSS-Quotation-Email.txt';a.click();setTimeout(()=>URL.revokeObjectURL(url),1200);setStatus('status','Email draft downloaded. Open the file, copy its contents to Outlook, attach files and click Send. The website has not transmitted anything.','success');});
 $('copy').addEventListener('click',async()=>{const d=getData();const err=validate(d);if(err){setStatus('status',err,'error');return;}const t='To: '+TO+'\nSubject: '+subject(d)+'\n\n'+compose(d);try{await navigator.clipboard.writeText(t);setStatus('status','Copied. Paste into Outlook and click Send to reach '+TO+'.','success');}catch{setStatus('status','Clipboard unavailable; select and copy the preview text manually.','error');}});
 $('downloadCsv').addEventListener('click',()=>{const d=getData();const headers=['Item','Description','Quantity','Unit','Manufacturer','Model','NSN','MPN','Specifications','Remarks'];const cell=s=>{let value=String(s??'');if(/^\s*[=+@-]/.test(value))value="'"+value;return '"'+value.replace(/"/g,'""')+'"';};const rows=d.items.map((x,i)=>[i+1,x.description,x.quantity,x.unit,x.brand,x.model,x.nsn,x.mpn,x.specs,x.remarks]);const csv='\uFEFF'+[headers,...rows].map(row=>row.map(cell).join(',')).join('\r\n');const blob=new Blob([csv],{type:'text/csv;charset=utf-8'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='UTDSS-RFQ-Items.csv';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);setStatus('draftStatus','Item list exported to CSV. This does not send an enquiry.','success');});
 $('print').addEventListener('click',()=>{const d=getData();const err=validate(d);if(err){setStatus('draftStatus','Complete the required fields before preparing a PDF: '+err,'error');return;}updatePrintReport(d);window.print();});
 window.addEventListener('beforeunload',e=>{if(dirty){e.preventDefault();e.returnValue='';}});
 function updatePrintReport(data){const target=$('printReport');if(!target)return;const title=document.createElement('h1');title.textContent='United Shipping Services — Request for Quotation';const to=document.createElement('p');to.textContent='Prepared for: '+TO;const pre=document.createElement('pre');pre.textContent='Subject: '+subject(data)+'\n\n'+compose(data);target.replaceChildren(title,to,pre);}
-createItem();renderCategories();refresh();
+createItem();renderCategories();refresh();refreshDraftPrompt();
 })();
