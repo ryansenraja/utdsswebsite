@@ -94,7 +94,7 @@ if(!parsed){setStatus('draftStatus','No saved draft found in this browser.','err
 if(dirty&&!confirm('Restoring the saved draft will replace your current unsaved changes. Continue?'))return;
 const d=parsed.data;for(const k of fields)$(k).value=String(d[k]||'').slice(0,2000);
 itemsEl.replaceChildren();
-d.items.slice(0,MAX_ITEMS).forEach(item=>createItem(item));
+d.items.filter(item=>item&&typeof item==='object'&&!Array.isArray(item)).slice(0,MAX_ITEMS).forEach(item=>createItem(item));
 if(!itemsEl.children.length)createItem();
 $('files').value='';dirty=false;refresh();refreshDraftPrompt();
 setStatus('draftStatus','Draft from '+formatSavedDate(parsed.savedAt)+' restored. Attach supporting documents again before sending.','success');
