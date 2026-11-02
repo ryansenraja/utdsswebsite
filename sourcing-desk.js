@@ -1,6 +1,6 @@
 (()=>{
 'use strict';
-const TO='utdss@singnet.com.sg';
+const TO='Utdss@singnet.com';
 const KEY='utdss.smartdesk.draft.v1';
 const $=id=>document.getElementById(id);
 const categories=[
