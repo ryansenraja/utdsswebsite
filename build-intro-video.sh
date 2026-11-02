@@ -25,6 +25,7 @@ clip() {
 }
 # Exact publicly listed Pexels source-file URLs.
 clip 01 "https://videos.pexels.com/video-files/6857819/6857819-uhd_3840_2160_24fps.mp4" "UNITED SHIPPING SERVICES" "Specialised Supply and Sourcing"
+ffmpeg -nostdin -hide_banner -loglevel error -y -i "$D/scene01.mp4" -frames:v 1 -q:v 2 /app/media/utdss-film-poster.jpg
 clip 02 "https://videos.pexels.com/video-files/5846709/5846709-hd_1920_1080_25fps.mp4" "NOT EVERY REQUIREMENT IS SIMPLE" "Technical needs deserve a closer look"
 clip 03 "https://videos.pexels.com/video-files/6285685/6285685-uhd_3840_2160_30fps.mp4" "PRECISION BEGINS WITH DETAILS" "NSN   /   MPN   /   Specifications"
 clip 04 "https://videos.pexels.com/video-files/31751330/13528046_3840_2160_25fps.mp4" "ACROSS INDUSTRIES" "Maritime  /  Industrial  /  Energy  /  Aviation"
