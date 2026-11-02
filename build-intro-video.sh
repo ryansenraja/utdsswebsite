@@ -2,17 +2,20 @@
 set -eu
 mkdir -p /app/media /tmp/utdss-video
 FONT=/usr/share/fonts/ttf-dejavu/DejaVuSans-Bold.ttf
+# Quiet, cinematic design: high-definition images, generous negative space and minimal copy.
+# One restrained headline per scene, with piano instrumental only.
+FONT_REG=/usr/share/fonts/ttf-dejavu/DejaVuSans.ttf
 make_scene() {
-  id="$1"; source="$2"; title="$3"; subtitle="$4"; color="$5"
-  ffmpeg -hide_banner -loglevel error -y -loop 1 -framerate 18 -i "/app/assets/$source" -t 4.5 \
-    -vf "scale=960:540:force_original_aspect_ratio=increase,crop=960:540,drawbox=x=0:y=0:w=960:h=540:color=0x071a33@0.68:t=fill,drawbox=x=68:y=155:w=7:h=225:color=0xd5ad65@1:t=fill,drawtext=fontfile=$FONT:text='UNITED SHIPPING SERVICES PTE LTD':fontcolor=0xd5ad65:fontsize=22:x=94:y=158,drawtext=fontfile=$FONT:text='$title':fontcolor=white:fontsize=42:x=94:y=230,drawtext=fontfile=$FONT:text='$subtitle':fontcolor=0xe4edf7:fontsize=21:x=94:y=312,fade=t=in:st=0:d=0.55,fade=t=out:st=3.95:d=0.55,format=yuv420p" \
-    -an -c:v libx264 -preset veryfast -crf 26 -r 18 -movflags +faststart "/tmp/utdss-video/$id.mp4"
+  id="$1"; source="$2"; title="$3"; subtitle="$4"
+  ffmpeg -hide_banner -loglevel error -y -loop 1 -framerate 24 -i "/app/assets/$source" -t 4.5 \
+    -vf "scale=1280:720:force_original_aspect_ratio=increase,crop=1280:720,eq=contrast=1.04:saturation=0.91,drawbox=x=0:y=0:w=1280:h=720:color=0x07192b@0.20:t=fill,drawbox=x=0:y=440:w=1280:h=280:color=0x07192b@0.56:t=fill,drawbox=x=92:y=548:w=52:h=4:color=0xd5b779@0.98:t=fill,drawtext=fontfile=$FONT:text='$title':fontcolor=white:fontsize=49:x=92:y=579,drawtext=fontfile=$FONT_REG:text='$subtitle':fontcolor=0xe7edf5:fontsize=22:x=94:y=652,fade=t=in:st=0:d=0.7,fade=t=out:st=3.85:d=0.65,format=yuv420p" \
+    -an -c:v libx264 -preset medium -crf 20 -r 24 -pix_fmt yuv420p -movflags +faststart "/tmp/utdss-video/$id.mp4"
 }
-make_scene 01 hero-ship.webp "HARD TO FIND?" "Let UTDSS take a closer look." "#0d3559"
-make_scene 02 marine.webp "SPECIALISED SOURCING" "When usual channels come up short." "#0d3559"
-make_scene 03 hardware.webp "SHARE YOUR PART NUMBER" "NSN, MPN, model and specifications." "#0d3559"
-make_scene 04 hero-air.webp "MULTI-SECTOR ENQUIRIES" "Marine, industrial, energy and aviation." "#0d3559"
-make_scene 05 office.webp "CHALLENGE US WITH YOUR REQUIREMENT" "utdss@singnet.com.sg" "#0d3559"
+make_scene 01 hero-ship.webp "SPECIALISED SOURCING" "United Shipping Services Pte Ltd"
+make_scene 02 marine.webp "BEYOND STANDARD CATALOGUES" "Every requirement deserves a closer look"
+make_scene 03 hardware.webp "THE DETAILS MAKE A DIFFERENCE" "Part numbers. Specifications. Precision."
+make_scene 04 hero-air.webp "ACROSS INDUSTRIES" "Marine  /  Energy  /  Industrial  /  Aviation"
+make_scene 05 office.webp "YOUR REQUIREMENT. OUR FOCUS." "Utdss@singnet.com"
 printf "file '/tmp/utdss-video/01.mp4'\nfile '/tmp/utdss-video/02.mp4'\nfile '/tmp/utdss-video/03.mp4'\nfile '/tmp/utdss-video/04.mp4'\nfile '/tmp/utdss-video/05.mp4'\n" > /tmp/utdss-video/list.txt
 ffmpeg -hide_banner -loglevel error -y -f concat -safe 0 -i /tmp/utdss-video/list.txt -c copy /tmp/utdss-video/silent.mp4
 # Original piano-style instrumental. Each note has a struck-key attack and decaying harmonics.
