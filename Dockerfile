@@ -12,6 +12,7 @@ COPY assets/energy-offshore-hd.svg /app/assets/energy-offshore-hd.svg
 COPY configure-assistant.mjs /tmp/configure-assistant.mjs
 COPY website-language.js /app/website-language.js
 COPY site-enhancements.css site-enhancements.js /app/
+COPY rfq-experience.css /app/rfq-experience.css
 COPY build-intro-video.sh /tmp/build-intro-video.sh
 COPY defence.html maritime.html energy.html industrial.html aviation.html about.html services.html products.html agencies.html contact.html /app/
 RUN cp /tmp/reference-layout.html /app/index.html && node /tmp/configure-assistant.mjs
