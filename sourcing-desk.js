@@ -60,6 +60,17 @@ indicator.classList.toggle('ok',Boolean(x.description&&hasIdentity&&Number(x.qua
 indicator.textContent=!x.description?'Add a product description to begin.':!hasIdentity?'Add a manufacturer, model, NSN, MPN or specifications to identify this item.':!(Number(x.quantity)>0)?'Enter a valid quantity.':'Identification details captured. UTDSS will assess feasibility after you send the enquiry.';
 });const data=getData();const readyCount=data.items.filter(x=>x.description&&/^[0-9]+$/.test(x.quantity)&&Number(x.quantity)>0&&[x.nsn,x.mpn,x.brand,x.model,x.specs].some(Boolean)).length;
 $('summary').textContent=data.items.length+' product'+(data.items.length===1?'':'s')+' · '+readyCount+' with sufficient identification · '+(data.company||'Company not entered');$('preview').textContent='Subject: '+subject(data)+'\n\n'+compose(data);
+const contactReady=Boolean(data.name&&data.company&&$('email').checkValidity()&&data.email);
+const itemsReady=Boolean(data.items.length&&readyCount===data.items.length);
+const progress=(contactReady?1:0)+(itemsReady?1:0);
+const readinessBar=$('rfqReadinessBar'),readinessFill=$('rfqReadinessFill');
+if(readinessBar){readinessBar.setAttribute('aria-valuenow',String(progress));readinessBar.setAttribute('aria-valuetext',progress+' of 2 preparation steps complete; customer must send email manually.');}
+if(readinessFill)readinessFill.style.width=(progress/3*100)+'%';
+const updateReady=(id,ready,text)=>{const node=$(id);if(node){node.textContent=(ready?'✓ ':'○ ')+text;node.classList.toggle('ready',ready);}};
+updateReady('rfqReadyContact',contactReady,'Contact name, organisation and valid email');
+updateReady('rfqReadyItems',itemsReady,'All items identified with valid quantities');
+updateReady('rfqReadySend',false,'Review and send from your own email application');
+
 const seen=new Map(),duplicates=[];data.items.forEach((x,i)=>{for(const [type,val] of [['MPN',x.mpn],['NSN',x.nsn]]){if(!val)continue;const key=type+':'+val.toLowerCase().replace(/[^a-z0-9]/g,'');if(seen.has(key))duplicates.push(type+' appears in items '+seen.get(key)+' and '+(i+1));else seen.set(key,i+1);}});const note=$('duplicateNotice');if(note){note.textContent=duplicates.length?'Possible duplicate references: '+duplicates.join('; ')+'. Confirm if both lines are needed.':'';note.classList.toggle('hidden',!duplicates.length);}
 updatePrintReport(data);}
 function subject(d){return '[UTDSS RFQ] '+(d.company||'Customer enquiry')+(d.reference?' | '+d.reference:'');}
