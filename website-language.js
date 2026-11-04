@@ -77,6 +77,14 @@ function applyNode(node,lang){if(!node.isConnected){tracked.delete(node);return;
 function allText(root){const walk=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);let node;while((node=walk.nextNode())){register(node);if(original.has(node))applyNode(node,active);}}
 const attrCache=new WeakMap();
 function applyAttrs(root,lang){
+ const opts=root.nodeType===1?(root.matches('option')?[root]:[...root.querySelectorAll('option')]):[];
+ for(const opt of opts){
+   if(opt.closest('#utdssLanguageSelect'))continue;
+   let saved=attrCache.get(opt);
+   if(!saved){saved={optionText:opt.textContent,optionValue:opt.value};attrCache.set(opt,saved);if(!opt.hasAttribute('value'))opt.setAttribute('value',saved.optionValue);}
+   const next=translatedText(saved.optionText,lang);
+   if(opt.textContent!==next)opt.textContent=next;
+ }
  const els=root.nodeType===1?[root,...root.querySelectorAll('[placeholder],[aria-label],[title]')]:[];
  for(const el of els){
    if(!eligible(el))continue;
