@@ -13,4 +13,22 @@ const back=document.createElement('button');back.type='button';back.className='u
 let pending=false;function updateTop(){back.classList.toggle('is-visible',scrollY>550);pending=false}addEventListener('scroll',()=>{if(!pending){pending=true;requestAnimationFrame(updateTop)}},{passive:true});updateTop();
 const footer=document.querySelector('footer');if(footer){const note=document.createElement('section');note.className='utdss-service-note';note.setAttribute('aria-label','Talk to our sourcing team');note.innerHTML='<div class="utdss-service-note-inner"><div><strong>Have a difficult sourcing requirement?</strong><p>Share the product description, NSN or MPN if available, quantity and destination. Our team will review feasibility and confirm commercial details before any commitment.</p></div><a href="/#quote">Request a quotation →</a></div>';footer.parentElement.insertBefore(note,footer)}
 const film=document.querySelector('#utdssPromotionalVideo');if(film){film.setAttribute('aria-label','UTDSS promotional video with original piano instrumental and no narration');film.setAttribute('preload','none');}
+/* Consistent practical help on secondary pages. Full assistant stays on homepage. */
+if(!document.getElementById('assistant')&&!document.getElementById('utdssHelpDock')){
+  const dock=document.createElement('div');dock.id='utdssHelpDock';dock.className='utdss-help-dock';
+  dock.innerHTML='<button id="utdssHelpOpen" type="button" class="utdss-help-launch" aria-controls="utdssHelpPanel" aria-expanded="false">✧ Sourcing help</button><section id="utdssHelpPanel" class="utdss-help-panel" aria-label="UTDSS sourcing guidance" hidden><header><strong>UTDSS · Sourcing Help</strong><button id="utdssHelpClose" type="button" aria-label="Close sourcing help">×</button></header><p>Practical guidance only. Prices, stock and delivery must be confirmed by the UTDSS team.</p><div class="utdss-help-questions"><button type="button" data-help="prepare">How do I request a quotation?</button><button type="button" data-help="parts">What are NSN and MPN?</button><button type="button" data-help="delivery">How do I check delivery?</button><button type="button" data-help="files">How do I send drawings?</button></div><div id="utdssHelpAnswer" class="utdss-help-answer" role="status" aria-live="polite">Choose a topic to see the guidance.</div><div class="utdss-help-links"><a href="/sourcing.html">Prepare an enquiry →</a><a href="mailto:Utdss@singnet.com">Email UTDSS</a></div></section>';
+  document.body.append(dock);
+  const panel=dock.querySelector('#utdssHelpPanel'),open=dock.querySelector('#utdssHelpOpen'),close=dock.querySelector('#utdssHelpClose');
+  const toggle=flag=>{const active=typeof flag==='boolean'?flag:panel.hidden;panel.hidden=!active;open.setAttribute('aria-expanded',String(active));if(active)close.focus();else open.focus();};
+  open.addEventListener('click',()=>toggle());close.addEventListener('click',()=>toggle(false));
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!panel.hidden)toggle(false);});
+  const responses={
+    prepare:'Use the Smart Sourcing Desk to prepare the product description, quantity, manufacturer or model, part numbers and delivery requirements. Review your email in Outlook and click Send. This website does not automatically submit enquiries.',
+    parts:'NSN means National Stock Number and MPN means Manufacturer Part Number. Include whichever is available, plus the product description and specifications. The website does not validate part numbers against supplier catalogues.',
+    delivery:'Include the delivery destination, preferred date, product quantities and any special requirements. Delivery availability and lead time require confirmation from the UTDSS team.',
+    files:'Attach product photographs, drawings, datasheets or certificates yourself in Outlook or your email app before sending the prepared enquiry to Utdss@singnet.com.'
+  };
+  dock.querySelectorAll('[data-help]').forEach(button=>button.addEventListener('click',()=>{dock.querySelector('#utdssHelpAnswer').textContent=responses[button.dataset.help]||'Please contact UTDSS for assistance.';}));
+}
+
 })();
