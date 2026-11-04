@@ -35,16 +35,47 @@ if(!document.getElementById('assistant')&&!document.getElementById('utdssHelpDoc
 }
 
 
-/* Accessible scroll reveal: never hide content before observation is ready. */
-if('IntersectionObserver' in window&&!matchMedia('(prefers-reduced-motion: reduce)').matches){
-  document.querySelectorAll('.utdss-editorial').forEach(page=>{
-    const nodes=page.querySelectorAll('[data-ed-reveal]');
-    const observer=new IntersectionObserver(entries=>{
-      entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('ed-visible');observer.unobserve(entry.target)}});
-    },{threshold:.08,rootMargin:'0px 0px 50px 0px'});
-    nodes.forEach(node=>observer.observe(node));
-    page.classList.add('ed-motion');
+/* Progressive motion: enhance only when supported and enabled. Never hide content without JS. */
+const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
+if(!reduceMotion.matches&&'IntersectionObserver' in window){
+  const targets=[...new Set([
+    ...document.querySelectorAll('.utdss-editorial [data-ed-reveal]'),
+    ...document.querySelectorAll('.utdss-secondary-main > .grid > .card, .utdss-secondary-main > .utdss-secondary-cta, .utdss-secondary-main > .choose-journey'),
+    ...document.querySelectorAll('.hero-area .hero-words, .hero-area .features .feature, main .sector, .desk-promo-inner > *, .film-video-block, .lower > section, .lower > div')
+  ])].filter(el=>!el.closest('[hidden],.assistant,.utdss-help-dock'));
+  const observer=new IntersectionObserver(entries=>{
+    for(const entry of entries){
+      if(entry.isIntersecting){
+        entry.target.classList.add('utdss-revealed');
+        observer.unobserve(entry.target);
+      }
+    }
+  },{threshold:0.06,rootMargin:'0px 0px 70px 0px'});
+  targets.forEach((el,i)=>{
+    el.classList.add('utdss-reveal');
+    el.style.setProperty('--utdss-stagger',String(Math.min(i%4,3)));
+    observer.observe(el);
   });
+  document.documentElement.classList.add('utdss-motion-ready');
+  if(document.querySelector('.utdss-editorial'))document.querySelector('.utdss-editorial').classList.add('ed-motion');
+}
+/* A non-interactive scroll position indicator: compositor-friendly, no misleading loading animation. */
+if(!reduceMotion.matches&&document.querySelector('main')){
+  const line=document.createElement('div');
+  line.className='utdss-scroll-progress';
+  line.setAttribute('aria-hidden','true');
+  document.body.append(line);
+  let scheduled=false;
+  const measure=()=>{
+    const max=document.documentElement.scrollHeight-window.innerHeight;
+    const ratio=max>0?Math.min(1,Math.max(0,window.scrollY/max)):0;
+    line.style.transform='scaleX('+ratio.toFixed(4)+')';
+    scheduled=false;
+  };
+  const schedule=()=>{if(!scheduled){scheduled=true;requestAnimationFrame(measure)}};
+  addEventListener('scroll',schedule,{passive:true});
+  addEventListener('resize',schedule,{passive:true});
+  measure();
 }
 
 })();
