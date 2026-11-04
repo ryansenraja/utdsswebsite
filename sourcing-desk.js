@@ -65,7 +65,7 @@ const itemsReady=Boolean(data.items.length&&readyCount===data.items.length);
 const progress=(contactReady?1:0)+(itemsReady?1:0);
 const readinessBar=$('rfqReadinessBar'),readinessFill=$('rfqReadinessFill');
 if(readinessBar){readinessBar.setAttribute('aria-valuenow',String(progress));readinessBar.setAttribute('aria-valuetext',progress+' of 2 preparation steps complete; customer must send email manually.');}
-if(readinessFill)readinessFill.style.width=(progress/3*100)+'%';
+if(readinessFill)readinessFill.style.width=(progress/2*100)+'%';
 const updateReady=(id,ready,text)=>{const node=$(id);if(node){node.textContent=(ready?'✓ ':'○ ')+(window.UTDSSLocaleText?window.UTDSSLocaleText(text):text);node.classList.toggle('ready',ready);}};
 updateReady('rfqReadyContact',contactReady,'Contact name, organisation and valid email');
 updateReady('rfqReadyItems',itemsReady,'All items identified with valid quantities');
