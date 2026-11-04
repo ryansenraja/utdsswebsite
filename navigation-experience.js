@@ -33,13 +33,16 @@ if(primaryHeader&&primaryNav&&!primaryHeader.querySelector('.utdss-menu-toggle')
   menu.setAttribute('aria-label','Open navigation menu');
   menu.innerHTML='<span class="utdss-menu-bars" aria-hidden="true"><i></i><i></i><i></i></span><span class="utdss-menu-caption">Menu</span>';
   primaryHeader.insertBefore(menu,primaryNav);
+  const localise=t=>window.UTDSSLocaleText?window.UTDSSLocaleText(t):t;
   const setOpen=open=>{
     primaryHeader.classList.toggle('utdss-menu-open',open);
     menu.setAttribute('aria-expanded',String(open));
-    menu.setAttribute('aria-label',open?'Close navigation menu':'Open navigation menu');
+    menu.setAttribute('aria-label',localise(open?'Close navigation menu':'Open navigation menu'));
     const title=menu.querySelector('.utdss-menu-caption');
-    if(title)title.textContent=open?'Close menu':'Menu';
+    if(title)title.textContent=localise(open?'Close menu':'Menu');
   };
+  setOpen(false);
+  document.addEventListener('utdss:languagechange',()=>setOpen(menu.getAttribute('aria-expanded')==='true'));
   menu.addEventListener('click',()=>setOpen(menu.getAttribute('aria-expanded')!=='true'));
   primaryNav.addEventListener('click',e=>{if(e.target.closest('a'))setOpen(false)});
   document.addEventListener('keydown',e=>{if(e.key==='Escape'&&menu.getAttribute('aria-expanded')==='true'){setOpen(false);menu.focus()}});
