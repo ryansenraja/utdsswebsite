@@ -206,7 +206,7 @@ function addDirectoryFinder(pageSelector,config){
   let shown=0;
   for(const card of cards){
    const text=(card.textContent||'').toLocaleLowerCase();
-   const match=!value||value.split(/\\s+/).every(term=>text.includes(term));
+   const match=!value||value.split(/\s+/).every(term=>text.includes(term));
    card.hidden=!match;if(match)shown++;
   }
   clear.hidden=!value;
