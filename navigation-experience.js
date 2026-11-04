@@ -55,15 +55,12 @@ if(primaryHeader&&primaryNav&&!primaryHeader.querySelector('.utdss-menu-toggle')
 if(primaryHeader&&primaryNav&&!primaryNav.dataset.utdssDropdowns){
  primaryNav.dataset.utdssDropdowns='ready';
  const definitions={
-  '/':[['Website homepage','/'],['Explore industries','/#sectors'],['Request a Quotation','/#quote']],
-  '#quote':[['Request a Quotation','/#quote'],['Smart Sourcing Desk','/sourcing.html'],['Contact details','/contact.html']],
-  '/about.html':[['Our company','/about.html'],['Who we are','/about.html#about-story'],['Our approach','/about.html#about-approach'],['Sectors we support','/about.html#about-sectors']],
+  '/about.html':[['Our company','/about.html'],['Our approach','/about.html#about-approach'],['Sectors','/about.html#about-sectors']],
   '/services.html':[['All services','/services.html'],['Maritime','/maritime.html'],['Defence & Institutional','/defence.html'],['Energy & Offshore','/energy.html'],['Industrial','/industrial.html'],['Aviation Support','/aviation.html']],
-  '/products.html':[['Supply categories','/products.html'],['Maritime','/maritime.html'],['Industrial Supply','/industrial.html'],['Smart Sourcing Desk','/sourcing.html']],
-  '/agencies.html':[['Brands & supply enquiries','/agencies.html'],['Supply categories','/products.html'],['Ask about a brand','/sourcing.html']],
-  '/contact.html':[['Contact details','/contact.html'],['Prepare an enquiry','/sourcing.html'],['Request a Quotation','/#quote']],
-  '/sourcing.html':[['Open Sourcing Desk','/sourcing.html'],['Browse supply categories','/products.html'],['Contact UTDSS','/contact.html']],
-  '#sectors':[['Defence & Institutional','/defence.html'],['Maritime','/maritime.html'],['Energy & Offshore','/energy.html'],['Industrial','/industrial.html'],['Aviation Support','/aviation.html']]
+  '/products.html':[['Supply categories','/products.html'],['Smart Sourcing Desk','/sourcing.html']],
+  '/agencies.html':[['Brands & supply enquiries','/agencies.html'],['Ask about a brand','/sourcing.html']],
+  '/contact.html':[['Contact details','/contact.html'],['Request a Quotation','/#quote']],
+  '#sectors':[['Maritime','/maritime.html'],['Defence & Institutional','/defence.html'],['Energy & Offshore','/energy.html'],['Industrial','/industrial.html'],['Aviation Support','/aviation.html']]
  };
  let dropdownNumber=0;
  const menus=[];
@@ -82,14 +79,11 @@ if(primaryHeader&&primaryNav&&!primaryNav.dataset.utdssDropdowns){
    toggle.setAttribute('aria-controls',subId);
    toggle.setAttribute('aria-expanded','false');
    const icon=document.createElement('span');
-   icon.className='utdss-nav-chevron';icon.setAttribute('aria-hidden','true');icon.textContent='⌄';
+   icon.className='utdss-nav-chevron';icon.setAttribute('aria-hidden','true');icon.textContent='';
    toggle.append(icon);
    const menu=document.createElement('div');
    menu.className='utdss-nav-dropdown';menu.id=subId;
    menu.setAttribute('aria-hidden','true');
-   const eyebrow=document.createElement('div');eyebrow.className='utdss-nav-dropdown-heading';
-   eyebrow.textContent=link.textContent.trim();
-   menu.append(eyebrow);
    for(const [title,href] of entries){
      const option=document.createElement('a');option.href=href;
      option.dataset.utdssOriginal=title;option.textContent=localise(title);
@@ -106,7 +100,6 @@ if(primaryHeader&&primaryNav&&!primaryNav.dataset.utdssDropdowns){
    setOpen(false);
    const updateLanguage=()=>{
      toggle.setAttribute('aria-label',localise('More options for')+' '+link.textContent.trim());
-     eyebrow.textContent=link.textContent.trim();
      menu.querySelectorAll('a').forEach(a=>a.textContent=localise(a.dataset.utdssOriginal));
    };
    updateLanguage();
