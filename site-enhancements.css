@@ -301,3 +301,30 @@ body>header nav[aria-label="Primary navigation"] a:focus-visible{outline:3px sol
 @media(max-width:900px){.utdss-secondary .utdss-global-header nav{width:100%;flex-wrap:nowrap;overflow-x:auto;padding-bottom:7px;scrollbar-width:thin}.utdss-secondary .utdss-global-header nav a{white-space:nowrap;flex-shrink:0}.utdss-secondary .utdss-secondary-cta{align-items:flex-start;flex-direction:column}}
 @media(max-width:620px){.utdss-secondary .utdss-global-brand img{width:36px;height:36px}.utdss-secondary .utdss-global-brand strong{font-size:15px}.utdss-secondary .utdss-secondary-main{padding-inline:18px}.utdss-secondary .utdss-secondary-grid>.card{padding:23px}.utdss-secondary .utdss-secondary-cta{padding:24px}.utdss-secondary .utdss-secondary-cta .cta{width:100%;text-align:center}.utdss-secondary .choose-journey .journey-grid .cta{width:100%;text-align:center}}
 @media(prefers-reduced-motion:reduce){.utdss-secondary .utdss-secondary-grid>.card{transition:none}.utdss-secondary .utdss-secondary-grid>.card:hover{transform:none}}
+
+
+/* Compact accessible navigation shared by homepage, sourcing desk and all secondary pages. */
+body>header>.utdss-menu-toggle{display:none;align-items:center;justify-content:center;gap:9px;padding:10px 13px;border:1px solid #cad9e7;border-radius:10px;background:#f5f8fc;color:#123959;font:700 13px/1.3 Arial,sans-serif;cursor:pointer;min-height:44px}
+body>header>.utdss-menu-toggle:focus-visible{outline:3px solid #ccaa68;outline-offset:3px}
+body>header>.utdss-menu-toggle .utdss-menu-bars{width:19px;display:flex;flex-direction:column;gap:4px}
+body>header>.utdss-menu-toggle .utdss-menu-bars i{display:block;width:19px;height:2px;background:currentColor;border-radius:2px}
+@media(max-width:780px){
+body>header{position:relative}
+body>header>.utdss-menu-toggle{display:inline-flex;order:2;margin-left:auto}
+body>header>nav,
+body>header nav[aria-label="Primary navigation"]{display:none!important}
+body>header.utdss-menu-open>nav,
+body>header.utdss-menu-open nav[aria-label="Primary navigation"]{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));order:4;flex-basis:100%;width:100%;max-width:none;overflow:visible;gap:5px!important;margin:10px 0 0!important;padding:11px!important;background:#f5f8fc;border:1px solid #dbe6ef;border-radius:12px;box-shadow:0 8px 20px #123b6112}
+body>header.utdss-menu-open>nav a,
+body>header.utdss-menu-open nav[aria-label="Primary navigation"] a{display:block;min-width:0;white-space:normal!important;border:0!important;border-radius:7px;padding:12px 13px!important;font-size:13px!important;text-decoration:none}
+body>header.utdss-menu-open>nav a:hover,
+body>header.utdss-menu-open>nav a[aria-current="page"]{background:#e5edf6;color:#0a5186}
+body>header #utdssLang{order:3;margin-left:0}
+body>header .brand,body>header .utdss-global-brand,body>header .about-brand{min-width:0;max-width:calc(100% - 110px)}
+}
+@media(max-width:520px){
+body>header.utdss-menu-open>nav,body>header.utdss-menu-open nav[aria-label="Primary navigation"]{grid-template-columns:1fr}
+body>header>.utdss-menu-toggle{padding:10px 12px}
+body>header .brand,body>header .utdss-global-brand,body>header .about-brand{max-width:calc(100% - 96px)}
+}
+@media(prefers-reduced-motion:reduce){body>header>.utdss-menu-toggle{transition:none}}
