@@ -141,7 +141,7 @@ function applyDiscoveryReferral(){
  const message=selectedBrand?'Selected brand: '+selectedBrand+'. Please add the exact product description, part number and quantity. Brand listings do not guarantee supply or stock.':'Sector selected: '+selectedSector+'. Enter the specific product details and required quantity.';
  setStatus('draftStatus',message);
  const target=document.getElementById('product-details');
- if(target)requestAnimationFrame(()=>target.scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth',block:'start'}));
+ if(target)requestAnimationFrame(()=>target.scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'}));
 }
 applyDiscoveryReferral();
 })();
