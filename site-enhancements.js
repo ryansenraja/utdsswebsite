@@ -125,7 +125,7 @@ function enhanceSectorTile(container,sectorHref){
   const canHover=window.matchMedia('(hover:hover) and (pointer:fine)');
   container.addEventListener('mouseenter',()=>{if(canHover.matches)setOpen(true)});
   container.addEventListener('mouseleave',()=>{if(canHover.matches&& !container.contains(document.activeElement))setOpen(false)});
-  container.addEventListener('focusin',()=>setOpen(true));
+  container.addEventListener('focusin',e=>{if(e.target!==trigger||trigger.matches(':focus-visible'))setOpen(true)});
   container.addEventListener('focusout',e=>{if(!container.contains(e.relatedTarget))setOpen(false)});
   trigger.addEventListener('click',()=>setOpen(!opened));
   container.addEventListener('keydown',e=>{if(e.key==='Escape'&&opened){setOpen(false);trigger.focus()}});
