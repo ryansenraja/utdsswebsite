@@ -174,4 +174,53 @@ document.querySelectorAll('.about-sectors .ed-card, .utdss-page-products .utdss-
   if(sectorMenuData[route])enhanceSectorTile(card,route);
 });
 
+/* Procurement finder: instant, accessible filtering without an external service. */
+function addDirectoryFinder(pageSelector,config){
+ const page=document.querySelector(pageSelector);
+ if(!page)return;
+ const grid=page.querySelector('.utdss-secondary-grid');
+ if(!grid||grid.dataset.utdssFinder)return;
+ const cards=[...grid.children].filter(el=>el.matches('.card'));
+ if(cards.length<2)return;
+ grid.dataset.utdssFinder='ready';
+ const bar=document.createElement('section');bar.className='utdss-directory-finder';
+ bar.setAttribute('aria-label',config.label);
+ const inner=document.createElement('div');inner.className='utdss-finder-inner';
+ const intro=document.createElement('div');intro.className='utdss-finder-intro';
+ const heading=document.createElement('h2');heading.textContent=config.heading;
+ const helper=document.createElement('p');helper.textContent=config.help;
+ intro.append(heading,helper);
+ const form=document.createElement('form');form.setAttribute('role','search');form.className='utdss-finder-form';
+ const label=document.createElement('label');label.textContent=config.label;
+ const input=document.createElement('input');input.type='search';input.autocomplete='off';
+ input.maxLength=80;input.placeholder=config.placeholder;
+ input.setAttribute('aria-label',config.label);
+ const clear=document.createElement('button');clear.type='button';clear.textContent='Clear';clear.hidden=true;
+ const status=document.createElement('p');status.className='utdss-finder-status';
+ status.setAttribute('role','status');status.setAttribute('aria-live','polite');
+ const empty=document.createElement('p');empty.className='utdss-finder-empty';empty.hidden=true;
+ empty.textContent='No matching entries. Try a different keyword or send us a sourcing enquiry.';
+ label.append(input);form.append(label,clear);
+ const count=()=>{
+  const value=input.value.toLocaleLowerCase().trim();
+  let shown=0;
+  for(const card of cards){
+   const text=(card.textContent||'').toLocaleLowerCase();
+   const match=!value||value.split(/\\s+/).every(term=>text.includes(term));
+   card.hidden=!match;if(match)shown++;
+  }
+  clear.hidden=!value;
+  status.textContent=value?shown+' of '+cards.length+' results':cards.length+' categories and entries';
+  if(config.kind==='brands')status.textContent=value?shown+' of '+cards.length+' brands':cards.length+' brands listed for enquiry';
+  empty.hidden=shown!==0;
+ };
+ form.addEventListener('submit',event=>event.preventDefault());
+ input.addEventListener('input',count);
+ clear.addEventListener('click',()=>{input.value='';count();input.focus()});
+ inner.append(intro,form,status,empty);bar.append(inner);grid.parentNode.insertBefore(bar,grid);
+ count();
+}
+addDirectoryFinder('.utdss-page-products',{heading:'Find a supply category',help:'Search by industry or product type. Categories are examples, not live inventory.',label:'Search supply categories',placeholder:'Try marine, industrial or NSN',kind:'categories'});
+addDirectoryFinder('.utdss-page-agencies',{heading:'Explore brands',help:'Find a listed brand and contact UTDSS to confirm the current sourcing arrangement.',label:'Search listed brands',placeholder:'Search a brand name',kind:'brands'});
+
 })();
