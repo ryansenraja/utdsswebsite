@@ -345,3 +345,15 @@ body>header .brand,body>header .utdss-global-brand,body>header .about-brand{max-
 .utdss-about .about-procurement-list strong{display:block;font-size:15px;color:#0f3455;line-height:1.35}
 .utdss-about .about-procurement-list small{display:block;margin-top:5px;color:#587087;font-size:12px;line-height:1.7}
 @media(max-width:850px){.utdss-about .about-procurement-grid{grid-template-columns:1fr}}
+
+
+/* Smart Sourcing Desk: transparent preparation status without false send confirmation. */
+.rfq-readiness{margin:18px 0 8px;padding:16px;border:1px solid rgba(224,236,249,.27);border-radius:12px;background:rgba(255,255,255,.08);color:#f0f5fb}
+.rfq-readiness>strong{display:block;font-size:14px;color:#fff;letter-spacing:.02em}
+.rfq-readiness-bar{height:7px;background:rgba(255,255,255,.23);border-radius:999px;overflow:hidden;margin-top:12px}
+.rfq-readiness-bar span{display:block;height:100%;width:0;background:#d7b574;border-radius:999px;transition:width .25s ease}
+.rfq-readiness ul{list-style:none;padding:0;margin:13px 0 0}
+.rfq-readiness li{font-size:12px;line-height:1.6;color:#d1dfec;margin:7px 0}
+.rfq-readiness li.ready{color:#d9f6dc}
+.rfq-readiness p{font-size:11px;line-height:1.55;color:#c5d5e3;margin:14px 0 0}
+@media(prefers-reduced-motion:reduce){.rfq-readiness-bar span{transition:none}}
