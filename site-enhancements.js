@@ -78,4 +78,81 @@ if(!reduceMotion.matches&&document.querySelector('main')){
   measure();
 }
 
+
+/* Sector discovery: a downward-opening, accessible menu on desktop and touch devices. */
+const sectorMenuData={
+  '/defence.html':{name:'Defence & Institutional',description:'General institutional and non-restricted procurement enquiries.',options:[['Explore sector','/defence.html'],['Supply categories','/products.html'],['Prepare an enquiry','/sourcing.html']]},
+  '/maritime.html':{name:'Maritime',description:'Vessel, deck, maintenance and marine technical supply enquiries.',options:[['Explore sector','/maritime.html'],['Supply categories','/products.html'],['Prepare an enquiry','/sourcing.html']]},
+  '/energy.html':{name:'Energy & Offshore',description:'Operational, industrial and offshore sourcing requirements.',options:[['Explore sector','/energy.html'],['Supply categories','/products.html'],['Prepare an enquiry','/sourcing.html']]},
+  '/industrial.html':{name:'Industrial Supply',description:'Engineering components, facility items and MRO sourcing.',options:[['Explore sector','/industrial.html'],['Supply categories','/products.html'],['Prepare an enquiry','/sourcing.html']]},
+  '/aviation.html':{name:'Aviation Support',description:'General ground operations and non-flight-critical supply requests.',options:[['Explore sector','/aviation.html'],['Supply categories','/products.html'],['Prepare an enquiry','/sourcing.html']]}
+};
+let sectorMenuCount=0;
+function enhanceSectorTile(container,sectorHref){
+  const definition=sectorMenuData[sectorHref];
+  if(!definition||container.dataset.utdssMenuReady)return;
+  container.dataset.utdssMenuReady='true';
+  container.classList.add('utdss-sector-menu');
+  const id='utdss-sector-options-'+(++sectorMenuCount);
+  const trigger=document.createElement('button');
+  trigger.type='button';trigger.className='utdss-sector-trigger';
+  trigger.setAttribute('aria-controls',id);
+  trigger.setAttribute('aria-expanded','false');
+  trigger.setAttribute('aria-label','Show options for '+definition.name);
+  const chevron=document.createElement('span');
+  chevron.className='utdss-sector-chevron';chevron.setAttribute('aria-hidden','true');chevron.textContent='⌄';
+  const text=document.createElement('span');text.textContent='Explore options';
+  trigger.append(text,chevron);
+  const panel=document.createElement('div');panel.id=id;panel.className='utdss-sector-dropdown';
+  panel.setAttribute('aria-label',definition.name+' options');
+  const description=document.createElement('p');description.className='utdss-sector-description';description.textContent=definition.description;
+  const options=document.createElement('div');options.className='utdss-sector-links';
+  definition.options.forEach(([label,url])=>{
+    const a=document.createElement('a');a.href=url;a.textContent=label;
+    a.setAttribute('tabindex','-1');options.append(a);
+  });
+  panel.append(description,options);
+  container.append(trigger,panel);
+  let opened=false;
+  const setOpen=show=>{
+    opened=show;
+    container.classList.toggle('is-expanded',show);
+    trigger.setAttribute('aria-expanded',String(show));
+    panel.setAttribute('aria-hidden',String(!show));
+    options.querySelectorAll('a').forEach(a=>a.tabIndex=show?0:-1);
+  };
+  setOpen(false);
+  const canHover=window.matchMedia('(hover:hover) and (pointer:fine)');
+  container.addEventListener('mouseenter',()=>{if(canHover.matches)setOpen(true)});
+  container.addEventListener('mouseleave',()=>{if(canHover.matches&& !container.contains(document.activeElement))setOpen(false)});
+  container.addEventListener('focusin',()=>setOpen(true));
+  container.addEventListener('focusout',e=>{if(!container.contains(e.relatedTarget))setOpen(false)});
+  trigger.addEventListener('click',()=>setOpen(!opened));
+  container.addEventListener('keydown',e=>{if(e.key==='Escape'&&opened){setOpen(false);trigger.focus()}});
+  document.addEventListener('pointerdown',e=>{if(opened&&!container.contains(e.target))setOpen(false)},{passive:true});
+  const localise=()=>{
+    const tr=t=>window.UTDSSLocaleText?window.UTDSSLocaleText(t):t;
+    text.textContent=tr('Explore options');
+    trigger.setAttribute('aria-label',tr('Show options for')+' '+tr(definition.name));
+    panel.setAttribute('aria-label',tr(definition.name)+' '+tr('options'));
+  };
+  localise();
+  document.addEventListener('utdss:languagechange',localise);
+}
+// Homepage: preserve the original clickable image while adding a separate menu control.
+document.querySelectorAll('#sectors > a.sector[href]').forEach(anchor=>{
+  const route=new URL(anchor.href,location.href).pathname;
+  if(!sectorMenuData[route])return;
+  const tile=document.createElement('div');tile.className='utdss-home-sector-tile';
+  anchor.parentNode.insertBefore(tile,anchor);tile.append(anchor);
+  enhanceSectorTile(tile,route);
+});
+// About and Products: enhance the existing cards without changing their primary links.
+document.querySelectorAll('.about-sectors .ed-card, .utdss-page-products .utdss-secondary-grid > .card').forEach(card=>{
+  const link=card.querySelector('a[href]');
+  if(!link)return;
+  const route=new URL(link.href,location.href).pathname;
+  if(sectorMenuData[route])enhanceSectorTile(card,route);
+});
+
 })();
