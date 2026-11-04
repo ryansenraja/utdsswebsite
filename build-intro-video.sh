@@ -47,7 +47,19 @@ scene 04 "INDUSTRIAL COMPONENTS" "Parts identification. Equipment and specificat
 scene 05 "INSTITUTIONAL PROCUREMENT" "Structured specifications and technical supply enquiries." "https://images.pexels.com/photos/3735930/pexels-photo-3735930.jpeg?auto=compress&cs=tinysrgb&w=2400"
 scene 06 "AVIATION SUPPORT" "Specialised ground-support equipment enquiries." "https://images.pexels.com/photos/32128674/pexels-photo-32128674.jpeg?auto=compress&cs=tinysrgb&w=2400"
 brand_scene 07 "IDENTIFY. SPECIFY. SOURCE." "FROM REQUIREMENT TO ENQUIRY" "NSN  /  MPN  /  Technical specifications"
-brand_scene 08 "HARD TO FIND?" "LET UTDSS TAKE A LOOK." "www.utdss.com"
+# Closing signature: embed the existing UTDSS emblem directly in the video frames.
+# Using the same original logo asset as the website (not an approximation or regenerated logo).
+LOGO=/app/assets/united-emblem.png
+if [ ! -s "$LOGO" ]; then
+  echo "UTDSS closing-film logo missing: $LOGO" >&2
+  exit 1
+fi
+ffmpeg -nostdin -hide_banner -loglevel error -y \
+  -f lavfi -i "color=c=0x061b31:s=1920x1080:r=24:d=8" \
+  -loop 1 -framerate 24 -i "$LOGO" \
+  -filter_complex "[0:v]drawgrid=w=160:h=160:t=1:c=0xb7cddd@0.08,drawbox=x=800:y=492:w=320:h=3:color=0xd8b77c:t=fill,drawtext=fontfile=$FONT:text='UNITED SHIPPING SERVICES':fontcolor=white:fontsize=54:x=(w-text_w)/2:y=535,drawtext=fontfile=$FONT:text='HARD TO FIND?':fontcolor=0xd8b77c:fontsize=37:x=(w-text_w)/2:y=656,drawtext=fontfile=$REGULAR:text='LET UTDSS TAKE A LOOK.':fontcolor=white:fontsize=32:x=(w-text_w)/2:y=714,drawtext=fontfile=$REGULAR:text='www.utdss.com':fontcolor=0xdce7ef:fontsize=26:x=(w-text_w)/2:y=794[bg];[1:v]scale=w=248:h=248:force_original_aspect_ratio=decrease,format=rgba[logo];[bg][logo]overlay=x=(W-w)/2:y=200:shortest=1,fade=t=in:st=0:d=0.95,fade=t=out:st=7.1:d=0.9,format=yuv420p[v]" \
+  -map "[v]" -an -t 8 -r 24 -c:v libx264 -preset veryfast -crf 20 -pix_fmt yuv420p "$D/scene08.mp4"
+test -s "$D/scene08.mp4" || { echo "UTDSS logo closing scene failed" >&2; exit 1; }
 : > "$D/playlist.txt"
 for n in 01 02 03 04 05 06 07 08; do
  printf "file '%s/scene%s.mp4'\n" "$D" "$n" >> "$D/playlist.txt"
