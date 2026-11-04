@@ -50,8 +50,7 @@ if(primaryHeader&&primaryNav&&!primaryHeader.querySelector('.utdss-menu-toggle')
 }
 
 
-/* Site-wide premium navigation dropdowns, attached to the TOP HEADER menu.
-   Primary links remain valid; separate buttons open nested choices. */
+/* Understated header navigation: no arrows, icons, ticks or extra controls. */
 if(primaryHeader&&primaryNav&&!primaryNav.dataset.utdssDropdowns){
  primaryNav.dataset.utdssDropdowns='ready';
  const definitions={
@@ -62,58 +61,63 @@ if(primaryHeader&&primaryNav&&!primaryNav.dataset.utdssDropdowns){
   '/contact.html':[['Contact details','/contact.html'],['Request a Quotation','/#quote']],
   '#sectors':[['Maritime','/maritime.html'],['Defence & Institutional','/defence.html'],['Energy & Offshore','/energy.html'],['Industrial','/industrial.html'],['Aviation Support','/aviation.html']]
  };
- let dropdownNumber=0;
- const menus=[];
- const localise=text=>window.UTDSSLocaleText?window.UTDSSLocaleText(text):text;
+ const menus=[];let number=0;
+ const translate=t=>window.UTDSSLocaleText?window.UTDSSLocaleText(t):t;
+ const closeOthers=current=>menus.forEach(m=>{if(m!==current)m.close()});
  for(const link of [...primaryNav.children]){
    if(link.tagName!=='A')continue;
    const raw=link.getAttribute('href')||'';
-   const path=raw==='#sectors'?'#sectors':raw==='#quote'?'#quote':new URL(link.href,location.href).pathname;
-   const entries=definitions[path];
+   const key=raw==='#sectors'?'#sectors':new URL(link.href,location.href).pathname;
+   const entries=definitions[key];
    if(!entries)continue;
-   const item=document.createElement('div');
-   item.className='utdss-nav-item';
-   const toggle=document.createElement('button');
-   toggle.type='button';toggle.className='utdss-nav-dropdown-toggle';
-   const subId='utdss-top-dropdown-'+(++dropdownNumber);
-   toggle.setAttribute('aria-controls',subId);
-   toggle.setAttribute('aria-expanded','false');
-   const icon=document.createElement('span');
-   icon.className='utdss-nav-chevron';icon.setAttribute('aria-hidden','true');icon.textContent='';
-   toggle.append(icon);
-   const menu=document.createElement('div');
-   menu.className='utdss-nav-dropdown';menu.id=subId;
-   menu.setAttribute('aria-hidden','true');
-   for(const [title,href] of entries){
-     const option=document.createElement('a');option.href=href;
-     option.dataset.utdssOriginal=title;option.textContent=localise(title);
-     option.tabIndex=-1;menu.append(option);
-   }
-   link.parentNode.insertBefore(item,link);
-   item.append(link,toggle,menu);
-   const setOpen=(open)=>{
-     item.classList.toggle('is-open',open);
-     toggle.setAttribute('aria-expanded',String(open));
-     menu.setAttribute('aria-hidden',String(!open));
-     menu.querySelectorAll('a').forEach(a=>a.tabIndex=open?0:-1);
+   const wrapper=document.createElement('div');wrapper.className='utdss-nav-item';
+   const id='utdss-nav-panel-'+(++number);
+   const dropdown=document.createElement('div');dropdown.className='utdss-nav-dropdown';dropdown.id=id;
+   dropdown.setAttribute('aria-hidden','true');
+   entries.forEach(([label,href])=>{
+     const a=document.createElement('a');a.href=href;a.dataset.originalText=label;
+     a.textContent=translate(label);a.tabIndex=-1;dropdown.append(a);
+   });
+   link.parentNode.insertBefore(wrapper,link);
+   wrapper.append(link,dropdown);
+   link.setAttribute('aria-haspopup','true');
+   link.setAttribute('aria-controls',id);
+   let closeTimer=null;
+   const setOpen=open=>{
+     if(closeTimer!==null){clearTimeout(closeTimer);closeTimer=null;}
+     wrapper.classList.toggle('is-open',open);
+     link.setAttribute('aria-expanded',String(open));
+     dropdown.setAttribute('aria-hidden',String(!open));
+     dropdown.querySelectorAll('a').forEach(a=>a.tabIndex=open?0:-1);
    };
+   const entry={wrapper,close:()=>setOpen(false)};menus.push(entry);
    setOpen(false);
-   const updateLanguage=()=>{
-     toggle.setAttribute('aria-label',localise('More options for')+' '+link.textContent.trim());
-     menu.querySelectorAll('a').forEach(a=>a.textContent=localise(a.dataset.utdssOriginal));
-   };
-   updateLanguage();
-   document.addEventListener('utdss:languagechange',updateLanguage);
-   menus.push({item,toggle,menu,setOpen});
-   toggle.addEventListener('click',()=>{const next=!item.classList.contains('is-open');menus.forEach(m=>{if(m.item!==item)m.setOpen(false)});setOpen(next)});
-   item.addEventListener('mouseenter',()=>{if(matchMedia('(hover:hover) and (pointer:fine)').matches){menus.forEach(m=>{if(m.item!==item)m.setOpen(false)});setOpen(true)}});
-   item.addEventListener('mouseleave',()=>{if(matchMedia('(hover:hover) and (pointer:fine)').matches&&!item.contains(document.activeElement))setOpen(false)});
-   item.addEventListener('focusout',e=>{if(!item.contains(e.relatedTarget))setOpen(false)});
-   item.addEventListener('keydown',e=>{if(e.key==='Escape'){setOpen(false);toggle.focus()}});
-   menu.addEventListener('click',e=>{if(e.target.closest('a'))setOpen(false)});
+   const desktop=()=>matchMedia('(hover:hover) and (pointer:fine) and (min-width:781px)').matches;
+   wrapper.addEventListener('pointerenter',e=>{if(e.pointerType==='mouse'&&desktop()){closeOthers(entry);setOpen(true)}});
+   wrapper.addEventListener('pointerleave',e=>{if(e.pointerType==='mouse'&&desktop())closeTimer=setTimeout(()=>{if(!wrapper.contains(document.activeElement))setOpen(false)},130)});
+   wrapper.addEventListener('focusin',()=>{closeOthers(entry);setOpen(true)});
+   wrapper.addEventListener('focusout',e=>{if(!wrapper.contains(e.relatedTarget))setOpen(false)});
+   // On touch / compact navigation, the first tap reveals the links.
+   // A second tap on the heading follows its original destination.
+   link.addEventListener('click',e=>{
+     if(!desktop()&&!wrapper.classList.contains('is-open')){
+       e.preventDefault();closeOthers(entry);setOpen(true);
+     }
+   });
+   wrapper.addEventListener('keydown',e=>{
+     if(e.key==='Escape'){e.preventDefault();setOpen(false);link.focus();}
+     if(e.key==='ArrowDown'&&e.target===link){e.preventDefault();closeOthers(entry);setOpen(true);dropdown.querySelector('a')?.focus();}
+   });
+   document.addEventListener('utdss:languagechange',()=>{
+     dropdown.querySelectorAll('a').forEach(a=>a.textContent=translate(a.dataset.originalText));
+   });
  }
- document.addEventListener('pointerdown',e=>{if(!primaryNav.contains(e.target))menus.forEach(m=>m.setOpen(false))},{passive:true});
- document.addEventListener('keydown',e=>{if(e.key==='Escape')menus.forEach(m=>m.setOpen(false))});
+ document.addEventListener('pointerdown',e=>{
+   if(!primaryNav.contains(e.target))menus.forEach(m=>m.close());
+ },{passive:true});
+ document.addEventListener('keydown',e=>{
+   if(e.key==='Escape')menus.forEach(m=>m.close());
+ });
 }
 
 })();
