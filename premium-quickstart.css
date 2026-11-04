@@ -1,0 +1,26 @@
+/* UTDSS procurement quick start — production-safe, scoped component */
+.utdss-quickstart{background:#f5f8fa;padding:clamp(48px,6vw,86px) clamp(18px,4vw,65px);border-block:1px solid #e2e9ee;color:#173a53}
+.utdss-quickstart *{box-sizing:border-box}
+.utdss-quickstart-inner{max-width:1320px;margin:0 auto;display:grid;grid-template-columns:minmax(260px,.95fr) minmax(0,1.05fr);gap:clamp(30px,5vw,92px);align-items:center}
+.utdss-quickstart-kicker{font:800 11px/1.5 Arial,sans-serif;letter-spacing:.17em;color:#a27c43;text-transform:uppercase}
+.utdss-quickstart h2{font:700 clamp(29px,3.3vw,45px)/1.14 Georgia,serif;letter-spacing:-.034em;color:#102f48;max-width:620px;margin:16px 0}
+.utdss-quickstart-lead{font:400 15px/1.8 Arial,sans-serif;color:#526d80;max-width:550px;margin:0}
+.utdss-quickstart-notes{display:flex;flex-wrap:wrap;gap:12px 22px;margin-top:24px}
+.utdss-quickstart-notes span{font:600 12px/1.5 Arial,sans-serif;color:#466278}
+.utdss-quickstart-notes span:before{content:'';display:inline-block;width:6px;height:6px;background:#c2a06c;border-radius:50%;vertical-align:middle;margin-right:9px}
+.utdss-quickstart-panel{background:#fff;border:1px solid #dce6ee;border-radius:14px;box-shadow:0 15px 44px rgba(10,37,55,.075);padding:clamp(20px,3vw,34px)}
+.utdss-quickstart-panel h3{font:700 19px/1.35 Arial,sans-serif;color:#153a55;margin:0 0 7px}
+.utdss-quickstart-panel>p{font:400 13px/1.65 Arial,sans-serif;color:#60798c;margin:0 0 21px}
+.utdss-quickstart-form{display:grid;gap:15px}
+.utdss-quickstart-form label{display:block;font:700 12px/1.5 Arial,sans-serif;color:#33566e}
+.utdss-quickstart-form select{display:block;width:100%;margin-top:7px;min-height:49px;padding:12px 14px;border:1px solid #bdcedb;border-radius:8px;color:#173d5b;background:#fff;font:400 14px/1.4 Arial,sans-serif;cursor:pointer}
+.utdss-quickstart-form select:focus-visible{outline:3px solid #d0ae73;outline-offset:2px}
+.utdss-quickstart-actions{display:flex;flex-wrap:wrap;gap:11px;margin-top:5px}
+.utdss-quickstart-go{min-height:46px;display:inline-flex;align-items:center;justify-content:center;padding:12px 20px;border:1px solid #153f60;border-radius:8px;background:#153f60;color:#fff;font:700 13px/1.4 Arial,sans-serif;cursor:pointer}
+.utdss-quickstart-go:hover{background:#215b81;border-color:#215b81}
+.utdss-quickstart-other{min-height:46px;display:inline-flex;align-items:center;justify-content:center;padding:12px 16px;border:1px solid #cfdae3;border-radius:8px;background:#fff;color:#27526f;text-decoration:none;font:600 13px/1.4 Arial,sans-serif}
+.utdss-quickstart-other:hover{background:#f3f7fa}
+.utdss-quickstart-foot{font:400 11px/1.65 Arial,sans-serif!important;color:#718698!important;margin:15px 0 0!important}
+@media(max-width:900px){.utdss-quickstart-inner{grid-template-columns:1fr;gap:26px}.utdss-quickstart-lead{max-width:700px}.utdss-quickstart-panel{max-width:710px}}
+@media(max-width:560px){.utdss-quickstart{padding:45px 18px}.utdss-quickstart-panel{padding:19px}.utdss-quickstart-actions{flex-direction:column}.utdss-quickstart-actions>*{width:100%}}
+@media(prefers-reduced-motion:reduce){.utdss-quickstart *{animation:none!important;transition:none!important}}
