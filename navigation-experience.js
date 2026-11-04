@@ -44,7 +44,7 @@ if(primaryHeader&&primaryNav&&!primaryHeader.querySelector('.utdss-menu-toggle')
   setOpen(false);
   document.addEventListener('utdss:languagechange',()=>setOpen(menu.getAttribute('aria-expanded')==='true'));
   menu.addEventListener('click',()=>setOpen(menu.getAttribute('aria-expanded')!=='true'));
-  primaryNav.addEventListener('click',e=>{if(e.target.closest('a'))setOpen(false)});
+  primaryNav.addEventListener('click',e=>{if(!e.defaultPrevented&&e.target.closest('a'))setOpen(false)});
   document.addEventListener('keydown',e=>{if(e.key==='Escape'&&menu.getAttribute('aria-expanded')==='true'){setOpen(false);menu.focus()}});
   document.addEventListener('click',e=>{if(menu.getAttribute('aria-expanded')==='true'&&!primaryHeader.contains(e.target))setOpen(false)});
 }
