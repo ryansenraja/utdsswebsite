@@ -251,7 +251,7 @@ chatResponse.insertAdjacentElement('afterend',chatTranscript);
 function scrollChatToLatest(){requestAnimationFrame(()=>{chatTranscript.scrollTop=chatTranscript.scrollHeight;});}
 function addChatMessage(t,who){
  const el=document.createElement('div');
- el.className='chat-line '+who;
+ el.className='chat-line '+(who==='assistant'?'bot-message':'customer');
  el.dir='auto';
  if(t){const label=document.createElement('span');label.className='chat-author';label.textContent=who==='customer'?'You':'UTDSS Assistant';const body=document.createElement('span');body.className='chat-content';body.textContent=t;el.append(label,body)}
  chatTranscript.append(el);
@@ -326,10 +326,10 @@ let sending=false;
 async function sendChat(){
 const v=chatInput.value.trim();if(!v||sending)return;
 chatInput.value='';addChatMessage(v,'customer');sending=true;chatSend.disabled=true;chatSend.setAttribute('aria-busy','true');
-addChatMessage('','assistant');const messageEl=chatTranscript.lastElementChild;messageEl.classList.add('typing');messageEl.setAttribute('aria-label','Assistant is typing');messageEl.innerHTML='<span></span><span></span><span></span>';
+const messageEl=addChatMessage('','assistant');messageEl.classList.add('typing');messageEl.setAttribute('aria-label','Assistant is typing');messageEl.innerHTML='<span></span><span></span><span></span>';
 let text='';let offerQuotationLink=false;
 if(ai){try{const controller=new AbortController(),timeout=setTimeout(()=>controller.abort(),14000);let r;try{r=await fetch('/api/ai/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({language:(['zh','ms','ta'].includes(document.documentElement.lang.slice(0,2))?document.documentElement.lang.slice(0,2):'auto'),messages:[...history.slice(-8),{role:'user',content:v}]}),signal:controller.signal})}finally{clearTimeout(timeout)}if(r.ok){const d=await r.json();text=d.reply||d.answer||d.message||'';if(d.navigate==='contact'||d.escalate)offerQuotationLink=true}}catch(e){console.warn('AI reply unavailable; using guided response')}}
-if(!text){text=guidedAnswer(v);}
+if(!text){text=guidedAnswer(v,history);}
 messageEl.classList.remove('typing');messageEl.removeAttribute('aria-label');messageEl.replaceChildren();const assistantLabel=document.createElement('span');assistantLabel.className='chat-author';assistantLabel.textContent='UTDSS Assistant';const assistantText=document.createElement('span');assistantText.className='chat-content';assistantText.textContent=text;messageEl.append(assistantLabel,assistantText);if(offerQuotationLink){const a=document.createElement('a');a.href='#quote';a.textContent='Open the quotation form';a.className='chat-link';messageEl.append(a)}history.push({role:'user',content:v},{role:'assistant',content:text});if(history.length>16)history.splice(0,history.length-16);speak(text);
 sending=false;chatSend.disabled=false;chatSend.removeAttribute('aria-busy');chatInput.focus();chatTranscript.scrollTop=chatTranscript.scrollHeight;
 }
