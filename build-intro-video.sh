@@ -87,5 +87,10 @@ ffmpeg -nostdin -hide_banner -loglevel error -y -i "$D/silent.mp4" -i "$D/score.
   -map 0:v:0 -map 1:a:0 -c:v copy -c:a aac -b:a 160k -ar 48000 -shortest \
   -movflags +faststart "$FILE"
 test -s "$FILE" || { echo "Corporate film missing" >&2; exit 1; }
+length=$(ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 "$FILE")
+dimensions=$(ffprobe -v error -select_streams v:0 -show_entries stream=width,height -of csv=p=0 "$FILE")
+echo "Film duration: $length seconds; resolution: $dimensions"
+echo "$length" | awk '{ if ($1 < 62 || $1 > 67) exit 1 }' || { echo "Invalid film duration" >&2; exit 1; }
+[ "$dimensions" = "1920,1080" ] || { echo "Invalid film resolution" >&2; exit 1; }
 ffprobe -v error -show_entries format=duration,size -of default=noprint_wrappers=1 "$FILE"
 echo "UTDSS SPECIALISATION FILM: 64 SECONDS, 1080P, INSTRUMENTAL, SECTOR FOCUS, NO GENERIC PEOPLE FOOTAGE"
