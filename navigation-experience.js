@@ -7,7 +7,7 @@ const a=e.target.closest?.('a[href]');if(!a||a.hasAttribute('download')||a.targe
 let href;try{href=new URL(a.href,location.href)}catch{return;}
 if(href.origin!==location.origin||!['http:','https:'].includes(href.protocol)||href.pathname===location.pathname&&href.search===location.search&&href.hash)return;
 if(!/\.(html?)?$/.test(href.pathname)&&href.pathname!=='/')return;
-clearTimeout(overlayDelay);overlayDelay=setTimeout(()=>{if(document.visibilityState==='visible'){const p=ensureOverlay();p.classList.add('is-visible')}},480);
+clearTimeout(overlayDelay);overlayDelay=setTimeout(()=>{if(document.visibilityState==='visible'){const p=ensureOverlay();p.classList.add('is-visible')}},1000);
 });
 window.addEventListener('pageshow',()=>{clearTimeout(overlayDelay);overlay?.classList.remove('is-visible');});
 document.addEventListener('visibilitychange',()=>{if(document.hidden){clearTimeout(overlayDelay);overlay?.classList.remove('is-visible')}});
@@ -121,5 +121,89 @@ if(primaryHeader&&primaryNav&&!primaryNav.dataset.utdssDropdowns){
    if(e.key==='Escape')menus.forEach(m=>m.close());
  });
 }
+
+
+/* Quick navigation: accessible local site finder with no external requests. */
+(function setupSiteFinder(){
+ const header=document.querySelector('body > header');
+ if(!header||document.getElementById('utdss-site-search-trigger'))return;
+ const pages=[
+  {title:'Home',subtitle:'Company overview',url:'/',terms:'home welcome overview'},
+  {title:'About United Shipping Services',subtitle:'Our company and approach',url:'/about.html',terms:'about team who we are company'},
+  {title:'Services',subtitle:'How we support sourcing requirements',url:'/services.html',terms:'service supply sourcing procurement capabilities'},
+  {title:'Products and supply categories',subtitle:'Browse types of procurement enquiries',url:'/products.html',terms:'products catalogue equipment categories supply'},
+  {title:'Agencies and brands',subtitle:'Explore listed brands',url:'/agencies.html',terms:'agency brand manufacturer partner reseller stockholding'},
+  {title:'Maritime',subtitle:'Marine and vessel supply enquiries',url:'/maritime.html',terms:'marine vessel ship maritime nautical'},
+  {title:'Defence and institutional',subtitle:'Institutional procurement enquiries',url:'/defence.html',terms:'defence defense government tender institution'},
+  {title:'Energy and offshore',subtitle:'Technical sourcing for energy requirements',url:'/energy.html',terms:'energy offshore power'},
+  {title:'Industrial supply',subtitle:'Industrial parts and equipment',url:'/industrial.html',terms:'industrial tools components'},
+  {title:'Aviation support',subtitle:'Ground-support supply enquiries',url:'/aviation.html',terms:'aviation aircraft ground'},
+  {title:'Smart Sourcing Desk',subtitle:'Prepare a structured enquiry and Outlook email',url:'/sourcing.html',terms:'rfq request quotation nsn mpn sourcing desk part number submit'},
+  {title:'Contact UTDSS',subtitle:'Email and quotation information',url:'/contact.html',terms:'contact email reach representative address'}
+ ];
+ const trigger=document.createElement('button');
+ trigger.id='utdss-site-search-trigger';trigger.type='button';trigger.className='utdss-search-trigger';
+ trigger.setAttribute('aria-haspopup','dialog');trigger.setAttribute('aria-controls','utdss-site-finder');trigger.setAttribute('aria-label','Search site pages');
+ trigger.innerHTML='<svg aria-hidden="true" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="10.7" cy="10.7" r="6.8"/><path d="m16 16 5 5"/></svg><span>Search</span><kbd>/</kbd>';
+ const nav=header.querySelector(':scope > nav');
+ if(nav)header.append(trigger);else return;
+ const backdrop=document.createElement('div');
+ backdrop.id='utdss-site-finder';backdrop.className='utdss-finder-backdrop';backdrop.hidden=true;
+ backdrop.innerHTML='<section class="utdss-site-finder" role="dialog" aria-modal="true" aria-labelledby="utdss-finder-title"><div class="utdss-finder-heading"><div><span>QUICK NAVIGATION</span><h2 id="utdss-finder-title">Where can we help?</h2></div><button type="button" class="utdss-finder-close" aria-label="Close site search">×</button></div><label class="utdss-finder-search"><span class="utdss-visually-hidden">Search pages, sectors and sourcing</span><input type="search" autocomplete="off" spellcheck="false" placeholder="Search sectors, products, quotation…" maxlength="100"></label><p id="utdss-finder-count" class="utdss-finder-count" role="status" aria-live="polite"></p><div id="utdss-finder-results" class="utdss-finder-results"></div><div class="utdss-finder-foot">Press Esc to close · No account required</div></section>';
+ document.body.append(backdrop);
+ const input=backdrop.querySelector('input');
+ const results=backdrop.querySelector('#utdss-finder-results');
+ const count=backdrop.querySelector('#utdss-finder-count');
+ const close=backdrop.querySelector('.utdss-finder-close');
+ let previousFocus=null;
+ const render=()=>{
+  const q=input.value.trim().toLocaleLowerCase().split(/\s+/).filter(Boolean);
+  const matches=pages.filter(p=>{const combined=(p.title+' '+p.subtitle+' '+p.terms).toLocaleLowerCase();return q.every(x=>combined.includes(x))});
+  results.replaceChildren();
+  for(const p of matches){
+   const a=document.createElement('a');a.href=p.url;a.className='utdss-finder-result';
+   const title=document.createElement('strong');title.textContent=p.title;
+   const subtitle=document.createElement('span');subtitle.textContent=p.subtitle;
+   const arrow=document.createElement('span');arrow.textContent='→';arrow.setAttribute('aria-hidden','true');
+   a.append(title,subtitle,arrow);results.append(a);
+  }
+  count.textContent=matches.length?matches.length+' matching '+(matches.length===1?'page':'pages'):'No matching pages. Try another keyword.';
+ };
+ const setOpen=open=>{
+  if(open){
+   previousFocus=document.activeElement;
+   backdrop.hidden=false;document.body.classList.add('utdss-search-open');
+   input.value='';render();input.focus({preventScroll:true});
+  }else{
+   backdrop.hidden=true;document.body.classList.remove('utdss-search-open');
+   if(previousFocus&&typeof previousFocus.focus==='function')previousFocus.focus({preventScroll:true});
+  }
+ };
+ trigger.addEventListener('click',()=>setOpen(true));
+ close.addEventListener('click',()=>setOpen(false));
+ backdrop.addEventListener('pointerdown',e=>{if(e.target===backdrop)setOpen(false)});
+ input.addEventListener('input',render);
+ input.addEventListener('keydown',e=>{if(e.key==='ArrowDown'){const first=results.querySelector('a');if(first){e.preventDefault();first.focus()}}});
+ results.addEventListener('keydown',e=>{
+  const links=[...results.querySelectorAll('a')];const i=links.indexOf(document.activeElement);
+  if(e.key==='ArrowDown'&&i>=0){e.preventDefault();links[Math.min(i+1,links.length-1)].focus()}
+  if(e.key==='ArrowUp'&&i>=0){e.preventDefault();if(i===0)input.focus();else links[i-1].focus()}
+ });
+ document.addEventListener('keydown',e=>{
+  const inForm=e.target.closest?.('input,textarea,select,[contenteditable="true"]');
+  if((e.key==='/'&&!inForm&&!e.ctrlKey&&!e.metaKey&&!e.altKey)||(e.key.toLowerCase()==='k'&&(e.ctrlKey||e.metaKey))){
+   e.preventDefault();setOpen(true);
+  }
+  if(backdrop.hidden)return;
+  if(e.key==='Escape'){e.preventDefault();setOpen(false)}
+  if(e.key==='Tab'){
+   const focusable=[input,...results.querySelectorAll('a'),close];
+   const active=focusable.indexOf(document.activeElement);
+   if(e.shiftKey&&active===0){e.preventDefault();close.focus()}
+   else if(!e.shiftKey&&document.activeElement===close){e.preventDefault();input.focus()}
+  }
+ });
+ render();
+})();
 
 })();
