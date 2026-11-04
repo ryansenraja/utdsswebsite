@@ -1322,3 +1322,30 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
  .utdss-finder-inner{grid-template-columns:minmax(0,1fr);gap:13px;padding:18px}
  .utdss-finder-status,.utdss-finder-empty{grid-column:1}
 }
+
+
+/* Compact brand cards after removing duplicate flag illustration. */
+.utdss-page-agencies .utdss-secondary-grid>.card{
+  display:flex;flex-direction:column;justify-content:center;
+  min-height:134px!important;
+  padding:23px 25px!important;
+  gap:9px!important;
+  border:1px solid #e2e9ee!important;
+}
+.utdss-page-agencies .utdss-secondary-grid>.card h2{
+  display:flex;align-items:center;gap:10px;
+  font:700 19px/1.35 Arial,Helvetica,sans-serif!important;
+  letter-spacing:-.012em!important;
+  margin:0!important;color:#183c59!important;
+}
+.utdss-page-agencies .utdss-secondary-grid>.card .country-flag{
+  flex:0 0 auto;
+  display:inline-flex!important;
+  align-items:center;
+  margin:0!important;
+}
+.utdss-page-agencies .utdss-secondary-grid>.card .country-flag svg{
+  width:29px;height:20px;border-radius:3px;
+  box-shadow:0 1px 3px rgba(10,31,50,.09)
+}
+.utdss-page-agencies .utdss-secondary-grid>.card p{margin:0!important;color:#667a8b!important;font-size:13px!important}
