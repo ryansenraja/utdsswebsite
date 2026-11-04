@@ -220,6 +220,21 @@ function addDirectoryFinder(pageSelector,config){
  inner.append(intro,form,status,empty);bar.append(inner);grid.parentNode.insertBefore(bar,grid);
  count();
 }
+/* Brand-to-enquiry journey: preserve the selected brand without claiming inventory. */
+const brandGrid=document.querySelector('.utdss-page-agencies .utdss-secondary-grid');
+if(brandGrid){
+ for(const card of brandGrid.querySelectorAll(':scope > .card')){
+  const h=card.querySelector('h2');if(!h)continue;
+  const brand=h.textContent.replace(/\\s+/g,' ').trim();
+  if(!brand||brand.length>80||card.querySelector('.utdss-brand-enquire'))continue;
+  const link=document.createElement('a');
+  link.className='utdss-brand-enquire';
+  link.href='/sourcing.html?brand='+encodeURIComponent(brand);
+  link.textContent='Enquire about this brand';
+  link.setAttribute('aria-label','Prepare a sourcing enquiry about '+brand);
+  card.append(link);
+ }
+}
 addDirectoryFinder('.utdss-page-products',{heading:'Find a supply category',help:'Search by industry or product type. Categories are examples, not live inventory.',label:'Search supply categories',placeholder:'Try marine, industrial or NSN',kind:'categories'});
 addDirectoryFinder('.utdss-page-agencies',{heading:'Explore brands',help:'Find a listed brand and contact UTDSS to confirm the current sourcing arrangement.',label:'Search listed brands',placeholder:'Search a brand name',kind:'brands'});
 
