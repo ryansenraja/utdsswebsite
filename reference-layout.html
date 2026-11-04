@@ -274,22 +274,22 @@ const serviceKnowledge={
 /* Context-aware guided mode. It is not a substitute for the live AI service. */
 function contextualGuidance(question,prior){
  const value=question.trim();
- const text=value.toLowerCase().replace(/\\s+/g,' ').trim();
+ const text=value.toLowerCase().replace(/\s+/g,' ').trim();
  const priorMessages=Array.isArray(prior)?prior:[];
  const userTurns=priorMessages.filter(m=>m.role==='user').map(m=>String(m.content||''));
  const assistantTurns=priorMessages.filter(m=>m.role==='assistant').map(m=>String(m.content||''));
  const lastAssistant=(assistantTurns.at(-1)||'').toLowerCase();
  const recentUser=userTurns.slice(-7).join(' ');
  const recent=(recentUser+' '+value).toLowerCase();
- const hasSourcingContext=/\\b(part|part number|product|item|model|nsn|mpn|quantity|quote|quotation|sourc|delivery|equipment|suppl|units|pcs|sets)\\b/i.test(recentUser+' '+lastAssistant);
- const quantityMatch=recent.match(/\\b(\\d{1,6})\\s*(pcs|pieces|units|sets|ea|each|items)\\b/i);
- const shortQuantity=/^\\d{1,6}$/.test(text) && /\\b(quantity|how many|units|pieces|sets|pcs)\\b/.test(lastAssistant);
- const destinationMatch=recent.match(/\\b(?:deliver(?:y)? to|ship to|destination|send to)\\s+([a-z][a-z\\s-]{2,35})/i);
- const countryOnly=/^(singapore|malaysia|indonesia|japan|india|china|usa|united states|united kingdom|uk|australia|thailand|vietnam|philippines|hong kong)\\.?$/i.test(text);
+ const hasSourcingContext=/\b(part|part number|product|item|model|nsn|mpn|quantity|quote|quotation|sourc|delivery|equipment|suppl|units|pcs|sets)\b/i.test(recentUser+' '+lastAssistant);
+ const quantityMatch=recent.match(/\b(\d{1,6})\s*(pcs|pieces|units|sets|ea|each|items)\b/i);
+ const shortQuantity=/^\d{1,6}$/.test(text) && /\b(quantity|how many|units|pieces|sets|pcs)\b/.test(lastAssistant);
+ const destinationMatch=recent.match(/\b(?:deliver(?:y)? to|ship to|destination|send to)\s+([a-z][a-z\s-]{2,35})/i);
+ const countryOnly=/^(singapore|malaysia|indonesia|japan|india|china|usa|united states|united kingdom|uk|australia|thailand|vietnam|philippines|hong kong)\.?$/i.test(text);
  const partOnly=/^[a-z0-9]{2,8}[-/][a-z0-9/-]{3,28}$/i.test(value);
- const asksForPart=/\\b(part number|model|nsn|mpn|reference)\\b/.test(lastAssistant);
- const asksForQty=/\\b(quantity|how many|units|pieces|sets|pcs)\\b/.test(lastAssistant);
- const asksForDestination=/\\b(deliver|destination|ship to|location|which country|where should)\\b/.test(lastAssistant);
+ const asksForPart=/\b(part number|model|nsn|mpn|reference)\b/.test(lastAssistant);
+ const asksForQty=/\b(quantity|how many|units|pieces|sets|pcs)\b/.test(lastAssistant);
+ const asksForDestination=/\b(deliver|destination|ship to|location|which country|where should)\b/.test(lastAssistant);
  const hello=/^(hi|hello|hey|good morning|good afternoon|good evening)[!?. ]*$/i.test(text);
  if(hello)return userTurns.length?'Hello again. What would you like help with next?':"Hello! I can help you find sourcing information, understand UTDSS services or prepare an enquiry. What are you looking for?";
  if(/^(how are you|how's it going|are you there|can you hear me)[!? .]*$/.test(text))return "I'm here and ready to help. What can I assist you with today?";
@@ -308,17 +308,17 @@ function contextualGuidance(question,prior){
    if(asksForQty)return "That's fine. You can provide an estimated quantity later. What item are you looking for?";
    return "That's okay. Tell me what you know, and we can work from there.";
  }
- if(/^(can you|could you)\\s+(get|find|source|supply)\\s+(it|that|this)\\??$/i.test(text)&&hasSourcingContext)
+ if(/^(can you|could you)\s+(get|find|source|supply)\s+(it|that|this)\??$/i.test(text)&&hasSourcingContext)
    return "I can help prepare a sourcing request for the item we've discussed. The team needs to check the exact part and availability before confirming whether it can be supplied.";
- if(/^(how much|what(?:'s| is) the price|price\\??|cost\\??)$/i.test(text)&&hasSourcingContext)
+ if(/^(how much|what(?:'s| is) the price|price\??|cost\??)$/i.test(text)&&hasSourcingContext)
    return "I don't have live pricing for that item. You can request a quotation with the part details and quantity; the team will confirm the price.";
- if(/^(how long|when can it arrive|when will it arrive|lead time\\??)$/i.test(text)&&hasSourcingContext)
+ if(/^(how long|when can it arrive|when will it arrive|lead time\??)$/i.test(text)&&hasSourcingContext)
    return "The lead time isn't confirmed here. Which delivery destination and required date should the team review?";
- if(hasSourcingContext&&(shortQuantity||(/^\\d{1,6}\\s*(pcs|pieces|units|sets|ea|each|items)$/i.test(text)))){
+ if(hasSourcingContext&&(shortQuantity||(/^\d{1,6}\s*(pcs|pieces|units|sets|ea|each|items)$/i.test(text)))){
    if(countryOnly||destinationMatch)return "Thanks, I've noted that in this chat. The UTDSS team can review the complete enquiry in the Smart Sourcing Desk.";
    return "Thanks, I've noted the quantity for this conversation. Where should the items be delivered?";
  }
- if(hasSourcingContext&&(countryOnly||(/^\\b(?:deliver(?:y)? to|ship to)\\s+[\\w\\s,-]+$/i.test(text)))){
+ if(hasSourcingContext&&(countryOnly||(/^\b(?:deliver(?:y)? to|ship to)\s+[\w\s,-]+$/i.test(text)))){
    if(quantityMatch)return "Thanks. You've shared a quantity and delivery destination. You can now prepare the sourcing enquiry in the Smart Sourcing Desk; the team will verify pricing, stock and lead time.";
    return "Got it. What quantity should the team consider?";
  }
@@ -326,7 +326,7 @@ function contextualGuidance(question,prior){
    if(quantityMatch)return "Thanks for the part number. Where should the items be delivered?";
    return "Thanks for the part number. How many units are required?";
  }
- if(/^(i need|i want|i'm looking for|looking for)\\s+(something|a product|some items)[!?. ]*$/.test(text))return "What kind of item are you looking for, or what is it used for?";
+ if(/^(i need|i want|i'm looking for|looking for)\s+(something|a product|some items)[!?. ]*$/.test(text))return "What kind of item are you looking for, or what is it used for?";
  if(/^(i already told you|i said that|you asked that already|you keep repeating)[!?. ]*$/.test(text))
    return "You're right, I shouldn't keep asking for the same information. I can work with the details you've already provided. What would you like to clarify next?";
  return null;
