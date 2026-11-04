@@ -98,3 +98,19 @@ header nav a:hover{text-decoration:underline;text-decoration-color:#d0a253;text-
 .rfq-more-link a{color:#0b5489;text-decoration:underline;text-underline-offset:3px;font-weight:800}
 @media(max-width:960px){.enquiry-steps{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:580px){.enquiry-process{padding:42px 18px}.enquiry-steps{grid-template-columns:1fr}.enquiry-steps li{flex-direction:row;align-items:flex-start;padding:17px}.enquiry-steps li>span{flex:none}}
+
+/* Lightweight branded transitions only after a visitor navigates inside the site.
+   This does not replace the hosting provider's startup screen on a sleeping instance. */
+#utdss-navigation-cover{position:fixed;inset:0;z-index:9999;background:#071c36;color:#f4f7fb;display:grid;place-items:center;text-align:center;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .18s ease,visibility .18s ease}
+#utdss-navigation-cover.is-visible{opacity:1;visibility:visible;pointer-events:auto}
+.utdss-navigation-inner{display:flex;flex-direction:column;align-items:center;gap:14px;padding:24px}
+.utdss-navigation-mark{width:65px;height:65px;display:grid;place-items:center;border:2px solid #d8b875;border-radius:15px;color:#e1c38c;font:700 42px Georgia,serif}
+.utdss-navigation-inner strong{font-size:15px;letter-spacing:.14em}
+.utdss-navigation-message{font-size:13px;color:#c2d3e2}
+.utdss-navigation-progress{display:block;width:150px;height:2px;overflow:hidden;background:#34516d;position:relative;margin-top:7px}
+.utdss-navigation-progress:after{content:'';position:absolute;inset:0;width:42%;background:#dec28d;animation:utdss-load 1.15s infinite ease-in-out}
+@keyframes utdss-load{0%{transform:translateX(-110%)}100%{transform:translateX(355%)}}
+.film-video-block{position:relative}
+.film-load-notice{position:absolute;left:50%;bottom:65px;transform:translateX(-50%);background:rgba(7,27,50,.9);color:#fff;padding:9px 17px;border-radius:999px;font-size:12px;font-weight:700;z-index:2;opacity:0;pointer-events:none;transition:opacity .2s;max-width:90%;text-align:center}
+.film-load-notice.is-visible{opacity:1}
+@media(prefers-reduced-motion:reduce){#utdss-navigation-cover,.film-load-notice{transition:none}.utdss-navigation-progress:after{animation:none;width:100%}}
