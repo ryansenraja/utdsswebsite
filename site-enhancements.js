@@ -111,7 +111,20 @@ function enhanceSectorTile(container,sectorHref){
     const a=document.createElement('a');a.href=url;a.textContent=label;
     a.setAttribute('tabindex','-1');options.append(a);
   });
-  panel.append(description,options);
+  const selectorWrap=document.createElement('div');selectorWrap.className='utdss-sector-select-wrap';
+  const selectorLabel=document.createElement('label');selectorLabel.className='utdss-sector-select-label';
+  selectorLabel.htmlFor='utdss-sector-select-'+sectorMenuCount;
+  selectorLabel.textContent='Select an option';
+  const select=document.createElement('select');select.id=selectorLabel.htmlFor;select.className='utdss-sector-select';
+  const placeholder=document.createElement('option');placeholder.value='';placeholder.textContent='Choose where to go';select.append(placeholder);
+  definition.options.forEach(([label,url])=>{
+    const item=document.createElement('option');item.value=url;item.textContent=label;select.append(item);
+  });
+  const selectGo=document.createElement('button');selectGo.type='button';selectGo.className='utdss-sector-go';selectGo.disabled=true;selectGo.textContent='Open selection →';
+  select.addEventListener('change',()=>{selectGo.disabled=!select.value;});
+  selectGo.addEventListener('click',()=>{if(select.value&&definition.options.some(([,url])=>url===select.value))window.location.assign(select.value);});
+  selectorWrap.append(selectorLabel,select,selectGo);
+  panel.append(description,selectorWrap,options);
   container.append(trigger,panel);
   let opened=false;
   const setOpen=show=>{
@@ -135,6 +148,12 @@ function enhanceSectorTile(container,sectorHref){
     text.textContent=tr('Explore options');
     trigger.setAttribute('aria-label',tr('Show options for')+' '+tr(definition.name));
     panel.setAttribute('aria-label',tr(definition.name)+' '+tr('options'));
+    selectorLabel.textContent=tr('Select an option');
+    placeholder.textContent=tr('Choose where to go');
+    selectGo.textContent=tr('Open selection →');
+    [...select.options].slice(1).forEach((option,i)=>{option.textContent=tr(definition.options[i][0]);});
+    [...options.querySelectorAll('a')].forEach((a,i)=>{a.textContent=tr(definition.options[i][0]);});
+    description.textContent=tr(definition.description);
   };
   localise();
   document.addEventListener('utdss:languagechange',localise);
