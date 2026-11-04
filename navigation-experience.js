@@ -8,7 +8,7 @@ let href;try{href=new URL(a.href,location.href)}catch{return;}
 if(href.origin!==location.origin||!['http:','https:'].includes(href.protocol)||href.pathname===location.pathname&&href.search===location.search&&href.hash)return;
 if(!/\.(html?)?$/.test(href.pathname)&&href.pathname!=='/')return;
 const p=ensureOverlay();p.classList.add('is-visible');
-},{capture:true});
+});
 window.addEventListener('pageshow',()=>{overlay?.classList.remove('is-visible');});
 const video=document.querySelector('#utdssPromotionalVideo');
 if(video){let status=document.getElementById('filmLoadNotice');if(status){
