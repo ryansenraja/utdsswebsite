@@ -1300,3 +1300,25 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
  .hero-area .hero-words h1{font-size:clamp(31px,7.5vw,45px)!important}
 }
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}body>header>nav a{transition:none!important}}
+
+
+/* Fast directory search: unobtrusive and accessible. */
+.utdss-directory-finder{margin:0 0 28px;padding:0;background:transparent}
+.utdss-finder-inner{display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,360px);align-items:center;gap:12px 30px;padding:23px 26px;border-radius:11px;border:1px solid #e0e8ee;background:#fff;box-shadow:0 7px 22px rgba(8,38,62,.04)}
+.utdss-finder-intro h2{margin:0 0 6px;font:700 clamp(19px,2vw,24px)/1.25 Georgia,serif;letter-spacing:-.012em;color:#153a57}
+.utdss-finder-intro p{margin:0;color:#617688;font:400 13px/1.65 Arial,Helvetica,sans-serif}
+.utdss-finder-form{display:flex;align-items:flex-end;gap:8px;margin:0;min-width:0}
+.utdss-finder-form label{display:block;min-width:0;flex:1;font:600 12px/1.5 Arial,Helvetica,sans-serif;color:#31546b}
+.utdss-finder-form input[type=search]{display:block;width:100%;height:44px;margin-top:5px;padding:10px 12px;border:1px solid #cfdde7;border-radius:7px;background:#fff;color:#173e5c;font:400 13px/1.4 Arial,Helvetica,sans-serif;box-shadow:none;outline-offset:2px}
+.utdss-finder-form input[type=search]:focus{border-color:#5788a6;box-shadow:0 0 0 3px rgba(30,99,147,.09)}
+.utdss-finder-form button{height:44px;padding:0 12px;border:1px solid #d6e1e9;border-radius:7px;background:#f4f7fa;color:#284a63;font-weight:600;font-size:12px}
+.utdss-finder-form button:hover{background:#e8f0f5}
+.utdss-finder-form button[hidden]{display:none!important}
+.utdss-finder-status{grid-column:1/-1;margin:0;color:#6f8494;font:400 12px/1.5 Arial,Helvetica,sans-serif}
+.utdss-finder-empty{grid-column:1/-1;margin:0;padding:12px 15px;border:1px solid #e3eaf0;background:#f8fafc;border-radius:7px;color:#49677e;font:400 13px/1.6 Arial,Helvetica,sans-serif}
+.utdss-finder-empty[hidden],.utdss-secondary-grid>.card[hidden]{display:none!important}
+.utdss-page-products .utdss-secondary-grid,.utdss-page-agencies .utdss-secondary-grid{align-items:stretch}
+@media(max-width:780px){
+ .utdss-finder-inner{grid-template-columns:minmax(0,1fr);gap:13px;padding:18px}
+ .utdss-finder-status,.utdss-finder-empty{grid-column:1}
+}
