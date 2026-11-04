@@ -597,7 +597,7 @@ body>header>nav .utdss-nav-dropdown>a:hover{background:#f1f5f8!important;color:#
 .hero-area .hero-photo{filter:saturate(.86) contrast(1.04)}
 .hero-area .hero-plane{opacity:.55;filter:saturate(.72)}
 .hero-area .hero-words{max-width:860px}
-.hero-area .hero-words h2{font-family:Georgia,serif;font-weight:700;letter-spacing:-.038em!important;line-height:1.075!important;text-wrap:balance;text-shadow:0 5px 23px rgba(1,14,28,.12)}
+.hero-area .hero-words h1{font-family:Georgia,serif;font-weight:700;letter-spacing:-.038em!important;line-height:1.075!important;text-wrap:balance;text-shadow:0 5px 23px rgba(1,14,28,.12)}
 .hero-area .hero-words p{line-height:1.65!important;color:#e4edf5!important;max-width:580px}
 .hero-area .eyebrow{letter-spacing:.125em!important;font-size:12px!important;font-weight:700!important;color:#e3c894!important}
 .hero-area .eyebrow:before{height:1px!important;width:34px!important;margin-right:11px!important}
@@ -649,7 +649,7 @@ footer{background:#0b263d!important;line-height:1.7!important}
  .utdss-sector-intro-link{margin-top:18px}
  #sectors{margin-top:23px!important}
  #sectors>.utdss-home-sector-tile:hover{transform:none!important}
- .hero-area .hero-words h2{font-size:clamp(32px,7vw,48px)!important}
+ .hero-area .hero-words h1{font-size:clamp(32px,7vw,48px)!important}
 }
 @media(prefers-reduced-motion:reduce){.hero-area .hero-photo{animation:none!important;transform:none!important}#sectors>.utdss-home-sector-tile,#sectors>.utdss-home-sector-tile>.sector img,.agency-card{transition:none!important;transform:none!important}}
 
@@ -658,7 +658,7 @@ footer{background:#0b263d!important;line-height:1.7!important}
 .utdss-hero-actions{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-top:28px}
 .utdss-hero-actions .btn{margin:0!important;min-width:0;max-width:100%;text-align:center;text-decoration:none!important;font-size:14px!important;font-weight:700!important;letter-spacing:0!important;padding:15px 21px!important}
 .hero-area .hero-words{max-width:855px!important}
-.hero-area .hero-words h2{font-size:clamp(35px,3.65vw,59px)!important;max-width:780px!important;letter-spacing:-.035em!important}
+.hero-area .hero-words h1{font-size:clamp(35px,3.65vw,59px)!important;max-width:780px!important;letter-spacing:-.035em!important}
 .hero-area .hero-words p{font-size:clamp(15px,1.25vw,17px)!important;max-width:660px!important}
 .hero-area .features{backdrop-filter:none;-webkit-backdrop-filter:none}
 .utdss-sector-intro-link{gap:9px}
@@ -676,8 +676,8 @@ footer{background:#0b263d!important;line-height:1.7!important}
 .utdss-editorial .ed-section p,.utdss-secondary-main p{line-height:1.76}
 .utdss-secondary-main .cta,.utdss-editorial .ed-button{border-radius:7px!important}
 .utdss-secondary-main a:focus-visible,.utdss-editorial a:focus-visible{outline:2px solid #b4905d;outline-offset:3px}
-@media(max-width:980px){.utdss-hero-actions{gap:10px}.hero-area .hero-words h2{font-size:clamp(33px,4.5vw,51px)!important}}
-@media(max-width:780px){.utdss-hero-actions{margin-top:22px}.utdss-hero-actions .btn{width:100%;max-width:320px}.hero-area .hero-words{padding-top:58px!important}.hero-area .hero-words h2{font-size:clamp(30px,7.4vw,42px)!important}.hero-area .hero-words p{font-size:15px!important}}
+@media(max-width:980px){.utdss-hero-actions{gap:10px}.hero-area .hero-words h1{font-size:clamp(33px,4.5vw,51px)!important}}
+@media(max-width:780px){.utdss-hero-actions{margin-top:22px}.utdss-hero-actions .btn{width:100%;max-width:320px}.hero-area .hero-words{padding-top:58px!important}.hero-area .hero-words h1{font-size:clamp(30px,7.4vw,42px)!important}.hero-area .hero-words p{font-size:15px!important}}
 @media(prefers-reduced-motion:reduce){#sectors .utdss-sector-go{transition:none!important}.utdss-hero-actions .btn{transition:none!important}}
 
 
@@ -1190,3 +1190,113 @@ footer{background:#0b263d!important;line-height:1.7!important}
 @media(prefers-reduced-motion:reduce){
  #assistant #chatTranscript>.chat-line{animation:none!important;transition:none!important}
 }
+
+
+/* November 2026 UTDSS professional quality pass.
+   One consistent cross-site header and readable interaction system. */
+:root{--utdss-brand-navy:#10354f;--utdss-brand-ink:#1b394f;--utdss-brand-muted:#64788a;--utdss-brand-line:#e2e9ee;--utdss-brand-gold:#b9955d}
+html{scroll-padding-top:96px}
+body{color:var(--utdss-brand-ink);text-rendering:optimizeLegibility}
+body>header{
+  box-sizing:border-box;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  flex-wrap:wrap!important;
+  gap:16px!important;
+  height:auto!important;
+  min-height:83px!important;
+  padding:12px clamp(18px,3.8vw,62px)!important;
+  background:#fff!important;
+  border-bottom:1px solid var(--utdss-brand-line)!important;
+  box-shadow:0 4px 18px rgba(9,32,49,.035)!important;
+}
+body>header .brand,body>header .about-brand,body>header .utdss-global-brand,
+body>header .brand>div:first-child{
+  display:flex;align-items:center;gap:12px;min-width:0
+}
+body>header .brand img,body>header .about-brand img,body>header .utdss-global-brand img,
+body>header>div:first-child img{flex:none;max-width:44px!important;max-height:48px!important;object-fit:contain}
+body>header .brand .company-name,body>header .about-brand strong,body>header .utdss-global-brand strong,
+body>header>div:first-child>strong{
+  color:#123952!important;
+  font-family:Arial,Helvetica,sans-serif!important;
+  font-size:clamp(13px,1.2vw,16px)!important;
+  font-weight:750!important;
+  line-height:1.25!important;
+  letter-spacing:.012em!important
+}
+body>header .brand .tag,body>header .brand small{font-size:10px!important;line-height:1.35!important;letter-spacing:.06em!important;color:#7c8490!important}
+body>header>nav{
+  flex:0 1 auto!important;
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  flex-wrap:wrap;
+  column-gap:clamp(10px,1.2vw,19px)!important;
+  row-gap:3px!important;
+  margin:0!important;
+  min-width:0;
+  max-width:100%;
+}
+body>header>nav>a,body>header>nav .utdss-nav-item>a{
+  font-family:Arial,Helvetica,sans-serif!important;
+  font-size:clamp(12px,.95vw,14px)!important;
+  line-height:1.35!important;
+  font-weight:600!important;
+  letter-spacing:0!important;
+  padding:11px 0!important;
+  white-space:nowrap;
+  border-bottom:2px solid transparent!important;
+  color:#284a63!important;
+  transition:color .18s ease,border-color .2s ease!important;
+  text-decoration:none!important;
+}
+body>header>nav>a:hover,body>header>nav .utdss-nav-item>a:hover,
+body>header>nav>a[aria-current=page],body>header>nav .utdss-nav-item>a[aria-current=page]{
+  color:#0b4c75!important;border-bottom-color:#bea071!important;
+}
+body>header>nav .utdss-nav-dropdown{
+  min-width:215px!important;
+  padding:8px 0!important;
+  border:1px solid #e6edf1!important;
+  border-radius:8px!important;
+  background:#fff!important;
+  box-shadow:0 16px 35px rgba(7,32,53,.12)!important
+}
+body>header>nav .utdss-nav-dropdown>a{padding:11px 17px!important;font-size:13px!important;line-height:1.4!important}
+body>header>nav .utdss-nav-dropdown>a:hover,body>header>nav .utdss-nav-dropdown>a:focus-visible{
+  background:#f3f7fa!important
+}
+body>header>nav a:focus-visible,body>header>.utdss-menu-toggle:focus-visible{
+  outline:2px solid #b79866!important;outline-offset:3px!important
+}
+.hero-area .hero-words h1{font-weight:700!important;letter-spacing:-.038em!important;line-height:1.075!important;text-wrap:balance}
+.utdss-secondary-main h1,.utdss-editorial h1,.utdss-secondary-main h2,.utdss-editorial h2{
+  text-wrap:balance
+}
+.utdss-secondary-main p,.utdss-editorial p{max-width:75ch}
+.utdss-secondary-main a,.utdss-editorial a{transition:color .2s ease,background-color .2s ease,border-color .2s ease}
+input,textarea,select{max-width:100%}
+a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline-offset:3px}
+@media(min-width:781px){
+ body>header{position:relative!important;z-index:110!important}
+ body>header>nav{overflow:visible!important}
+}
+@media(max-width:1080px) and (min-width:781px){
+ body>header>nav{flex-basis:100%!important;justify-content:flex-start!important;gap:16px!important}
+ body>header{row-gap:3px!important}
+}
+@media(max-width:780px){
+ body>header{min-height:74px!important;padding:12px 18px!important;gap:10px!important}
+ body>header>.utdss-menu-toggle{display:inline-flex!important;border-radius:8px!important;background:#fff!important;border:1px solid #d7e2e9!important;color:#16405d!important}
+ body>header>nav{flex-basis:100%!important;max-width:100%!important;min-width:0!important}
+ body>header.utdss-menu-open>nav{display:grid!important;grid-template-columns:1fr!important;background:#fff!important;padding:12px!important;border:1px solid #e1e8ed!important;box-shadow:0 15px 32px rgba(10,39,57,.11)!important;gap:4px!important}
+ body>header.utdss-menu-open>nav>a,body>header.utdss-menu-open>nav .utdss-nav-item>a{min-height:44px!important;padding:12px 14px!important;border-bottom:0!important}
+ body>header.utdss-menu-open>nav .utdss-nav-item{display:block!important;width:100%!important;border:0!important;overflow:visible!important}
+ body>header.utdss-menu-open>nav .utdss-nav-dropdown{position:relative!important;width:100%!important;max-width:100%!important;box-shadow:none!important;border:0!important;border-radius:0!important}
+ body>header .brand .tag{display:none!important}
+ body>header .brand,body>header .utdss-global-brand,body>header .about-brand{max-width:calc(100% - 100px)!important}
+ .hero-area .hero-words h1{font-size:clamp(31px,7.5vw,45px)!important}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}body>header>nav a{transition:none!important}}
