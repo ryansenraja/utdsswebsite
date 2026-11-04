@@ -380,7 +380,7 @@ if(/log\s?in|account|registration|sign\s?up/.test(t))return 'You do not need to 
 if(/\b(order status|track.*order|tracking number|existing order)\b/.test(t))return 'I cannot access an order-management system or track shipments. Please email Utdss@singnet.com with your order or quotation reference and the question for the team.';
 if(/availability|stock|in stock|inventory/.test(t))return serviceKnowledge.availability;
 if(/agency|arm a cell|armacell|coltraco|mastervolt|led lenser|hewlett|hp|whip check|solar solv|elion|analytichem|eurochem|henlv/.test(t))return serviceKnowledge.agency;
-if(/marine|ship|vessel|offshore|deck|engine|chandlery/.test(t))return serviceKnowledge.marine;
+if(/marine|\\bvessel\\b|offshore|deck|\\bengine\\b|chandlery/.test(t))return serviceKnowledge.marine;
 if(/aviation|aircraft|airport|ground support/.test(t))return serviceKnowledge.aviation;
 if(/government|institution|tender|defence|defense|nsn/.test(t))return serviceKnowledge.government;
 if(/delivery|ship(ping|ment)|lead time|transport|logistics/.test(t))return answers.delivery;
