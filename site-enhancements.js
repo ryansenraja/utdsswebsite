@@ -220,6 +220,22 @@ function addDirectoryFinder(pageSelector,config){
  inner.append(intro,form,status,empty);bar.append(inner);grid.parentNode.insertBefore(bar,grid);
  count();
 }
+/* A direct procurement action on category cards, without redundant menus. */
+const sectorRouteMap={'/maritime.html':'Maritime','/defence.html':'Defence / Institutional','/energy.html':'Energy & Offshore','/industrial.html':'Industrial','/aviation.html':'Aviation'};
+const productGrid=document.querySelector('.utdss-page-products .utdss-secondary-grid');
+if(productGrid){
+ for(const card of productGrid.querySelectorAll(':scope > .card')){
+  const mainLink=card.querySelector('h2 a[href]');if(!mainLink)continue;
+  const path=new URL(mainLink.href,location.href).pathname;
+  const sector=sectorRouteMap[path];
+  if(!sector||card.querySelector('.utdss-card-enquire'))continue;
+  const a=document.createElement('a');a.className='utdss-card-enquire';
+  a.href='/sourcing.html?sector='+encodeURIComponent(sector);
+  a.textContent='Start a sourcing enquiry';
+  a.setAttribute('aria-label','Start a '+sector+' sourcing enquiry');
+  card.append(a);
+ }
+}
 /* Brand-to-enquiry journey: preserve the selected brand without claiming inventory. */
 const brandGrid=document.querySelector('.utdss-page-agencies .utdss-secondary-grid');
 if(brandGrid){
