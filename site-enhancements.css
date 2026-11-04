@@ -261,3 +261,43 @@ body>header nav[aria-label="Primary navigation"] a:focus-visible{outline:3px sol
 @media(max-width:900px){.utdss-about .about-story .ed-intro-grid{grid-template-columns:1fr}.utdss-about .about-story-visual{min-height:370px;max-width:590px;width:100%;margin:0 auto}.utdss-about .about-hero{min-height:510px}.utdss-about .about-hero .ed-shell{padding-block:82px 100px}}
 @media(max-width:620px){.about-main-header .about-brand strong{font-size:15px}.about-main-header .about-brand img{width:36px;height:36px}.utdss-about .about-hero{min-height:470px}.utdss-about .about-hero .ed-shell{padding-block:65px 90px}.utdss-about .about-hero h1{font-size:clamp(39px,11vw,55px)}.utdss-about .about-hero-rail{left:0;bottom:20px}.utdss-about .about-section-nav .ed-shell{justify-content:flex-start;gap:25px}.utdss-about .about-section-nav a{padding:15px 0}.utdss-about .about-story-visual{min-height:340px}.utdss-about .about-photo-main{right:5%;bottom:18%}.utdss-about .about-photo-caption{padding:18px;width:88%}.utdss-about .about-photo-caption strong{font-size:18px}.utdss-about .about-sectors .ed-card{min-height:310px}.utdss-about .ed-cta{padding-block:45px}}
 @media(prefers-reduced-motion:reduce){.utdss-about .about-sectors .ed-card .about-sector-photo{transition:none}}
+
+
+/* UTDSS quality pass: a unified secondary-page design system. */
+.utdss-secondary{--brand-navy:#092b50;--brand-blue:#164a74;--brand-gold:#d3ae68;--brand-line:#dce6ef;background:#f4f7fb;color:#193955}
+.utdss-secondary .utdss-global-header{position:relative;z-index:41;background:#fff;box-shadow:0 2px 20px rgba(10,37,65,.04);border-bottom:1px solid #e2eaf1}
+.utdss-secondary .utdss-global-brand{display:inline-flex;align-items:center;gap:12px;min-width:0;text-decoration:none}
+.utdss-secondary .utdss-global-brand img{object-fit:contain;flex-shrink:0}
+.utdss-secondary .utdss-global-brand strong{font-size:clamp(15px,1.65vw,21px);line-height:1.18;letter-spacing:-.02em}
+.utdss-secondary .utdss-global-header nav{align-items:center;gap:8px 17px}
+.utdss-secondary .utdss-global-header nav a{font-weight:700;font-size:12px;line-height:1.35;padding:9px 0;border-bottom:2px solid transparent}
+.utdss-secondary .utdss-global-header nav a:hover,.utdss-secondary .utdss-global-header nav a[aria-current="page"]{color:#0e5e93;border-color:#c6a063}
+.utdss-secondary .utdss-secondary-hero{position:relative;isolation:isolate;overflow:hidden;padding-block:clamp(74px,8vw,115px);background:radial-gradient(circle at 89% 25%,rgba(35,107,150,.5),transparent 36%),linear-gradient(115deg,#061e3b,#123a60 72%,#16476c)}
+.utdss-secondary .utdss-secondary-hero:after{content:"";position:absolute;right:-90px;bottom:-280px;width:510px;height:510px;border:1px solid #ffffff21;border-radius:50%;z-index:-1;box-shadow:0 0 0 90px #ffffff07,0 0 0 180px #ffffff04;pointer-events:none}
+.utdss-secondary .utdss-secondary-hero small{font-size:11px;letter-spacing:.21em;color:#e0bb78;text-transform:uppercase}
+.utdss-secondary .utdss-secondary-hero h1{font-size:clamp(37px,4.5vw,63px);line-height:1.11;letter-spacing:-.035em;max-width:920px;margin:17px 0}
+.utdss-secondary .utdss-secondary-hero p{max-width:750px;font-size:clamp(15px,1.8vw,18px);color:#e0ebf4;line-height:1.65;margin-bottom:0}
+.utdss-secondary .utdss-secondary-main{max-width:1250px;padding:clamp(36px,5vw,70px) 24px 85px}
+.utdss-secondary .utdss-secondary-grid{gap:19px}
+.utdss-secondary .utdss-secondary-grid>.card{border:1px solid #dfe8f0;border-top:3px solid #cca769;padding:29px 28px;box-shadow:0 10px 35px #1638610c;transition:box-shadow .25s,transform .25s;min-width:0}
+.utdss-secondary .utdss-secondary-grid>.card:hover{transform:translateY(-4px);box-shadow:0 22px 45px #16386116}
+.utdss-secondary .utdss-secondary-grid>.card h2{font-size:clamp(19px,2vw,23px);line-height:1.3;margin:0 0 13px;overflow-wrap:anywhere}
+.utdss-secondary .utdss-secondary-grid>.card p{line-height:1.7;font-size:14px;overflow-wrap:anywhere}
+.utdss-secondary .utdss-secondary-grid>.card a{text-underline-offset:3px}
+.utdss-secondary .utdss-secondary-cta{display:flex;align-items:center;justify-content:space-between;gap:24px;margin-top:28px;padding:28px 32px;background:linear-gradient(115deg,#0a2a4c,#17466c);border-radius:14px;color:#fff}
+.utdss-secondary .utdss-secondary-cta strong{font:700 clamp(21px,2vw,28px) Georgia,serif;color:#fff}
+.utdss-secondary .utdss-secondary-cta p{margin:9px 0 0;max-width:660px;line-height:1.65;font-size:13px;color:#dbe8f3}
+.utdss-secondary .utdss-secondary-cta .cta{flex-shrink:0;margin:0;background:#d3ae68;color:#0a2b4c}
+.utdss-secondary .utdss-sector-links{display:flex;gap:9px;flex-wrap:wrap;align-items:center;margin:28px 0}
+.utdss-secondary .utdss-sector-links .cta{margin:0;background:#e7eef6;border:1px solid #d7e3ee;color:#164d77;font-size:13px;padding:10px 15px}
+.utdss-secondary .utdss-sector-links .cta:hover{background:#dce8f2}
+.utdss-secondary .choose-journey{border-top:3px solid #d4b16f;box-shadow:0 12px 45px #0e355011}
+.utdss-secondary .choose-journey .journey-grid>div{background:#f8fbfd}
+.utdss-secondary .choose-journey .journey-grid .cta{display:inline-block}
+.utdss-secondary.utdss-page-agencies .agency-image{background:linear-gradient(140deg,#f4f7fb,#edf4fa)!important}
+.utdss-secondary.utdss-page-agencies .card{border-top-color:#d0af71}
+.utdss-secondary.utdss-page-agencies .card p:empty{display:none}
+.utdss-secondary .cta:focus-visible,.utdss-secondary button:focus-visible,.utdss-secondary a:focus-visible{outline:3px solid #cba45f;outline-offset:3px}
+@media(max-width:900px){.utdss-secondary .utdss-global-header nav{width:100%;flex-wrap:nowrap;overflow-x:auto;padding-bottom:7px;scrollbar-width:thin}.utdss-secondary .utdss-global-header nav a{white-space:nowrap;flex-shrink:0}.utdss-secondary .utdss-secondary-cta{align-items:flex-start;flex-direction:column}}
+@media(max-width:620px){.utdss-secondary .utdss-global-brand img{width:36px;height:36px}.utdss-secondary .utdss-global-brand strong{font-size:15px}.utdss-secondary .utdss-secondary-main{padding-inline:18px}.utdss-secondary .utdss-secondary-grid>.card{padding:23px}.utdss-secondary .utdss-secondary-cta{padding:24px}.utdss-secondary .utdss-secondary-cta .cta{width:100%;text-align:center}.utdss-secondary .choose-journey .journey-grid .cta{width:100%;text-align:center}}
+@media(prefers-reduced-motion:reduce){.utdss-secondary .utdss-secondary-grid>.card{transition:none}.utdss-secondary .utdss-secondary-grid>.card:hover{transform:none}}
