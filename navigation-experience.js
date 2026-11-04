@@ -7,7 +7,7 @@ const a=e.target.closest?.('a[href]');if(!a||a.hasAttribute('download')||a.targe
 let href;try{href=new URL(a.href,location.href)}catch{return;}
 if(href.origin!==location.origin||!['http:','https:'].includes(href.protocol)||href.pathname===location.pathname&&href.search===location.search&&href.hash)return;
 if(!/\.(html?)?$/.test(href.pathname)&&href.pathname!=='/')return;
-clearTimeout(overlayDelay);overlayDelay=setTimeout(()=>{if(document.visibilityState==='visible'){const p=ensureOverlay();p.classList.add('is-visible')}},480);
+clearTimeout(overlayDelay);overlayDelay=setTimeout(()=>{if(document.visibilityState==='visible'){const p=ensureOverlay();p.classList.add('is-visible')}},1000);
 });
 window.addEventListener('pageshow',()=>{clearTimeout(overlayDelay);overlay?.classList.remove('is-visible');});
 document.addEventListener('visibilitychange',()=>{if(document.hidden){clearTimeout(overlayDelay);overlay?.classList.remove('is-visible')}});
