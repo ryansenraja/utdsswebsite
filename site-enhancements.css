@@ -652,3 +652,30 @@ footer{background:#0b263d!important;line-height:1.7!important}
  .hero-area .hero-words h2{font-size:clamp(32px,7vw,48px)!important}
 }
 @media(prefers-reduced-motion:reduce){.hero-area .hero-photo{animation:none!important;transform:none!important}#sectors>.utdss-home-sector-tile,#sectors>.utdss-home-sector-tile>.sector img,.agency-card{transition:none!important;transform:none!important}}
+
+
+/* UTDSS visual quality pass: restrained layout refinement across primary pages. */
+.utdss-hero-actions{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-top:28px}
+.utdss-hero-actions .btn{margin:0!important;min-width:0;max-width:100%;text-align:center;text-decoration:none!important;font-size:14px!important;font-weight:700!important;letter-spacing:0!important;padding:15px 21px!important}
+.hero-area .hero-words{max-width:855px!important}
+.hero-area .hero-words h2{font-size:clamp(35px,3.65vw,59px)!important;max-width:780px!important;letter-spacing:-.035em!important}
+.hero-area .hero-words p{font-size:clamp(15px,1.25vw,17px)!important;max-width:660px!important}
+.hero-area .features{backdrop-filter:none;-webkit-backdrop-filter:none}
+.utdss-sector-intro-link{gap:9px}
+#sectors>.utdss-home-sector-tile>.sector strong{letter-spacing:.025em;font-size:13px!important}
+#sectors>.utdss-home-sector-tile>.sector strong span{display:none!important}
+#sectors .utdss-sector-select-wrap{background:#f6f8fa!important;border:1px solid #e2e9ee!important;border-radius:7px!important}
+#sectors .utdss-sector-select-label{letter-spacing:.015em!important;color:#31516a!important}
+#sectors .utdss-sector-select{border-radius:6px!important;border-color:#cbd9e3!important;font-size:13px!important}
+#sectors .utdss-sector-go{background:#133e60!important;border-color:#133e60!important;border-radius:6px!important;box-shadow:none!important;transform:none!important}
+#sectors .utdss-sector-go:hover:not(:disabled){background:#205579!important}
+.utdss-editorial .ed-section,.utdss-secondary-main{scroll-margin-top:95px}
+.utdss-editorial .ed-card,.utdss-secondary-main .card{border-color:#e2e9ef!important;box-shadow:0 8px 25px rgba(13,43,66,.05)!important}
+.utdss-editorial .ed-card:hover,.utdss-secondary-main .card:hover{border-color:#c9d8e3!important;box-shadow:0 19px 37px rgba(13,43,66,.1)!important}
+.utdss-editorial .ed-section h2,.utdss-secondary-main h1,.utdss-secondary-main h2{letter-spacing:-.025em}
+.utdss-editorial .ed-section p,.utdss-secondary-main p{line-height:1.76}
+.utdss-secondary-main .cta,.utdss-editorial .ed-button{border-radius:7px!important}
+.utdss-secondary-main a:focus-visible,.utdss-editorial a:focus-visible{outline:2px solid #b4905d;outline-offset:3px}
+@media(max-width:980px){.utdss-hero-actions{gap:10px}.hero-area .hero-words h2{font-size:clamp(33px,4.5vw,51px)!important}}
+@media(max-width:780px){.utdss-hero-actions{margin-top:22px}.utdss-hero-actions .btn{width:100%;max-width:320px}.hero-area .hero-words{padding-top:58px!important}.hero-area .hero-words h2{font-size:clamp(30px,7.4vw,42px)!important}.hero-area .hero-words p{font-size:15px!important}}
+@media(prefers-reduced-motion:reduce){#sectors .utdss-sector-go{transition:none!important}.utdss-hero-actions .btn{transition:none!important}}
