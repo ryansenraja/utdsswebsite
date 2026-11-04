@@ -328,3 +328,20 @@ body>header>.utdss-menu-toggle{padding:10px 12px}
 body>header .brand,body>header .utdss-global-brand,body>header .about-brand{max-width:calc(100% - 96px)}
 }
 @media(prefers-reduced-motion:reduce){body>header>.utdss-menu-toggle{transition:none}}
+
+
+/* About Us: concise procurement explainer. */
+.utdss-about .about-procurement{background:#fff;border-block:1px solid #e6edf4}
+.utdss-about .about-procurement-grid{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(28px,6vw,85px);align-items:center}
+.utdss-about .about-procurement-grid>div:first-child h2{max-width:590px;margin:15px 0 20px}
+.utdss-about .about-procurement-grid>div:first-child p{max-width:580px;color:#526d82;line-height:1.85}
+.utdss-about .about-procurement-grid .ed-button{display:inline-flex;margin-top:20px}
+.utdss-about .about-procurement-list{background:#f4f8fb;padding:clamp(18px,3vw,32px);border:1px solid #e0e9f0;border-radius:16px;box-shadow:0 12px 35px #102f4b0b}
+.utdss-about .about-procurement-list>div{display:grid;grid-template-columns:40px minmax(0,1fr);gap:14px;padding:17px 0;border-bottom:1px solid #dfe7ee}
+.utdss-about .about-procurement-list>div:first-child{padding-top:0}
+.utdss-about .about-procurement-list>div:last-child{border:0;padding-bottom:0}
+.utdss-about .about-procurement-list span{display:flex;align-items:center;justify-content:center;background:#0e355a;color:#eac98e;border-radius:9px;font-size:12px;font-weight:800;width:36px;height:36px}
+.utdss-about .about-procurement-list p{margin:0}
+.utdss-about .about-procurement-list strong{display:block;font-size:15px;color:#0f3455;line-height:1.35}
+.utdss-about .about-procurement-list small{display:block;margin-top:5px;color:#587087;font-size:12px;line-height:1.7}
+@media(max-width:850px){.utdss-about .about-procurement-grid{grid-template-columns:1fr}}
