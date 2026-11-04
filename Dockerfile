@@ -12,6 +12,7 @@ COPY assets/energy-offshore-hd.svg /app/assets/energy-offshore-hd.svg
 COPY configure-assistant.mjs /tmp/configure-assistant.mjs
 COPY website-language.js /app/website-language.js
 COPY site-enhancements.css site-enhancements.js /app/
+COPY navigation-experience.js /app/navigation-experience.js
 COPY rfq-experience.css /app/rfq-experience.css
 COPY utdss-favicon.svg /app/utdss-favicon.svg
 COPY generate-favicons.py /tmp/generate-favicons.py
