@@ -120,4 +120,28 @@ window.addEventListener('beforeunload',e=>{if(dirty){e.preventDefault();e.return
 function updatePrintReport(data){const target=$('printReport');if(!target)return;const title=document.createElement('h1');title.textContent='United Shipping Services — Request for Quotation';const to=document.createElement('p');to.textContent='Prepared for: '+TO;const pre=document.createElement('pre');pre.textContent='Subject: '+subject(data)+'\n\n'+compose(data);target.replaceChildren(title,to,pre);}
 document.addEventListener('utdss:languagechange',()=>refresh());
 createItem();renderCategories();refresh();refreshDraftPrompt();
+/* Optional non-sensitive prefill when arriving from a brand or sector page.
+   Never restore/sync private customer data from URL parameters. */
+function applyDiscoveryReferral(){
+ const params=new URLSearchParams(window.location.search);
+ const selectedBrand=(params.get('brand')||'').trim().slice(0,80);
+ const selectedSector=(params.get('sector')||'').trim().slice(0,80);
+ const allowedSectors=['Maritime','Defence / Institutional','Energy & Offshore','Industrial','Aviation','General / Other'];
+ if(!selectedBrand&&!selectedSector)return;
+ const saved=savedDraftInfo();
+ if(saved){
+  setStatus('draftStatus','A saved enquiry is available on this device. Restore it if needed before adding a new brand or sector. No saved data has been replaced.','');
+ }
+ if(selectedSector&&allowedSectors.includes(selectedSector))$('sector').value=selectedSector;
+ if(selectedBrand){
+  const first=itemsEl.querySelector('.item');
+  if(first){const brandField=first.querySelector('[data-key="brand"]');if(brandField)brandField.value=selectedBrand;}
+ }
+ markUnsaved();refresh();
+ const message=selectedBrand?'Selected brand: '+selectedBrand+'. Please add the exact product description, part number and quantity. Brand listings do not guarantee supply or stock.':'Sector selected: '+selectedSector+'. Enter the specific product details and required quantity.';
+ setStatus('draftStatus',message);
+ const target=document.getElementById('product-details');
+ if(target)requestAnimationFrame(()=>target.scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth',block:'start'}));
+}
+applyDiscoveryReferral();
 })();
