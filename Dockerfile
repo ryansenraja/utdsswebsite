@@ -20,8 +20,10 @@ COPY generate-favicons.py /tmp/generate-favicons.py
 RUN python3 /tmp/generate-favicons.py
 COPY sourcing.html sourcing-desk.js /app/
 COPY build-intro-video.sh /tmp/build-intro-video.sh
+COPY verify-production.mjs /tmp/verify-production.mjs
 COPY defence.html maritime.html energy.html industrial.html aviation.html about.html services.html products.html agencies.html contact.html /app/
 RUN cp /tmp/reference-layout.html /app/index.html && node /tmp/configure-assistant.mjs
+RUN node /tmp/verify-production.mjs
 RUN sh /tmp/build-intro-video.sh
 RUN cd /app/server && npm install --omit=dev --no-audit --no-fund
 ENV NODE_ENV=production
