@@ -357,3 +357,60 @@ body>header .brand,body>header .utdss-global-brand,body>header .about-brand{max-
 .rfq-readiness li.ready{color:#d9f6dc}
 .rfq-readiness p{font-size:11px;line-height:1.55;color:#c5d5e3;margin:14px 0 0}
 @media(prefers-reduced-motion:reduce){.rfq-readiness-bar span{transition:none}}
+
+
+/* UTDSS Motion System v1 — editorial transitions inspired by premium corporate sites.
+   Animation only runs where JS confirms visibility and never blocks interaction. */
+.utdss-scroll-progress{position:fixed;top:0;left:0;right:0;height:3px;z-index:9998;pointer-events:none;background:linear-gradient(90deg,#b78c4d,#edcf8c,#b88b4c);transform:scaleX(0);transform-origin:left center;will-change:transform}
+@media(prefers-reduced-motion:no-preference){
+  html.utdss-motion-ready .utdss-reveal:not(.utdss-revealed){
+    opacity:0;transform:translate3d(0,25px,0);
+  }
+  html.utdss-motion-ready .utdss-reveal{
+    transition:opacity .78s cubic-bezier(.2,.68,.2,1),transform .78s cubic-bezier(.2,.68,.2,1);
+    transition-delay:calc(var(--utdss-stagger,0) * 70ms);
+  }
+  html.utdss-motion-ready .utdss-reveal.utdss-revealed{
+    opacity:1;transform:translate3d(0,0,0)
+  }
+  .utdss-editorial .ed-hero:before{
+    animation:utdss-hero-zoom 18s ease-out both;
+    transform-origin:60% 45%;
+  }
+  @keyframes utdss-hero-zoom{
+    from{transform:scale(1.075)}
+    to{transform:scale(1)}
+  }
+  .utdss-editorial .ed-hero .ed-eyebrow{animation:utdss-hero-enter .8s .1s both}
+  .utdss-editorial .ed-hero h1{animation:utdss-hero-enter .9s .18s both}
+  .utdss-editorial .ed-hero .ed-lead{animation:utdss-hero-enter .9s .29s both}
+  .utdss-editorial .ed-hero .ed-actions{animation:utdss-hero-enter .9s .39s both}
+  @keyframes utdss-hero-enter{from{opacity:0;transform:translate3d(0,20px,0)}to{opacity:1;transform:translate3d(0,0,0)}}
+  .utdss-editorial .ed-button,.utdss-secondary .cta,.desk-promo a.btn{
+    transition:background-color .25s ease,box-shadow .28s ease,transform .28s cubic-bezier(.2,.68,.2,1),color .25s ease;
+  }
+  .utdss-editorial .ed-button:hover,.utdss-secondary .cta:hover,.desk-promo a.btn:hover{
+    transform:translateY(-3px);box-shadow:0 12px 26px rgba(7,33,57,.19)
+  }
+  .utdss-editorial .ed-card,.utdss-secondary .utdss-secondary-grid>.card{
+    transition:transform .34s cubic-bezier(.2,.7,.2,1),box-shadow .34s ease,border-color .25s ease
+  }
+  .utdss-editorial .ed-card:hover,.utdss-secondary .utdss-secondary-grid>.card:hover{
+    transform:translateY(-6px);box-shadow:0 22px 46px rgba(11,44,73,.14)
+  }
+  .utdss-about .about-sector-photo{transition:transform .85s cubic-bezier(.2,.7,.2,1),filter .55s ease}
+  .utdss-about .about-sectors .ed-card:hover .about-sector-photo{transform:scale(1.055);filter:saturate(1.1)}
+  .utdss-about .about-section-nav a{transition:border-color .22s ease,color .22s ease,background-color .22s ease}
+  .utdss-about .about-section-nav a:hover{background:rgba(196,158,84,.04)}
+  .film-video-block{transition:box-shadow .35s ease,transform .35s ease}
+  .film-video-block:hover{box-shadow:0 23px 50px rgba(8,32,55,.15);transform:translateY(-2px)}
+}
+@media(max-width:780px){
+  html.utdss-motion-ready .utdss-reveal{transition-duration:.5s;transition-delay:0ms}
+  .utdss-scroll-progress{height:2px}
+}
+@media(prefers-reduced-motion:reduce){
+  .utdss-scroll-progress{display:none}
+  html.utdss-motion-ready .utdss-reveal,html.utdss-motion-ready .utdss-reveal:not(.utdss-revealed){opacity:1!important;transform:none!important;transition:none!important}
+  .utdss-editorial .ed-hero:before,.utdss-editorial .ed-hero .ed-eyebrow,.utdss-editorial .ed-hero h1,.utdss-editorial .ed-hero .ed-lead,.utdss-editorial .ed-hero .ed-actions{animation:none!important}
+}
