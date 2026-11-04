@@ -245,6 +245,23 @@ const serviceKnowledge={
 };
 function guidedAnswer(question){
 const t=question.toLowerCase().trim();
+const displayLang=document.documentElement.lang.slice(0,2).toLowerCase();
+// When the user chooses a site language, follow it even for English-language questions.
+if(displayLang==='zh'&&!/[\\u4E00-\\u9FFF]/.test(t)){
+  if(/delivery|ship|transport|lead time/.test(t))return '请提供交付地点、数量及期望日期。UTDSS 团队会在审核后确认可行性和交货期，网站无法实时查询库存。';
+  if(/human|staff|contact|email|person/.test(t))return '请通过 Utdss@singnet.com 联系 UTDSS 团队，或使用智能采购服务台准备询价邮件。网站不会自动发送邮件。';
+  return '我可以协助整理产品询价。请提供产品名称、数量、型号或 NSN/MPN（如有）及交付地点。价格、库存、技术适用性和交货期须由 UTDSS 团队确认。';
+}
+if(displayLang==='ms'&&!/\\b(berapa|harga|boleh|tolong|saya|bekalan|penghantaran|sebut harga|terima kasih)\\b/i.test(t)){
+  if(/delivery|ship|transport|lead time/.test(t))return 'Sila nyatakan destinasi, kuantiti dan tarikh penghantaran yang diperlukan. Pasukan UTDSS akan mengesahkan kebolehlaksanaan dan tempoh penghantaran selepas semakan.';
+  if(/human|staff|contact|email|person/.test(t))return 'Hubungi pasukan UTDSS melalui Utdss@singnet.com atau sediakan draf di Meja Penyumberan Pintar. Laman web tidak menghantar e-mel secara automatik.';
+  return 'Saya boleh membantu menyediakan pertanyaan produk. Berikan nama produk, kuantiti, model atau NSN/MPN jika ada, serta destinasi penghantaran. Harga, stok dan kesesuaian mesti disahkan oleh pasukan UTDSS.';
+}
+if(displayLang==='ta'&&!/[\\u0B80-\\u0BFF]/.test(t)){
+  if(/delivery|ship|transport|lead time/.test(t))return 'விநியோக இடம், அளவு மற்றும் தேவையான தேதியைத் தெரிவிக்கவும். UTDSS குழு மதிப்பாய்வுக்குப் பின் சாத்தியம் மற்றும் காலத்தை உறுதிப்படுத்தும்.';
+  if(/human|staff|contact|email|person/.test(t))return 'Utdss@singnet.com மூலம் UTDSS குழுவைத் தொடர்புகொள்ளவும் அல்லது ஸ்மார்ட் கொள்முதல் மையத்தில் மின்னஞ்சல் வரைவைத் தயாரிக்கவும். தளம் தானாக மின்னஞ்சல் அனுப்பாது.';
+  return 'பொருள் விசாரணையைத் தயாரிக்க உதவுகிறேன். பொருள் பெயர், அளவு, மாதிரி அல்லது NSN/MPN, விநியோக இடத்தை வழங்கவும். விலை, இருப்பு, பொருத்தம் ஆகியவை UTDSS குழுவால் உறுதிசெய்யப்பட வேண்டும்.';
+}
 if(/^(hi|hello|hey|good morning|good afternoon|good evening)[!?. ]*$/.test(t))return serviceKnowledge.greeting;
 if(/[\u4E00-\u9FFF]/.test(t)){if(/报价|价格|多少钱|询价|购买/.test(t))return '当然可以。请告诉我产品名称、型号或零件编号（NSN/MPN）、数量以及送货地点。我们会协助准备询价，但价格和库存须由团队确认。';if(/运输|送货|交货|物流/.test(t))return '请提供送货地址、产品数量及期望交货日期，团队会确认运输和交货安排。';return '您好！我是 UTDSS 客户服务助手。请问您需要查询产品、报价、运输，还是希望联系工作人员？您可以直接用中文描述需求。';}
 if(/[\u0B80-\u0BFF]/.test(t))return 'வணக்கம்! UTDSS வாடிக்கையாளர் உதவிக்கு வரவேற்கிறோம். பொருளின் பெயர், பாக எண் (NSN/MPN), அளவு மற்றும் விநியோக இடத்தைத் தெரிவிக்கவும். விலை மற்றும் கிடைப்பை எங்கள் குழு உறுதிப்படுத்தும்.';
@@ -283,7 +300,7 @@ const v=chatInput.value.trim();if(!v||sending)return;
 chatInput.value='';addChatMessage(v,'customer');sending=true;chatSend.disabled=true;chatSend.setAttribute('aria-busy','true');
 addChatMessage('','assistant');const messageEl=chatTranscript.lastElementChild;messageEl.classList.add('typing');messageEl.setAttribute('aria-label','Assistant is typing');messageEl.innerHTML='<span></span><span></span><span></span>';
 let text='';
-if(ai){try{const controller=new AbortController(),timeout=setTimeout(()=>controller.abort(),14000);let r;try{r=await fetch('/api/ai/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({language:'auto',messages:[...history.slice(-8),{role:'user',content:v}]}),signal:controller.signal})}finally{clearTimeout(timeout)}if(r.ok){const d=await r.json();text=d.reply||d.answer||d.message||'';if(d.navigate==='contact'||d.escalate){const a=document.createElement('a');a.href='#quote';a.textContent='Open the quotation form →';a.className='chat-link';chatTranscript.append(a)}}}catch(e){console.warn('AI reply unavailable; using guided response')}}
+if(ai){try{const controller=new AbortController(),timeout=setTimeout(()=>controller.abort(),14000);let r;try{r=await fetch('/api/ai/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({language:(['zh','ms','ta'].includes(document.documentElement.lang.slice(0,2))?document.documentElement.lang.slice(0,2):'auto'),messages:[...history.slice(-8),{role:'user',content:v}]}),signal:controller.signal})}finally{clearTimeout(timeout)}if(r.ok){const d=await r.json();text=d.reply||d.answer||d.message||'';if(d.navigate==='contact'||d.escalate){const a=document.createElement('a');a.href='#quote';a.textContent='Open the quotation form →';a.className='chat-link';chatTranscript.append(a)}}}catch(e){console.warn('AI reply unavailable; using guided response')}}
 if(!text){text=guidedAnswer(v);}
 messageEl.classList.remove('typing');messageEl.removeAttribute('aria-label');messageEl.textContent=text;chatResponse.textContent=text;history.push({role:'user',content:v},{role:'assistant',content:text});if(history.length>16)history.splice(0,history.length-16);speak(text);
 sending=false;chatSend.disabled=false;chatSend.removeAttribute('aria-busy');chatInput.focus();chatTranscript.scrollTop=chatTranscript.scrollHeight;
