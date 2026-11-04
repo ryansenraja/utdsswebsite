@@ -128,3 +128,22 @@ header nav a:hover{text-decoration:underline;text-decoration-color:#d0a253;text-
 .assistant .chat-line{overflow-wrap:anywhere}
 .assistant .portrait img{aspect-ratio:1;max-width:100%}
 @media(max-width:480px){.assistant .assistant-actions{grid-template-columns:1fr 1fr}.assistant .assistant-actions a{padding:10px 6px}.assistant .assistant-honesty{font-size:11px}}
+
+/* Compact site-wide guided sourcing support (the full AI experience is on the homepage). */
+.utdss-help-dock{position:fixed;right:20px;bottom:20px;z-index:900;max-width:calc(100vw - 24px);font:13px/1.5 Arial,sans-serif}
+.utdss-help-launch{display:block;margin-left:auto;border:1px solid #d8b875;border-radius:999px;padding:13px 18px;background:#0b2b4c;color:#fff;box-shadow:0 7px 25px rgba(0,19,43,.25);font-weight:800;cursor:pointer}
+.utdss-help-launch:hover{background:#1b4c72}
+.utdss-help-panel{width:min(360px,calc(100vw - 24px));max-height:min(650px,76vh);overflow:auto;margin-bottom:10px;background:#fff;border:1px solid #d4e2ef;border-radius:17px;box-shadow:0 17px 54px rgba(6,29,51,.25);color:#1c3c5e;padding:0 15px 17px}
+.utdss-help-panel[hidden]{display:none}
+.utdss-help-panel header{position:sticky;top:0;z-index:1;display:flex;justify-content:space-between;gap:10px;align-items:center;background:#0b2b4c;color:#fff;padding:15px;margin:0 -15px;font-size:13px;border-radius:16px 16px 0 0;height:auto}
+.utdss-help-panel header strong{font-size:14px;white-space:normal}
+.utdss-help-panel header button{font-size:24px;background:transparent;color:#fff;border:0;cursor:pointer}
+.utdss-help-panel>p{font-size:12px;color:#58748c;line-height:1.6;margin:14px 0}
+.utdss-help-questions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.utdss-help-questions button{cursor:pointer;border:1px solid #cfdce9;background:#f4f8fc;border-radius:9px;padding:11px 8px;color:#143e63;text-align:left;font-size:12px;font-weight:700}
+.utdss-help-answer{background:#eef5fb;border-left:3px solid #c49e62;padding:12px;border-radius:5px;margin:12px 0;min-height:78px;font-size:12px;line-height:1.7}
+.utdss-help-links{display:flex;gap:7px}
+.utdss-help-links a{flex:1;border-radius:8px;padding:11px 6px;font-size:11px;font-weight:800;text-align:center;background:#0f4b77;color:#fff;text-decoration:none}
+.utdss-help-links a:last-child{background:#eaf0f6;color:#154568}
+.utdss-help-dock button:focus-visible,.utdss-help-dock a:focus-visible{outline:3px solid #d1a45c;outline-offset:3px}
+@media(max-width:540px){.utdss-help-dock{right:12px;bottom:12px}.utdss-help-panel{max-height:65vh}.utdss-help-questions{grid-template-columns:1fr 1fr}}
