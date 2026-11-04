@@ -114,3 +114,17 @@ header nav a:hover{text-decoration:underline;text-decoration-color:#d0a253;text-
 .film-load-notice{position:absolute;left:50%;bottom:65px;transform:translateX(-50%);background:rgba(7,27,50,.9);color:#fff;padding:9px 17px;border-radius:999px;font-size:12px;font-weight:700;z-index:2;opacity:0;pointer-events:none;transition:opacity .2s;max-width:90%;text-align:center}
 .film-load-notice.is-visible{opacity:1}
 @media(prefers-reduced-motion:reduce){#utdss-navigation-cover,.film-load-notice{transition:none}.utdss-navigation-progress:after{animation:none;width:100%}}
+
+/* Accessible, less intrusive customer support and clearer human handoff. */
+.assistant .assistant-honesty{font-size:11px;line-height:1.55;color:#56708a;margin:0 15px 8px;background:#eaf2fa;border-left:3px solid #bc9555;padding:10px 11px;border-radius:4px}
+.assistant .assistant-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:5px 13px 8px}
+.assistant .assistant-actions a{border-radius:9px;border:1px solid #bacce0;padding:9px 7px;text-align:center;color:#123c66;background:white;font-size:11px;line-height:1.35;font-weight:700}
+.assistant .assistant-actions a:first-child{background:#0d446b;color:#fff;border-color:#0d446b}
+.assistant .assistant-actions a:hover{filter:brightness(.94)}
+.assistant .assistant-clear{align-self:flex-start;background:none;border:0;color:#5a7289;text-decoration:underline;font-size:11px;padding:2px 15px 8px;cursor:pointer;text-underline-offset:3px}
+.assistant .chat-entry input:focus-visible,.assistant button:focus-visible,.assistant a:focus-visible{outline:3px solid #bb9346;outline-offset:2px}
+.assistant .chat-entry button:disabled{cursor:wait;opacity:.65}
+.assistant .ai-label{line-height:1.45}
+.assistant .chat-line{overflow-wrap:anywhere}
+.assistant .portrait img{aspect-ratio:1;max-width:100%}
+@media(max-width:480px){.assistant .assistant-actions{grid-template-columns:1fr 1fr}.assistant .assistant-actions a{padding:10px 6px}.assistant .assistant-honesty{font-size:11px}}
