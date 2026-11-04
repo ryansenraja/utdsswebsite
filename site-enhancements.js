@@ -6,7 +6,7 @@ const pathname=location.pathname==='/'?'/':location.pathname.replace(/\/$/,'');d
 const nav=document.querySelector('header nav');
 if(nav&&!nav.querySelector('a[href="/sourcing.html"]')){const link=document.createElement('a');link.href='/sourcing.html';link.textContent='Smart Sourcing Desk';const quoteLink=[...nav.querySelectorAll('a')].find(a=>a.getAttribute('href')?.includes('quote'));if(quoteLink)nav.insertBefore(link,quoteLink);else nav.append(link);}
 if(nav){nav.querySelectorAll('a[href]').forEach(link=>{try{const u=new URL(link.href,location.origin);if(u.pathname===location.pathname&&(!u.hash||location.pathname!=='/'))link.setAttribute('aria-current','page');}catch{}});}
-document.querySelectorAll('img:not([loading])').forEach((img,i)=>{if(i>2)img.loading='lazy';img.decoding='async';if(!img.alt)img.alt='Illustrative UTDSS sector imagery'});
+document.querySelectorAll('img').forEach((img,i)=>{if(!img.hasAttribute('loading')&&i>2)img.loading='lazy';img.decoding='async';if(!img.hasAttribute('alt'))img.alt='Illustrative UTDSS sector imagery';});
 document.querySelectorAll('a[target="_blank"]').forEach(a=>a.rel='noopener noreferrer');
 const quote=document.querySelector('.quote');const table=quote?.querySelector('table');if(table&&!table.closest('.quote-scroll')){const wrapper=document.createElement('div');wrapper.className='quote-scroll';wrapper.setAttribute('role','region');wrapper.setAttribute('aria-label','Quotation item details, scroll horizontally on small screens');wrapper.tabIndex=0;table.parentElement.insertBefore(wrapper,table);wrapper.append(table);const note=document.createElement('p');note.className='quote-helper';note.textContent='Add several products using Add Row. On smaller screens, scroll the item table sideways to view all fields.';wrapper.insertAdjacentElement('afterend',note)}
 const back=document.createElement('button');back.type='button';back.className='utdss-backtop';back.setAttribute('aria-label','Back to top');back.textContent='↑ Back to top';back.addEventListener('click',()=>window.scrollTo({top:0,behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'}));document.body.append(back);
@@ -28,7 +28,10 @@ if(!document.getElementById('assistant')&&!document.getElementById('utdssHelpDoc
     delivery:'Include the delivery destination, preferred date, product quantities and any special requirements. Delivery availability and lead time require confirmation from the UTDSS team.',
     files:'Attach product photographs, drawings, datasheets or certificates yourself in Outlook or your email app before sending the prepared enquiry to Utdss@singnet.com.'
   };
-  dock.querySelectorAll('[data-help]').forEach(button=>button.addEventListener('click',()=>{dock.querySelector('#utdssHelpAnswer').textContent=responses[button.dataset.help]||'Please contact UTDSS for assistance.';}));
+  const localise=t=>window.UTDSSLocaleText?window.UTDSSLocaleText(t):t;
+  let activeTopic=null;
+  dock.querySelectorAll('[data-help]').forEach(button=>button.addEventListener('click',()=>{activeTopic=button.dataset.help;dock.querySelector('#utdssHelpAnswer').textContent=localise(responses[activeTopic]||'Please contact UTDSS for assistance.');}));
+  document.addEventListener('utdss:languagechange',()=>{if(activeTopic)dock.querySelector('#utdssHelpAnswer').textContent=localise(responses[activeTopic]);});
 }
 
 
