@@ -476,3 +476,51 @@ body>header .brand,body>header .utdss-global-brand,body>header .about-brand{max-
 .utdss-sector-go:disabled{opacity:.52;cursor:not-allowed}
 .utdss-sector-dropdown .utdss-sector-links{border-top:1px solid #e2eaf1;padding-top:12px;margin-top:11px!important}
 @media(prefers-reduced-motion:reduce){.utdss-sector-go{transition:none!important;transform:none!important}}
+
+
+/* Premium header navigation dropdowns — actual top-bar menus. */
+body>header{position:relative;z-index:110!important}
+body>header>nav{overflow:visible}
+body>header>nav .utdss-nav-item{position:relative;display:inline-flex;align-items:center;gap:3px;flex:0 0 auto;min-width:0}
+body>header>nav .utdss-nav-item>a{display:inline-flex;align-items:center;min-height:39px;white-space:nowrap;text-decoration:none}
+body>header>nav .utdss-nav-dropdown-toggle{position:relative;display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;width:26px;height:32px;min-width:26px;padding:0;border:1px solid transparent;border-radius:7px;background:transparent;color:#a77b36;cursor:pointer}
+body>header>nav .utdss-nav-dropdown-toggle:hover,
+body>header>nav .utdss-nav-item.is-open>.utdss-nav-dropdown-toggle{background:#f1e6d2;border-color:#e2cca8}
+body>header>nav .utdss-nav-chevron{font:800 21px/1 Arial,Helvetica,sans-serif;display:block;transform:translateY(-3px);transition:transform .32s cubic-bezier(.2,.7,.2,1)}
+body>header>nav .utdss-nav-item.is-open .utdss-nav-chevron{transform:rotate(180deg) translateY(3px)}
+body>header>nav .utdss-nav-dropdown{position:absolute;top:calc(100% + 11px);left:0;z-index:130;width:min(315px,90vw);padding:13px;display:grid;gap:4px;border:1px solid #dce7ef;border-top:3px solid #ccaa6d;border-radius:12px;background:rgba(255,255,255,.99);box-shadow:0 22px 54px rgba(10,40,69,.19);opacity:0;visibility:hidden;pointer-events:none;transform:translate3d(0,-13px,0) scale(.975);transform-origin:top left;transition:opacity .28s ease,transform .34s cubic-bezier(.18,.73,.25,1),visibility .28s}
+body>header>nav .utdss-nav-item.is-open>.utdss-nav-dropdown{opacity:1;visibility:visible;pointer-events:auto;transform:translate3d(0,0,0) scale(1)}
+body>header>nav .utdss-nav-dropdown-heading{font:800 10px/1.4 Arial,Helvetica,sans-serif;text-transform:uppercase;letter-spacing:.15em;color:#96703a;padding:8px 11px 10px;border-bottom:1px solid #e8edf3;margin-bottom:5px}
+body>header>nav .utdss-nav-dropdown>a{display:flex;align-items:center;justify-content:space-between;min-height:39px;padding:10px 12px!important;border:1px solid transparent!important;border-radius:8px;text-decoration:none!important;white-space:normal!important;font:700 12px/1.5 Arial,Helvetica,sans-serif!important;color:#153b5d!important;background:transparent;transform:none!important;transition:background-color .22s ease,color .22s ease,transform .22s ease,border-color .22s ease}
+body>header>nav .utdss-nav-dropdown>a:after{content:"↗";color:#b58c4d;font-weight:800;margin-left:12px;flex:0 0 auto}
+body>header>nav .utdss-nav-dropdown>a:hover,
+body>header>nav .utdss-nav-dropdown>a:focus-visible{background:#edf4fa;border-color:#d9e7f1!important;color:#0d5886!important;transform:translateX(3px)!important}
+body>header>nav .utdss-nav-item:last-child>.utdss-nav-dropdown{right:0;left:auto;transform-origin:top right}
+body>header>nav .utdss-nav-dropdown-toggle:focus-visible{outline:3px solid #c8a166;outline-offset:2px}
+@media(min-width:781px){
+  body>header>nav,
+  body>header nav[aria-label="Primary navigation"]{overflow:visible!important;flex-wrap:wrap}
+}
+@media(max-width:780px){
+  body>header.utdss-menu-open>nav .utdss-nav-item{display:grid;grid-template-columns:minmax(0,1fr) 42px;width:100%;gap:0;background:#fff;border:1px solid #e0e9f0;border-radius:8px;align-items:center;overflow:hidden}
+  body>header.utdss-menu-open>nav .utdss-nav-item>a{display:flex;min-width:0;min-height:44px;padding:10px 13px!important;white-space:normal!important}
+  body>header.utdss-menu-open>nav .utdss-nav-dropdown-toggle{width:40px;height:40px;border-left:1px solid #e3eaf1;border-radius:0;margin-right:0}
+  body>header.utdss-menu-open>nav .utdss-nav-dropdown{position:relative;grid-column:1/-1;top:auto;left:auto;right:auto;width:100%;max-width:none;display:grid;gap:4px;max-height:0;overflow:hidden;padding:0 11px;margin:0;border:0;border-radius:0;background:#f7fafd;box-shadow:none;opacity:0;visibility:hidden;transform:translateY(-7px);pointer-events:none;transition:max-height .4s cubic-bezier(.25,.72,.2,1),opacity .28s ease,transform .35s ease,padding .35s ease,visibility .35s}
+  body>header.utdss-menu-open>nav .utdss-nav-item.is-open>.utdss-nav-dropdown{max-height:580px;padding:12px 11px 14px;border-top:1px solid #e3eaf1;opacity:1;visibility:visible;pointer-events:auto;transform:translateY(0)}
+  body>header.utdss-menu-open>nav .utdss-nav-dropdown>a{padding:10px!important;min-height:40px}
+  body>header.utdss-menu-open>nav .utdss-nav-dropdown-heading{padding:5px 9px 9px}
+  body>header.utdss-menu-open>nav .utdss-nav-item.is-open{overflow:visible}
+  body>header.utdss-menu-open>nav .utdss-nav-item.is-open>.utdss-nav-dropdown{border-radius:0 0 8px 8px}
+}
+/* Smooth mobile accordion for industry options, without abrupt display toggling. */
+@media(max-width:780px){
+  .utdss-sector-menu>.utdss-sector-dropdown{display:block!important;position:relative!important;top:auto!important;left:auto!important;right:auto!important;width:100%!important;max-height:0;overflow:hidden;padding:0 13px!important;margin:0!important;border:0!important;border-radius:0 0 11px 11px!important;box-shadow:none!important;opacity:0;visibility:hidden;transform:translate3d(0,-8px,0);pointer-events:none;transition:max-height .42s cubic-bezier(.23,.74,.2,1),opacity .28s ease,transform .35s ease,padding .35s ease,visibility .35s!important}
+  .utdss-sector-menu.is-expanded>.utdss-sector-dropdown{max-height:650px;padding:14px 13px!important;border-top:2px solid #d1ad6f!important;opacity:1;visibility:visible;transform:translate3d(0,0,0);pointer-events:auto}
+}
+@media(prefers-reduced-motion:reduce){
+  body>header>nav .utdss-nav-dropdown,
+  body>header>nav .utdss-nav-dropdown>a,
+  body>header>nav .utdss-nav-chevron,
+  body>header>nav .utdss-nav-dropdown-toggle,
+  .utdss-sector-dropdown{transition:none!important;transform:none!important}
+}
