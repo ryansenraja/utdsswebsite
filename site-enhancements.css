@@ -479,34 +479,31 @@ body>header .brand,body>header .utdss-global-brand,body>header .about-brand{max-
 
 
 
-/* Minimal corporate top navigation: smooth restrained downward reveal. */
+/* Understated top-nav dropdown: no chevrons, ticks, badges or decorative arrows. */
 body>header{position:relative;z-index:110!important}
-body>header>nav{overflow:visible}
-body>header>nav .utdss-nav-item{display:inline-flex;align-items:center;position:relative;gap:1px;flex:0 0 auto}
-body>header>nav .utdss-nav-item>a{display:inline-flex;align-items:center;min-height:41px;white-space:nowrap;text-decoration:none}
-body>header>nav .utdss-nav-dropdown-toggle{display:inline-grid;place-items:center;min-width:20px;width:20px;height:33px;margin:0;padding:0;border:0;border-radius:3px;background:transparent;color:#557086;cursor:pointer;transition:color .2s ease}
-body>header>nav .utdss-nav-dropdown-toggle:hover,body>header>nav .utdss-nav-item.is-open>.utdss-nav-dropdown-toggle{color:#a77e3e;background:transparent}
-body>header>nav .utdss-nav-chevron{display:block;width:7px;height:7px;border-right:1.6px solid currentColor;border-bottom:1.6px solid currentColor;transform:translateY(-2px) rotate(45deg);transition:transform .32s cubic-bezier(.22,.74,.22,1)}
-body>header>nav .utdss-nav-item.is-open .utdss-nav-chevron{transform:translateY(1px) rotate(225deg)}
-body>header>nav .utdss-nav-dropdown{position:absolute;top:100%;left:0;z-index:135;display:flex;flex-direction:column;gap:0;width:max-content;min-width:210px;max-width:min(300px,92vw);padding:9px 5px;background:#fff;border:1px solid #e4e9ef;border-radius:8px;box-shadow:0 17px 36px rgba(16,43,69,.12);opacity:0;visibility:hidden;pointer-events:none;transform:translate3d(0,-9px,0);transition:opacity .32s ease,transform .42s cubic-bezier(.2,.75,.2,1),visibility .32s;will-change:opacity,transform}
+body>header>nav .utdss-nav-item{position:relative;display:inline-flex;align-items:center;min-width:0}
+body>header>nav .utdss-nav-item>a{display:inline-flex;align-items:center;min-height:43px;white-space:nowrap}
+body>header>nav .utdss-nav-dropdown{position:absolute;top:100%;left:0;z-index:140;display:flex;flex-direction:column;width:max-content;min-width:205px;max-width:min(285px,92vw);padding:8px 0;background:#fff;border:1px solid #e8edf1;border-radius:5px;box-shadow:0 15px 34px rgba(14,38,58,.095);opacity:0;visibility:hidden;pointer-events:none;transform:translate3d(0,-11px,0);transition:opacity .35s cubic-bezier(.2,.7,.2,1),transform .45s cubic-bezier(.18,.7,.2,1),visibility .35s}
 body>header>nav .utdss-nav-item.is-open>.utdss-nav-dropdown{opacity:1;visibility:visible;pointer-events:auto;transform:translate3d(0,0,0)}
-body>header>nav .utdss-nav-dropdown>a{display:block!important;min-height:39px;white-space:normal!important;margin:0 5px!important;padding:11px 13px!important;border:0!important;border-radius:5px;background:transparent;color:#233e56!important;text-decoration:none!important;font:600 13px/1.4 Arial,Helvetica,sans-serif!important;transform:none!important;transition:background-color .2s ease,color .2s ease}
-body>header>nav .utdss-nav-dropdown>a:after{content:none!important}
-body>header>nav .utdss-nav-dropdown>a:hover,body>header>nav .utdss-nav-dropdown>a:focus-visible{background:#f2f6f9;color:#105a89!important;transform:none!important}
+body>header>nav .utdss-nav-dropdown>a{display:block!important;min-height:40px;margin:0!important;padding:11px 18px!important;background:transparent!important;border:0!important;border-radius:0!important;font:500 13px/1.4 Arial,Helvetica,sans-serif!important;color:#253c50!important;text-decoration:none!important;white-space:normal!important;box-shadow:none!important;transform:none!important;transition:background-color .22s ease,color .22s ease}
+body>header>nav .utdss-nav-dropdown>a:before,body>header>nav .utdss-nav-dropdown>a:after{display:none!important;content:none!important}
+body>header>nav .utdss-nav-dropdown>a:hover,body>header>nav .utdss-nav-dropdown>a:focus-visible{background:#f5f8fa!important;color:#0a4b78!important;transform:none!important}
 body>header>nav .utdss-nav-item:last-child>.utdss-nav-dropdown{right:0;left:auto}
-body>header>nav .utdss-nav-dropdown-toggle:focus-visible{outline:2px solid #bf9858;outline-offset:2px}
-@media(min-width:781px){body>header>nav{column-gap:clamp(9px,1.25vw,18px)!important;overflow:visible!important}body>header>nav .utdss-nav-item{align-self:center}}
-@media(max-width:780px){
-body>header.utdss-menu-open>nav .utdss-nav-item{display:grid;grid-template-columns:minmax(0,1fr) 42px;width:100%;gap:0;align-items:center;background:#fff;border:1px solid #e7edf2;border-radius:7px;overflow:hidden}
-body>header.utdss-menu-open>nav .utdss-nav-item>a{min-height:44px;padding:11px 12px!important;white-space:normal!important}
-body>header.utdss-menu-open>nav .utdss-nav-dropdown-toggle{width:40px;height:42px}
-body>header.utdss-menu-open>nav .utdss-nav-dropdown{position:relative;grid-column:1/-1;inset:auto;width:100%;max-width:none;min-width:0;max-height:0;overflow:hidden;margin:0;padding:0 5px;border:0;border-radius:0;background:#f8fafc;box-shadow:none;opacity:0;visibility:hidden;transform:translateY(-8px);transition:max-height .42s cubic-bezier(.2,.72,.2,1),opacity .32s ease,transform .42s ease,padding .32s ease,visibility .32s}
-body>header.utdss-menu-open>nav .utdss-nav-item.is-open>.utdss-nav-dropdown{max-height:460px;padding:6px 5px 10px;border-top:1px solid #e8edf2;opacity:1;visibility:visible;transform:translateY(0)}
-body>header.utdss-menu-open>nav .utdss-nav-dropdown>a{min-height:40px;margin:0!important;padding:11px 13px!important}
+body>header>nav .utdss-nav-dropdown-toggle,body>header>nav .utdss-nav-chevron{display:none!important}
+@media(min-width:781px){
+  body>header>nav{overflow:visible!important;column-gap:clamp(10px,1.35vw,20px)!important}
 }
-/* Mobile category menus expand rather than pop abruptly. */
 @media(max-width:780px){
-.utdss-sector-menu>.utdss-sector-dropdown{display:block!important;position:relative!important;inset:auto!important;width:100%!important;max-height:0;overflow:hidden;padding:0 13px!important;margin:0!important;border:0!important;box-shadow:none!important;opacity:0;visibility:hidden;transform:translateY(-8px);transition:max-height .42s cubic-bezier(.22,.76,.22,1),opacity .32s ease,transform .42s ease,padding .32s ease,visibility .32s!important}
-.utdss-sector-menu.is-expanded>.utdss-sector-dropdown{max-height:680px;padding:13px!important;border-top:1px solid #dde6ed!important;opacity:1;visibility:visible;transform:translateY(0)}
+  body>header.utdss-menu-open>nav .utdss-nav-item{display:block;width:100%;background:#fff;border-bottom:1px solid #edf1f4}
+  body>header.utdss-menu-open>nav .utdss-nav-item>a{display:flex;padding:12px 15px!important;min-height:46px;white-space:normal!important}
+  body>header.utdss-menu-open>nav .utdss-nav-dropdown{position:relative;inset:auto;display:block;max-width:none;min-width:0;width:100%;max-height:0;overflow:hidden;padding:0;margin:0;border:0;border-radius:0;background:#f7f9fb;box-shadow:none;opacity:0;visibility:hidden;transform:translateY(-9px);transition:max-height .43s cubic-bezier(.2,.74,.2,1),opacity .32s ease,transform .43s ease,visibility .32s}
+  body>header.utdss-menu-open>nav .utdss-nav-item.is-open>.utdss-nav-dropdown{max-height:460px;padding:6px 0;opacity:1;visibility:visible;transform:translateY(0)}
+  body>header.utdss-menu-open>nav .utdss-nav-dropdown>a{padding:11px 25px!important;min-height:40px}
 }
-@media(prefers-reduced-motion:reduce){body>header>nav .utdss-nav-dropdown,body>header>nav .utdss-nav-dropdown>a,body>header>nav .utdss-nav-chevron,.utdss-sector-dropdown{transition:none!important;transform:none!important}}
+/* Industry cards keep their functional selector but lose decorative motion. */
+.utdss-sector-chevron{display:none!important}
+.utdss-sector-trigger{font-weight:600!important;letter-spacing:0!important}
+.utdss-sector-dropdown .utdss-sector-links>a:after{display:none!important;content:none!important}
+@media(prefers-reduced-motion:reduce){
+ body>header>nav .utdss-nav-dropdown,body>header>nav .utdss-nav-dropdown>a{transition:none!important;transform:none!important}
+}
