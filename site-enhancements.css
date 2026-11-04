@@ -520,3 +520,66 @@ body>header>nav .utdss-nav-dropdown{backdrop-filter:none;-webkit-backdrop-filter
  body>header.utdss-menu-open>nav .utdss-nav-item>a[aria-current="page"]:after{display:none}
  body>header.utdss-menu-open>nav .utdss-nav-item>a[aria-current="page"]{background:#f3f7fa}
 }
+
+
+/* Corporate dropdown motion: smooth physical downward opening and upward closing.
+   clip-path reveals the panel edge progressively, not just an opacity change. */
+@media (min-width:781px) and (prefers-reduced-motion:no-preference){
+ body>header>nav .utdss-nav-dropdown{
+   opacity:0;
+   visibility:hidden;
+   clip-path:inset(0 0 100% 0 round 5px);
+   transform:translate3d(0,-16px,0);
+   transition:
+     clip-path .46s cubic-bezier(.22,.72,.18,1),
+     transform .46s cubic-bezier(.22,.72,.18,1),
+     opacity .28s ease,
+     visibility 0s linear .46s;
+   will-change:transform,clip-path,opacity;
+ }
+ body>header>nav .utdss-nav-item.is-open>.utdss-nav-dropdown{
+   visibility:visible;
+   opacity:1;
+   clip-path:inset(0 0 0 0 round 5px);
+   transform:translate3d(0,0,0);
+   transition:
+     clip-path .52s cubic-bezier(.18,.8,.2,1),
+     transform .52s cubic-bezier(.18,.8,.2,1),
+     opacity .34s ease,
+     visibility 0s;
+ }
+ body>header>nav .utdss-nav-dropdown>a{
+   opacity:.65;
+   transform:translate3d(0,-6px,0)!important;
+   transition:opacity .3s ease,transform .42s cubic-bezier(.22,.72,.18,1),background-color .2s ease,color .2s ease;
+ }
+ body>header>nav .utdss-nav-item.is-open>.utdss-nav-dropdown>a{
+   opacity:1;
+   transform:translate3d(0,0,0)!important;
+   transition-delay:calc(var(--utdss-nav-seq,0) * 35ms);
+ }
+ body>header>nav .utdss-nav-dropdown>a:hover{
+   transform:translate3d(0,0,0)!important;
+ }
+}
+@media(max-width:780px) and (prefers-reduced-motion:no-preference){
+ body>header.utdss-menu-open>nav .utdss-nav-dropdown{
+   display:block;
+   max-height:0;
+   opacity:0;
+   transform:translate3d(0,-8px,0);
+   visibility:hidden;
+   transition:max-height .46s cubic-bezier(.22,.72,.18,1),opacity .34s ease,transform .46s ease,visibility 0s linear .46s;
+ }
+ body>header.utdss-menu-open>nav .utdss-nav-item.is-open>.utdss-nav-dropdown{
+   max-height:460px;
+   opacity:1;
+   transform:translate3d(0,0,0);
+   visibility:visible;
+   transition:max-height .52s cubic-bezier(.22,.72,.18,1),opacity .34s ease,transform .52s ease,visibility 0s;
+ }
+}
+@media(prefers-reduced-motion:reduce){
+ body>header>nav .utdss-nav-dropdown{clip-path:none!important;transition:none!important;transform:none!important}
+ body>header>nav .utdss-nav-dropdown>a{transition:none!important;transform:none!important;opacity:1!important}
+}
