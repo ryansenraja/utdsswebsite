@@ -281,7 +281,9 @@ const serviceKnowledge={
 };
 /* Per-conversation enquiry facts: extracted from user messages only, never presented as verified stock. */
 function collectEnquiryFacts(prior,current){
- const turns=[...(prior||[]).filter(m=>m.role==='user').map(m=>String(m.content||'')),String(current||'')];
+ const allTurns=[...(prior||[]).filter(m=>m.role==='user').map(m=>String(m.content||'')),String(current||'')];
+ const lastReset=allTurns.findLastIndex(v=>/^(start over|new enquiry|new request|forget that|clear enquiry)[!?. ]*$/i.test(v.trim()));
+ const turns=lastReset>=0?allTurns.slice(lastReset+1):allTurns;
  const facts={item:'',part:'',quantity:'',destination:'',date:''};
  const countries=/^(singapore|malaysia|indonesia|japan|india|china|usa|united states|united kingdom|uk|australia|thailand|vietnam|philippines|hong kong)$/i;
  for(let i=0;i<turns.length;i++){
@@ -303,7 +305,7 @@ function collectEnquiryFacts(prior,current){
    if(date)facts.date=date[1];
    let item=raw.match(/\b(?:i(?:'m| am)?\s+looking\s+for|i\s+need|we\s+need|i\s+want|we\s+require|please\s+source|looking\s+for)\s+(.{3,110})/i);
    if(item&&!/^(help|assistance|something|a quotation|a quote|to know|some information|a product|items?)\b/i.test(item[1])){
-     const cleaned=item[1].replace(/\s+(?:quantity|qty|for delivery|to deliver|ship to|destination)\b.*$/i,'').replace(/[.!?]+$/,'').trim();
+     const cleaned=item[1].replace(/^\d{1,6}\s*(?:pcs|pieces|units|sets|ea|each)\s+(?:of\s+)?/i,'').replace(/\s+(?:quantity|qty|for delivery|to deliver|ship to|destination)\b.*$/i,'').replace(/[.!?]+$/,'').trim();
      if(cleaned.length>2)facts.item=cleaned.slice(0,100);
    }
    if(/\b(?:actually|correction|instead|change|rather|not)\b/i.test(v)){
@@ -349,6 +351,11 @@ function adaptiveConversation(question,prior){
    if(facts.destination&&/\b(?:singapore|malaysia|indonesia|japan|india|china|usa|uk|australia)\b/.test(t))return "Understood — I'll use "+facts.destination+" as the destination for this enquiry. Anything else to correct?";
  }
  if(!active)return null;
+ if(/\b(?:i need|we need|i'm looking for|we require|looking for|please source)\b/i.test(t)&&facts.item&&!/\b(?:how much|price|cost|availability|do you have|in stock|delivery|what is|what does)\b/i.test(t)){
+   if(!facts.quantity)return "I can help you prepare an enquiry for "+facts.item+". What quantity do you need?";
+   if(!facts.destination)return "I've noted "+facts.quantity+" for "+facts.item+". Where should the items be delivered?";
+   return "Thanks, we can prepare an initial sourcing enquiry. The UTDSS team will need to confirm availability and pricing.";
+ }
  const qty=/^\d{1,6}(?:\s*(?:pcs|pieces|units|sets|ea|each))?$/i.test(q);
  const location=/^(singapore|malaysia|indonesia|japan|india|china|usa|united states|united kingdom|uk|australia|thailand|vietnam|philippines|hong kong)$/i.test(q);
  const part=/^[A-Za-z0-9]{2,12}[-/][A-Za-z0-9./_-]{2,35}$/.test(q);
