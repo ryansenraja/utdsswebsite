@@ -81,3 +81,20 @@ header nav a:hover{text-decoration:underline;text-decoration-color:#d0a253;text-
 .desk-mini-foot{font-size:12px;color:#d9e9f6;text-align:center;padding-top:15px}
 @media(max-width:900px){.desk-promo-inner{grid-template-columns:1fr}.desk-mini{max-width:600px}}
 @media(max-width:560px){.desk-promo{padding:42px 20px}.desk-highlights{grid-template-columns:1fr}.desk-mini{padding:14px}}
+
+/* Clear, accessible guidance through a typical sourcing enquiry. */
+.enquiry-process{padding:62px 4% 67px;background:#f5f8fc;border-top:1px solid #e2eaf2;border-bottom:1px solid #e2eaf2}
+.enquiry-process .pro-inner{max-width:1320px;margin:auto}
+.enquiry-process .pro-heading{max-width:800px;margin-bottom:29px}
+.enquiry-process .pro-heading h2{font-size:clamp(29px,3.4vw,43px);line-height:1.18}
+.enquiry-steps{list-style:none;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px;margin:0;padding:0}
+.enquiry-steps li{min-width:0;display:flex;flex-direction:column;gap:18px;background:white;border:1px solid #d9e5f0;border-radius:13px;padding:21px;box-shadow:0 12px 30px #0b30500c}
+.enquiry-steps li>span{display:grid;place-items:center;width:43px;height:43px;border-radius:11px;background:#0b3158;color:#e8cc92;font-size:13px;font-weight:800;letter-spacing:1px}
+.enquiry-steps h3{font:700 19px/1.22 Georgia,serif;color:#15395f;margin:0 0 9px}
+.enquiry-steps p{font-size:13px;line-height:1.7;color:#62788e;margin:0}
+.enquiry-process-link{display:inline-flex;margin-top:26px;border-radius:9px;padding:13px 20px;background:#0f456f;color:white;font-size:13px;font-weight:800}
+.enquiry-process-link:hover{background:#1b628e}
+.rfq-more-link{font-size:12px;line-height:1.6;color:#58718b;margin:12px 0 3px}
+.rfq-more-link a{color:#0b5489;text-decoration:underline;text-underline-offset:3px;font-weight:800}
+@media(max-width:960px){.enquiry-steps{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:580px){.enquiry-process{padding:42px 18px}.enquiry-steps{grid-template-columns:1fr}.enquiry-steps li{flex-direction:row;align-items:flex-start;padding:17px}.enquiry-steps li>span{flex:none}}
