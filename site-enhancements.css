@@ -583,3 +583,72 @@ body>header>nav .utdss-nav-dropdown{backdrop-filter:none;-webkit-backdrop-filter
  body>header>nav .utdss-nav-dropdown{clip-path:none!important;transition:none!important;transform:none!important}
  body>header>nav .utdss-nav-dropdown>a{transition:none!important;transform:none!important;opacity:1!important}
 }
+
+
+/* UTDSS 2026 corporate art direction — intentional hierarchy, elegant movement, no visual gimmicks. */
+:root{--utdss-ink:#133250;--utdss-blue:#123f63;--utdss-accent:#bf9e69;--utdss-soft:#f4f7fa}
+body{background:#fff}
+body>header{background:rgba(255,255,255,.985)!important;border-bottom:1px solid #e7ebf0!important;box-shadow:0 4px 21px rgba(11,38,63,.035)!important}
+body>header>nav .utdss-nav-item>a,body>header>nav>a{font-weight:600!important;letter-spacing:.005em}
+body>header>nav .utdss-nav-dropdown{background:#fff;border-color:#e7edf2;box-shadow:0 20px 48px rgba(12,36,58,.12)}
+body>header>nav .utdss-nav-dropdown>a{font-weight:500!important;font-size:13px!important}
+body>header>nav .utdss-nav-dropdown>a:hover{background:#f1f5f8!important;color:#164e75!important}
+.hero-area{background:#071d33;isolation:isolate}
+.hero-area .hero-photo{filter:saturate(.86) contrast(1.04)}
+.hero-area .hero-plane{opacity:.55;filter:saturate(.72)}
+.hero-area .hero-words{max-width:860px}
+.hero-area .hero-words h2{font-family:Georgia,serif;font-weight:700;letter-spacing:-.038em!important;line-height:1.075!important;text-wrap:balance;text-shadow:0 5px 23px rgba(1,14,28,.12)}
+.hero-area .hero-words p{line-height:1.65!important;color:#e4edf5!important;max-width:580px}
+.hero-area .eyebrow{letter-spacing:.125em!important;font-size:12px!important;font-weight:700!important;color:#e3c894!important}
+.hero-area .eyebrow:before{height:1px!important;width:34px!important;margin-right:11px!important}
+.hero-area .btn{border-radius:7px!important;min-height:48px;box-shadow:none;transition:transform .3s cubic-bezier(.2,.75,.2,1),background-color .25s ease,border-color .25s ease,box-shadow .3s ease}
+.hero-area .btn.gold{background:#d6b678!important;border-color:#d6b678!important;color:#102b40!important}
+.hero-area .btn.gold:hover{background:#e6ca91!important;border-color:#e6ca91!important;box-shadow:0 12px 25px rgba(0,0,0,.16);transform:translateY(-2px)}
+.hero-area .btn.outline{border-color:rgba(255,255,255,.65)!important;background:rgba(5,29,49,.18)!important;color:#fff!important}
+.hero-area .btn.outline:hover{background:rgba(255,255,255,.13)!important;border-color:#fff!important;transform:translateY(-2px)}
+.hero-area .feature{align-items:center;transition:opacity .3s ease}
+.hero-area .feature:hover{opacity:.82}
+.hero-area .feature strong{font-weight:700;letter-spacing:.035em}
+.utdss-sector-intro{max-width:1450px;margin:70px auto 0;padding:0 28px;display:flex;align-items:flex-end;justify-content:space-between;gap:30px}
+.utdss-sector-intro-copy{max-width:820px}
+.utdss-sector-kicker{display:block;color:#ac8852;font:700 11px/1.4 Arial,Helvetica,sans-serif;letter-spacing:.19em;margin-bottom:13px}
+.utdss-sector-intro h2{color:#123552;font:700 clamp(26px,2.8vw,41px)/1.18 Georgia,serif;letter-spacing:-.025em;margin:0 0 13px;text-wrap:balance}
+.utdss-sector-intro p{font:400 15px/1.75 Arial,Helvetica,sans-serif;color:#5b7286;margin:0;max-width:640px}
+.utdss-sector-intro-link{display:inline-flex;align-items:center;min-height:42px;white-space:nowrap;padding:0 0 5px;border-bottom:1px solid #b59a70;color:#1d5275;font:700 12px/1.4 Arial,Helvetica,sans-serif;text-decoration:none;transition:color .24s ease,border-color .24s ease}
+.utdss-sector-intro-link:hover{color:#0e3555;border-color:#0e3555}
+#sectors{margin-top:27px!important}
+#sectors>.utdss-home-sector-tile{border:1px solid #e3e9ef!important;border-radius:9px!important;box-shadow:0 5px 22px rgba(12,42,65,.045)!important;transition:border-color .3s ease,box-shadow .42s cubic-bezier(.22,.75,.2,1),transform .42s cubic-bezier(.22,.75,.2,1)!important}
+#sectors>.utdss-home-sector-tile:hover,#sectors>.utdss-home-sector-tile.is-expanded{transform:translateY(-4px)!important;border-color:#cad7e1!important;box-shadow:0 20px 35px rgba(13,47,73,.13)!important}
+#sectors>.utdss-home-sector-tile>.sector{border-radius:8px 8px 0 0!important;overflow:hidden}
+#sectors>.utdss-home-sector-tile>.sector img{transition:transform .72s cubic-bezier(.22,.75,.2,1),filter .45s ease}
+#sectors>.utdss-home-sector-tile:hover>.sector img{transform:scale(1.045);filter:saturate(.95)}
+#sectors .utdss-sector-trigger{background:#fff!important;color:#274e6e!important;padding:13px 16px!important;min-height:48px!important;font-size:12px!important}
+#sectors .utdss-sector-trigger:hover{color:#0b3f63!important;background:#f8fafc!important}
+#sectors .utdss-sector-dropdown{border-top-color:#d4be9d!important;box-shadow:0 20px 36px rgba(8,35,61,.14)}
+#sectors .utdss-sector-dropdown .utdss-sector-links>a{background:#f7f9fb;border-color:#e6edf2;color:#274b67!important;font-weight:600}
+#sectors .utdss-sector-dropdown .utdss-sector-links>a:hover{transform:none;background:#eef3f7}
+.desk-promo{background:linear-gradient(120deg,#071e34,#153d5b)!important}
+.desk-promo h2,.agency-heading h2,#customer-guide h2,.pro-heading h2{letter-spacing:-.025em;text-wrap:balance}
+.desk-mini{border:1px solid rgba(255,255,255,.16);box-shadow:0 18px 45px rgba(0,11,23,.19)}
+.agency-section{background:#f7f9fb!important;border-top:1px solid #e8edf1}
+.agency-card{border:1px solid #e4eaf0!important;border-top:1px solid #e4eaf0!important;border-radius:9px!important;box-shadow:0 4px 16px rgba(11,43,69,.045)!important;transition:transform .32s cubic-bezier(.22,.75,.2,1),box-shadow .32s ease,border-color .32s ease!important}
+.agency-card:hover{transform:translateY(-3px)!important;border-color:#c5d5e2!important;box-shadow:0 15px 29px rgba(11,43,69,.11)!important}
+#customer-guide .guide-card{background:#fff!important;border-color:#e2eaf0!important;box-shadow:0 6px 19px rgba(12,42,65,.045)}
+#customer-guide .guide-card:hover{border-color:#c7d7e3!important;box-shadow:0 18px 37px rgba(12,42,65,.11)!important}
+.lower .quote,.lower .why{min-width:0}
+.lower .quote input:focus-visible,.lower .quote textarea:focus-visible,.lower .quote select:focus-visible{outline:2px solid #bba077!important;outline-offset:1px}
+footer{background:#0b263d!important;line-height:1.7!important}
+@media(min-width:781px) and (prefers-reduced-motion:no-preference){
+ .hero-area .hero-photo{animation:utdss-hero-breathe 19s ease-out both}
+ @keyframes utdss-hero-breathe{from{transform:scale(1.055)}to{transform:scale(1)}}
+ #sectors .utdss-sector-dropdown{transition:opacity .3s ease,transform .42s cubic-bezier(.2,.75,.2,1),visibility .3s!important}
+}
+@media(max-width:1100px){.utdss-sector-intro{margin-top:55px}}
+@media(max-width:780px){
+ .utdss-sector-intro{padding:0 20px;margin-top:50px;display:block}
+ .utdss-sector-intro-link{margin-top:18px}
+ #sectors{margin-top:23px!important}
+ #sectors>.utdss-home-sector-tile:hover{transform:none!important}
+ .hero-area .hero-words h2{font-size:clamp(32px,7vw,48px)!important}
+}
+@media(prefers-reduced-motion:reduce){.hero-area .hero-photo{animation:none!important;transform:none!important}#sectors>.utdss-home-sector-tile,#sectors>.utdss-home-sector-tile>.sector img,.agency-card{transition:none!important;transform:none!important}}
