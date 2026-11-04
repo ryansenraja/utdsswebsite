@@ -271,7 +271,40 @@ const serviceKnowledge={
  payment:'Our team will need to confirm applicable payment and commercial terms for your enquiry. You can contact us at Utdss@singnet.com.',
  contact:'You can reach the UTDSS team at Utdss@singnet.com. Complete the website quotation form to prepare an email in Outlook or your default email application.'
 };
-function guidedAnswer(question){
+function contextualGuidance(question,prior){
+ const original=question.trim(),t=original.toLowerCase();
+ const earlier=(prior||[]).filter(m=>m.role==='user').map(m=>m.content);
+ const previous=earlier.length?earlier[earlier.length-1].toLowerCase():'';
+ const lastReply=(prior||[]).filter(m=>m.role==='assistant').at(-1)?.content.toLowerCase()||'';
+ if(/^(how are you|how's it going|are you there|can you hear me)[!? .]*$/.test(t))return "I'm here and ready to help. What would you like to know about UTDSS or a sourcing requirement?";
+ if(/^(who are you|are you a real person|are you human|are you ai)[!? .]*$/.test(t))return "I'm UTDSS's virtual sourcing assistant. I can help explain our services, identify the details for an enquiry and guide you to the right page. I'm not a human employee, and I can't confirm live stock or submit orders.";
+ if(/^(help|help me|i need help|can you help me|i have a question)[!? .]*$/.test(t))return "Of course. Is your question about a product, a quotation, delivery or an existing order?";
+ if(/^(yes|yeah|yep|sure|okay|ok|correct|that's right)[!? .]*$/.test(t)){
+   if(/(part number|model|nsn|mpn)/.test(lastReply))return "Great — please send the part number or model, exactly as shown on the product label or document.";
+   if(/(quantity|how many)/.test(lastReply))return "Thanks. How many units or sets are required?";
+   if(/(deliver|destination|location)/.test(lastReply))return "Please share the delivery city or country, and any required date if you have one.";
+   if(/(product|item)/.test(lastReply))return "What product or item are you looking for? A brief description is fine if you don't have the part number.";
+   return "What would you like help with next?";
+ }
+ if(/^(no|nope|not yet|i don't know|not sure|unsure)[!? .]*$/.test(t)){
+   if(/(part number|model|nsn|mpn)/.test(lastReply))return "That's fine. Describe the item, what it is used for and the quantity needed. The team can review the enquiry without a part number, although additional details may be required.";
+   return "That's fine. Tell me what you know so far, and I'll help you identify the next useful detail.";
+ }
+ const isDetail=/^([a-z]{2,6}[-\d]{3,}[\w-]*|\d{1,6}\s*(pcs|pieces|units|sets|each|ea)|singapore|malaysia|indonesia|china|usa|united states|uk|united kingdom|japan|india)$/i.test(original);
+ const previousSourcing=/product|item|part|model|quote|quotation|delivery|sourc|quantit|units|pcs|equipment|supplier/i.test(previous+' '+lastReply);
+ if(isDetail&&previousSourcing){
+   const recent=[...earlier,original].join(' ').toLowerCase();
+   if(!/\b\d+\s*(pcs|pieces|units|sets|each|ea)\b/.test(recent))return "Thank you, I've noted that detail for this conversation. What quantity do you need?";
+   if(!/singapore|malaysia|indonesia|china|usa|united states|uk|united kingdom|japan|india|deliver to|destination|ship to/.test(recent))return "Got it. Where should the items be delivered?";
+   return "Thanks, that helps. You can prepare the enquiry in the Smart Sourcing Desk and send it through your email application. Our team will verify availability, pricing and delivery.";
+ }
+ if(/^(i need|i want|i'm looking for|looking for)\s+(something|a product|some items)[!?. ]*$/.test(t))return "I can help. What type of item are you looking for, and what will it be used for?";
+ if(/^(what can you do|how can you help)[!? .]*$/.test(t))return "I can explain UTDSS services, help organise product details and guide you through preparing a quotation enquiry. For stock, pricing, certifications or delivery commitments, the UTDSS team must confirm them.";
+ return null;
+}
+function guidedAnswer(question,prior){
+ const contextual=contextualGuidance(question,prior);
+ if(contextual)return contextual;
 const t=question.toLowerCase().trim();
 const displayLang=document.documentElement.lang.slice(0,2).toLowerCase();
 // When the user chooses a site language, follow it even for English-language questions.
@@ -320,7 +353,7 @@ if(/payment|invoice|terms/.test(t))return serviceKnowledge.payment;
 if(/email|contact|phone|staff|human|representative|person/.test(t))return serviceKnowledge.contact;
 if(/where|location|address/.test(t))return serviceKnowledge.location;
 if(/service|capabilit|what do you do|supply|sector/.test(t))return answers.capabilities;
-return 'Thanks for explaining. To help with this enquiry, could you share the product or service you need, any model or part number, the quantity and where it needs to be delivered? If this involves a previous order, please include the reference number. Our team will confirm prices, availability and deadlines before making any commitments.';
+return 'I can help with UTDSS products, services, sourcing enquiries and quotations. Could you tell me a little more about what you would like to know?';
 }
 let sending=false;
 async function sendChat(){
