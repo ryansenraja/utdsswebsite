@@ -524,3 +524,12 @@ body>header>nav .utdss-nav-dropdown-toggle:focus-visible{outline:3px solid #c8a1
   body>header>nav .utdss-nav-dropdown-toggle,
   .utdss-sector-dropdown{transition:none!important;transform:none!important}
 }
+
+
+/* Keep pointer travel continuous from header label to dropdown. */
+@media(min-width:781px){
+ body>header>nav .utdss-nav-dropdown{top:100%}
+ body>header>nav .utdss-nav-dropdown-toggle{width:19px;min-width:19px;padding:0}
+ body>header>nav .utdss-nav-item{gap:0}
+ body>header>nav{column-gap:clamp(8px,1.15vw,17px)!important}
+}
