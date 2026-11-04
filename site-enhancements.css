@@ -1382,3 +1382,16 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
 @media(prefers-reduced-motion:reduce){
  .utdss-page-agencies .utdss-brand-enquire,.utdss-page-products .utdss-card-enquire{transition:none!important}
 }
+
+/* 2026-11-04: final conversational layout and accessibility refinements. */
+#assistant #chatTranscript{box-sizing:border-box!important;display:flex!important;flex-flow:column nowrap!important;align-items:stretch!important;justify-content:flex-start!important;gap:19px!important;padding:22px 19px 26px!important;scrollbar-gutter:stable!important}
+#assistant #chatTranscript>.chat-line{box-sizing:border-box!important;position:relative!important;display:flex!important;flex-direction:column!important;flex:0 0 auto!important;max-width:85%!important;min-width:0!important;width:fit-content!important;margin:0!important;float:none!important;clear:both!important;line-height:1.65!important}
+#assistant #chatTranscript>.chat-line.customer{align-self:flex-end!important;margin-left:auto!important}
+#assistant #chatTranscript>.chat-line.bot-message,#assistant #chatTranscript>.chat-line:not(.customer):not(.typing){align-self:flex-start!important;margin-right:auto!important}
+#assistant #chatTranscript .chat-content{overflow-wrap:anywhere!important;word-break:normal!important;white-space:pre-wrap!important;line-height:1.67!important}
+#assistant .chat-entry{position:relative!important;z-index:1;flex-shrink:0!important}
+#assistant .chat-entry input{font-size:16px!important}
+#assistant #chatTranscript .chat-line.typing{align-self:flex-start!important}
+#assistant .assistant-more:not([open]) .assistant-more-content{display:none!important}
+@media(max-width:500px){#assistant #chatTranscript{padding:18px 14px 22px!important;gap:17px!important}#assistant #chatTranscript>.chat-line{max-width:91%!important}#assistant .chat-entry input{font-size:16px!important}}
+@media(prefers-reduced-motion:reduce){#assistant #chatTranscript{scroll-behavior:auto!important}}
