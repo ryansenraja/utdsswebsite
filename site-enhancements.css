@@ -453,3 +453,14 @@ body>header .brand,body>header .utdss-global-brand,body>header .about-brand{max-
 @media(prefers-reduced-motion:reduce){
   #sectors>.utdss-home-sector-tile,.utdss-sector-chevron,.utdss-sector-dropdown,.utdss-sector-dropdown .utdss-sector-links>a{transition:none!important;transform:none!important}
 }
+
+
+/* Final dropdown containment and desktop stacking. */
+#sectors{position:relative;overflow:visible}
+#sectors>.utdss-home-sector-tile.is-expanded{position:relative;z-index:35}
+.utdss-sector-dropdown .utdss-sector-links{margin:0!important;display:grid!important;grid-template-columns:1fr!important;gap:6px!important}
+.utdss-secondary .utdss-secondary-grid>.card.utdss-sector-menu>.utdss-sector-dropdown{width:auto;max-width:none}
+@media(min-width:781px){
+  #sectors>.utdss-home-sector-tile.is-expanded>.utdss-sector-dropdown{width:max(100%,240px);right:auto}
+  #sectors>.utdss-home-sector-tile:last-child.is-expanded>.utdss-sector-dropdown{right:0;left:auto}
+}
