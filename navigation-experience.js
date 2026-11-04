@@ -74,8 +74,9 @@ if(primaryHeader&&primaryNav&&!primaryNav.dataset.utdssDropdowns){
    const id='utdss-nav-panel-'+(++number);
    const dropdown=document.createElement('div');dropdown.className='utdss-nav-dropdown';dropdown.id=id;
    dropdown.setAttribute('aria-hidden','true');
-   entries.forEach(([label,href])=>{
+   entries.forEach(([label,href],index)=>{
      const a=document.createElement('a');a.href=href;a.dataset.originalText=label;
+     a.style.setProperty('--utdss-nav-seq',String(Math.min(index,5)));
      a.textContent=translate(label);a.tabIndex=-1;dropdown.append(a);
    });
    link.parentNode.insertBefore(wrapper,link);
