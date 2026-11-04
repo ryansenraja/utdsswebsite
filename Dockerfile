@@ -13,6 +13,7 @@ COPY configure-assistant.mjs /tmp/configure-assistant.mjs
 COPY website-language.js /app/website-language.js
 COPY site-enhancements.css site-enhancements.js /app/
 COPY rfq-experience.css /app/rfq-experience.css
+COPY utdss-favicon.svg /app/utdss-favicon.svg
 COPY sourcing.html sourcing-desk.js /app/
 COPY build-intro-video.sh /tmp/build-intro-video.sh
 COPY defence.html maritime.html energy.html industrial.html aviation.html about.html services.html products.html agencies.html contact.html /app/
