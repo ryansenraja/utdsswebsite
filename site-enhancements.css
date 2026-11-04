@@ -1465,3 +1465,33 @@ main :is(p,li){overflow-wrap:break-word}
 @media(max-width:850px){.hero-area .features{grid-template-columns:repeat(2,minmax(0,1fr))!important;row-gap:20px!important}.hero-area .feature:nth-child(2){border-right:0!important}.hero-area .feature:nth-child(3){padding-left:0!important}.hero-area .hero-words{padding:70px 27px 235px!important}#sectors.sectors{padding:14px 18px 22px!important;grid-template-columns:repeat(2,minmax(0,1fr))!important}#sectors .sector{height:166px!important}.desk-promo{padding:56px 22px!important}.enquiry-process{padding:54px 20px!important}#utdss-film{padding:55px 20px!important}}
 @media(max-width:560px){.hero-area .hero-words{padding:58px 20px 270px!important}.hero-area .hero-words h1{font-size:clamp(35px,10vw,48px)!important;margin:15px 0 16px!important}.hero-area .hero-words p{font-size:15px!important}.hero-area .utdss-hero-actions{flex-direction:column!important;align-items:stretch!important}.hero-area .utdss-hero-actions .btn{width:100%!important}.hero-area .features{padding:19px 17px!important;gap:15px 5px!important}.hero-area .feature{padding:0 9px!important;gap:7px!important}.hero-area .feature .symbol{font-size:18px!important}.hero-area .feature strong{font-size:10px!important}.hero-area .feature small{font-size:10px!important}#sectors .sector{height:153px!important}#sectors .sector strong{font-size:11px!important;left:12px!important;bottom:12px!important}.lower{margin:17px 15px 45px!important}.desk-mini{padding:15px!important}.enquiry-steps li{padding:18px!important}.film-simple-bottom{gap:18px!important}}
 @media(prefers-reduced-motion:reduce){#sectors .sector strong span{transition:none!important}}
+
+/* Accessible quick-navigation modal — visually restrained and keyboard friendly */
+.utdss-visually-hidden{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
+body>header>.utdss-search-trigger{display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:9px!important;flex:0 0 auto!important;padding:10px 13px!important;min-height:40px!important;border:1px solid #dbe5ec!important;border-radius:7px!important;background:#f8fafb!important;color:#254960!important;box-shadow:none!important;font:600 12px/1.4 Arial,Helvetica,sans-serif!important;cursor:pointer;transition:background .2s ease,border-color .2s ease!important}
+body>header>.utdss-search-trigger:hover{background:#ecf3f7!important;border-color:#b8cbd9!important;transform:none!important}
+body>header>.utdss-search-trigger kbd{display:inline-block;padding:2px 6px;border:1px solid #dce5eb;border-radius:4px;background:white;color:#698094;font:600 11px/1.3 Arial,Helvetica,sans-serif}
+.utdss-finder-backdrop{position:fixed;inset:0;z-index:10020;display:flex;align-items:flex-start;justify-content:center;overflow:auto;padding:clamp(48px,12vh,130px) 16px 32px;background:rgba(6,24,38,.69);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.utdss-finder-backdrop[hidden]{display:none!important}
+.utdss-site-finder{box-sizing:border-box;width:min(600px,100%);max-height:min(710px,calc(100dvh - 90px));overflow:hidden;display:flex;flex-direction:column;background:#fff;border:1px solid #dfe7ec;border-radius:15px;box-shadow:0 35px 100px rgba(1,17,31,.28);color:#1c405a}
+.utdss-finder-heading{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:23px 26px 17px;border-bottom:1px solid #edf1f4}
+.utdss-finder-heading span{display:block;color:#ae8b58;font:bold 10px/1.4 Arial,Helvetica,sans-serif;letter-spacing:.16em;margin-bottom:5px}
+.utdss-finder-heading h2{font:700 24px/1.2 Georgia,serif;letter-spacing:-.025em;margin:0;color:#173d59}
+.utdss-finder-close{width:38px;height:38px;flex:none;border:1px solid #e2e9ee;border-radius:8px;background:#f6f9fb;color:#3b596d;font:400 26px/1 Arial,Helvetica,sans-serif;cursor:pointer}
+.utdss-finder-close:hover{background:#eaf2f7}
+.utdss-finder-search{display:block;margin:20px 26px 0}
+.utdss-finder-search input{width:100%;height:51px;border:1px solid #cbdce6;border-radius:9px;background:#f9fbfd;color:#143e5d;padding:12px 15px;font:400 16px/1.4 Arial,Helvetica,sans-serif;outline-offset:2px}
+.utdss-finder-search input:focus{outline:2px solid #337da9;border-color:#337da9}
+.utdss-finder-count{font:600 11px/1.5 Arial,Helvetica,sans-serif;color:#75899a;padding:13px 26px 8px;margin:0}
+.utdss-finder-results{overflow-y:auto;overscroll-behavior:contain;padding:0 14px 18px;flex:1 1 auto;min-height:0;scrollbar-width:thin}
+.utdss-finder-result{position:relative;display:flex;flex-direction:column;gap:4px;border-radius:8px;padding:12px 42px 12px 13px;text-decoration:none;color:#1a3e59;transition:background .16s ease}
+.utdss-finder-result:hover,.utdss-finder-result:focus-visible{background:#f1f6fa;color:#104c76}
+.utdss-finder-result strong{font:700 13px/1.45 Arial,Helvetica,sans-serif}
+.utdss-finder-result>span:nth-child(2){font:400 12px/1.45 Arial,Helvetica,sans-serif;color:#6c8090}
+.utdss-finder-result>span:last-child{position:absolute;right:16px;top:17px;font-size:17px;color:#ab8958}
+.utdss-finder-foot{padding:13px 26px;border-top:1px solid #edf1f4;background:#fafcfd;color:#6d8294;font:400 11px/1.5 Arial,Helvetica,sans-serif}
+body.utdss-search-open{overflow:hidden!important}
+@media(max-width:1050px){body>header>.utdss-search-trigger{margin-left:auto!important}}
+@media(max-width:780px){body>header>.utdss-search-trigger{order:1!important;margin-left:auto!important;padding:10px!important}body>header>.utdss-search-trigger kbd{display:none!important}body>header>.utdss-search-trigger span{display:none!important}body>header>.utdss-menu-toggle{order:2!important}body>header>nav{order:3!important}.utdss-finder-backdrop{padding:45px 12px 20px}.utdss-finder-heading{padding:18px}.utdss-finder-search{margin:15px 18px 0}.utdss-finder-count{padding:12px 18px 7px}.utdss-finder-foot{padding:12px 18px}}
+@media(max-width:440px){.utdss-site-finder{max-height:calc(100dvh - 65px)}.utdss-finder-heading h2{font-size:21px}.utdss-finder-result{padding:11px 32px 11px 10px}}
+@media(prefers-reduced-motion:reduce){.utdss-finder-result,body>header>.utdss-search-trigger{transition:none!important}}
