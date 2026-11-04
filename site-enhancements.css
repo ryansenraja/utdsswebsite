@@ -215,3 +215,49 @@ body>header nav[aria-label="Primary navigation"] a:focus-visible{outline:3px sol
 .utdss-editorial .ed-card a{display:inline-block;margin-top:18px;font-size:13px;font-weight:800;color:#135b8a;text-underline-offset:4px}
 .utdss-editorial .ed-card a:hover{text-decoration:underline}
 @media(max-width:880px){body>header nav[aria-label="Primary navigation"]{width:100%;overflow-x:auto;flex-wrap:nowrap;scrollbar-width:thin;padding-bottom:8px}body>header nav[aria-label="Primary navigation"] a{white-space:nowrap;flex-shrink:0}}
+
+
+/* About Us v4 — premium editorial composition, responsive and motion-aware. */
+.about-main-header .about-brand{display:flex;gap:12px;align-items:center;text-decoration:none;min-width:0}
+.about-main-header .about-brand img{object-fit:contain;flex-shrink:0}
+.about-main-header .about-brand strong{line-height:1.23}
+.utdss-about .about-hero{min-height:590px}
+.utdss-about .about-hero:before{background-image:linear-gradient(90deg,rgba(5,21,42,.97) 0%,rgba(5,21,42,.85) 39%,rgba(5,21,42,.32) 100%),var(--ed-image)}
+.utdss-about .about-hero .ed-shell{position:relative;padding-block:105px 125px}
+.utdss-about .about-hero-content{max-width:760px}
+.utdss-about .about-hero h1{font-size:clamp(42px,5.4vw,78px);letter-spacing:-.037em;line-height:1.07}
+.utdss-about .about-hero-rail{position:absolute;bottom:34px;left:0;display:flex;gap:12px;align-items:center;font-size:11px;font-weight:800;letter-spacing:.2em;color:#e2c68e}
+.utdss-about .rail-line{width:120px;height:1px;background:linear-gradient(90deg,#d4b16f,#ffffff52)}
+.utdss-about .about-section-nav{position:sticky;top:0;z-index:40;background:#fff;border-bottom:1px solid #dde6ef;box-shadow:0 8px 24px #0d29430b}
+.utdss-about .about-section-nav .ed-shell{display:flex;justify-content:center;gap:clamp(15px,4vw,60px);overflow-x:auto;scrollbar-width:thin}
+.utdss-about .about-section-nav a{display:block;padding:18px 3px;flex-shrink:0;font-size:12px;font-weight:800;letter-spacing:.025em;color:#34516e;border-bottom:2px solid transparent;transition:color .2s,border-color .2s}
+.utdss-about .about-section-nav a:hover,.utdss-about .about-section-nav a:focus-visible{color:#0b6098;border-color:#c69e59}
+.utdss-about section[id]{scroll-margin-top:74px}
+.utdss-about .about-story .ed-intro-grid{grid-template-columns:minmax(0,1fr) minmax(310px,.9fr);gap:clamp(32px,6vw,90px)}
+.utdss-about .about-story-visual{position:relative;min-height:410px}
+.utdss-about .about-photo-main{position:absolute;inset:0 8% 12% 0;border-radius:13px;background:linear-gradient(160deg,#0a27421f,#0a27425c),url('https://images.pexels.com/photos/13433785/pexels-photo-13433785.jpeg?auto=compress&cs=tinysrgb&w=1200') center/cover;box-shadow:0 20px 45px #0b294b22}
+.utdss-about .about-photo-caption{position:absolute;right:0;bottom:0;width:min(88%,340px);padding:25px 28px;background:#0b294b;color:#fff;border:1px solid #ffffff16;border-radius:10px;box-shadow:0 16px 40px #0b294b2b}
+.utdss-about .about-photo-caption>span{display:block;color:#d2af6a;letter-spacing:.2em;font-size:10px;font-weight:800;margin-bottom:10px}
+.utdss-about .about-photo-caption strong{font:700 22px/1.25 Georgia,serif;color:#fff}
+.utdss-about .about-photo-caption p{font-size:12px;line-height:1.65;color:#d8e4f0;margin:10px 0 0}
+.utdss-about .about-approach{background:linear-gradient(180deg,#f6f9fd,#edf3f8)}
+.utdss-about .about-approach .ed-card{border-top:3px solid #c8a469;padding:30px;min-height:230px}
+.utdss-about .about-approach .ed-card h3{margin-top:28px}
+.utdss-about .about-sectors .ed-card-grid{gap:20px}
+.utdss-about .about-sectors .ed-card{padding:0;overflow:hidden;display:flex;flex-direction:column;min-height:352px;box-shadow:0 12px 32px #102e500e}
+.utdss-about .about-sectors .ed-card .about-sector-photo{height:145px;flex-shrink:0;background-position:center;background-size:cover;transition:transform .35s}
+.utdss-about .about-sectors .ed-card:hover .about-sector-photo{transform:scale(1.035)}
+.utdss-about .about-sectors .ed-card .ed-number{margin:20px 22px 0}
+.utdss-about .about-sectors .ed-card h3{margin:10px 22px;font-size:21px}
+.utdss-about .about-sectors .ed-card p{margin:0 22px;flex:1}
+.utdss-about .about-sectors .ed-card a{margin:15px 22px 23px;align-self:flex-start}
+.utdss-about .about-sectors .ed-card:last-child{background:linear-gradient(145deg,#0d3054,#1b5078);border-color:#19486e}
+.utdss-about .about-sectors .ed-card:last-child .ed-number{color:#e3c17d}
+.utdss-about .about-sectors .ed-card:last-child h3,.utdss-about .about-sectors .ed-card:last-child p{color:#f5f8fc}
+.utdss-about .about-sectors .ed-card:last-child a{color:#e3c17d}
+.utdss-about .about-enquiry{background:#f4f7fa}
+.utdss-about .about-enquiry .ed-statement{background:#fff;border-left-color:#d3ad67}
+.utdss-about .ed-cta{padding-block:65px}
+@media(max-width:900px){.utdss-about .about-story .ed-intro-grid{grid-template-columns:1fr}.utdss-about .about-story-visual{min-height:370px;max-width:590px;width:100%;margin:0 auto}.utdss-about .about-hero{min-height:510px}.utdss-about .about-hero .ed-shell{padding-block:82px 100px}}
+@media(max-width:620px){.about-main-header .about-brand strong{font-size:15px}.about-main-header .about-brand img{width:36px;height:36px}.utdss-about .about-hero{min-height:470px}.utdss-about .about-hero .ed-shell{padding-block:65px 90px}.utdss-about .about-hero h1{font-size:clamp(39px,11vw,55px)}.utdss-about .about-hero-rail{left:0;bottom:20px}.utdss-about .about-section-nav .ed-shell{justify-content:flex-start;gap:25px}.utdss-about .about-section-nav a{padding:15px 0}.utdss-about .about-story-visual{min-height:340px}.utdss-about .about-photo-main{right:5%;bottom:18%}.utdss-about .about-photo-caption{padding:18px;width:88%}.utdss-about .about-photo-caption strong{font-size:18px}.utdss-about .about-sectors .ed-card{min-height:310px}.utdss-about .ed-cta{padding-block:45px}}
+@media(prefers-reduced-motion:reduce){.utdss-about .about-sectors .ed-card .about-sector-photo{transition:none}}
