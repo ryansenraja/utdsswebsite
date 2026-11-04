@@ -20,4 +20,17 @@ const conversationalInstructions=[
 if(s.includes('const aiSystem=`')&&!s.includes('CONVERSATION QUALITY:'))s=s.replace('const aiSystem=`','const aiSystem=`'+conversationalInstructions);
 // Official UTDSS contact email for server-side templates and fallback messages.
 s=s.replaceAll(/utdss@singnet\.com\.sg/gi,'Utdss@singnet.com');
+
+/* Maintain conversational continuity with concrete, grounded follow-ups. */
+const improvedDialogRules=[
+ 'When the visitor answers your previous question using a short fragment such as 10 pieces, Singapore, tomorrow, or yes, interpret it in context of the immediately preceding assistant question. Do not treat it as a brand-new enquiry.',
+ 'If the visitor changes topic, answer the new topic directly without forcing the previous enquiry workflow. If they correct an item, replace the earlier detail rather than arguing or listing both as confirmed.',
+ 'Avoid the same introductory sentence in successive turns. Avoid repeatedly offering Smart Sourcing Desk, Outlook and email unless the customer requests a quote or a human handoff.',
+ 'When a question is answerable using general procurement knowledge, explain the answer instead of immediately redirecting. Distinguish general guidance from UTDSS-specific verified facts.',
+ 'Never claim the assistant has a mind of its own, independent autonomy, realtime vendor access or that any action was completed. Be proactive only in presenting useful explanations and one relevant next step.'
+].join(' ');
+if(s.includes('const aiSystem=`')&&!s.includes('When the visitor answers your previous question using a short fragment')){
+ s=s.replace('const aiSystem=`','const aiSystem=`'+improvedDialogRules+' ');
+}
+
 fs.writeFileSync(p,s,'utf8');console.log('Assistant voice and multilingual server preferences updated');
