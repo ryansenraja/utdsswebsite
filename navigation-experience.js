@@ -20,4 +20,30 @@ video.addEventListener('playing',hide);
 video.addEventListener('canplay',hide);
 video.addEventListener('error',()=>show('Video unavailable right now. Please try again.'));
 }}
+
+/* Accessible, space-efficient mobile navigation on every page. */
+const primaryHeader=document.querySelector('body > header');
+const primaryNav=primaryHeader?.querySelector(':scope > nav');
+if(primaryHeader&&primaryNav&&!primaryHeader.querySelector('.utdss-menu-toggle')){
+  if(!primaryNav.id)primaryNav.id='utdss-primary-menu';
+  const menu=document.createElement('button');
+  menu.type='button';menu.className='utdss-menu-toggle';
+  menu.setAttribute('aria-controls',primaryNav.id);
+  menu.setAttribute('aria-expanded','false');
+  menu.setAttribute('aria-label','Open navigation menu');
+  menu.innerHTML='<span class="utdss-menu-bars" aria-hidden="true"><i></i><i></i><i></i></span><span class="utdss-menu-caption">Menu</span>';
+  primaryHeader.insertBefore(menu,primaryNav);
+  const setOpen=open=>{
+    primaryHeader.classList.toggle('utdss-menu-open',open);
+    menu.setAttribute('aria-expanded',String(open));
+    menu.setAttribute('aria-label',open?'Close navigation menu':'Open navigation menu');
+    const title=menu.querySelector('.utdss-menu-caption');
+    if(title)title.textContent=open?'Close menu':'Menu';
+  };
+  menu.addEventListener('click',()=>setOpen(menu.getAttribute('aria-expanded')!=='true'));
+  primaryNav.addEventListener('click',e=>{if(e.target.closest('a'))setOpen(false)});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&menu.getAttribute('aria-expanded')==='true'){setOpen(false);menu.focus()}});
+  document.addEventListener('click',e=>{if(menu.getAttribute('aria-expanded')==='true'&&!primaryHeader.contains(e.target))setOpen(false)});
+}
+
 })();
