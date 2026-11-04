@@ -507,3 +507,16 @@ body>header>nav .utdss-nav-dropdown-toggle,body>header>nav .utdss-nav-chevron{di
 @media(prefers-reduced-motion:reduce){
  body>header>nav .utdss-nav-dropdown,body>header>nav .utdss-nav-dropdown>a{transition:none!important;transform:none!important}
 }
+
+
+/* Final corporate navigation polish: one restrained active indicator, no double bars. */
+body>header>nav .utdss-nav-item>a[aria-current="page"]{color:#124b75!important;text-decoration:none!important}
+body>header>nav .utdss-nav-item>a[aria-current="page"]:after{height:2px;bottom:0;left:0;right:0;background:#b89b68}
+body>header>nav .utdss-nav-item>a:hover{text-decoration:none!important;color:#1a668d}
+body>header>nav .utdss-nav-dropdown>a[aria-current="page"]:after{display:none!important}
+body>header>nav .utdss-nav-dropdown>a:hover{text-decoration:none!important}
+body>header>nav .utdss-nav-dropdown{backdrop-filter:none;-webkit-backdrop-filter:none}
+@media(max-width:780px){
+ body>header.utdss-menu-open>nav .utdss-nav-item>a[aria-current="page"]:after{display:none}
+ body>header.utdss-menu-open>nav .utdss-nav-item>a[aria-current="page"]{background:#f3f7fa}
+}
