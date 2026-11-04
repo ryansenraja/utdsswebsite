@@ -225,7 +225,7 @@ const brandGrid=document.querySelector('.utdss-page-agencies .utdss-secondary-gr
 if(brandGrid){
  for(const card of brandGrid.querySelectorAll(':scope > .card')){
   const h=card.querySelector('h2');if(!h)continue;
-  const brand=h.textContent.replace(/\\s+/g,' ').trim();
+  const brand=h.textContent.replace(/\s+/g,' ').trim();
   if(!brand||brand.length>80||card.querySelector('.utdss-brand-enquire'))continue;
   const link=document.createElement('a');
   link.className='utdss-brand-enquire';
