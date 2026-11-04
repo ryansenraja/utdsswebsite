@@ -9,7 +9,7 @@ D=/tmp/utdss-video
 FPS=24
 OUT_W=1920
 OUT_H=1080
-# Direct downloads verified against Pexels video pages 6857819, 5846709, 6285685, 35069289, 31751330.
+# Stock footage remaining: licensed Pexels industrial/maritime scene sources 5846709, 6285685, 35069289, 31751330.
 # Fallback URL is the same free-license clip at native file resolution.
 clip() {
   id="$1"; url="$2"; line1="$3"; line2="$4"
@@ -23,9 +23,12 @@ clip() {
   fi
   ffprobe -v error -select_streams v:0 -show_entries stream=width,height -of csv=p=0 "$D/scene$id.mp4" | grep -q '1920,1080' || { echo "Video scene $id failed Full HD dimension validation"; exit 1; }
 }
-# Exact publicly listed Pexels source-file URLs.
-clip 01 "https://videos.pexels.com/video-files/6857819/6857819-uhd_3840_2160_24fps.mp4" "UNITED SHIPPING SERVICES" "Specialised Supply and Sourcing"
-ffmpeg -nostdin -hide_banner -loglevel error -y -i "$D/scene01.mp4" -frames:v 1 -q:v 2 /app/media/utdss-film-poster.jpg
+# Opening title is generated from original UTDSS branding instead of a named stock vessel.
+# This deliberately removes the identifiable third-party ship rather than smearing its name.
+ffmpeg -nostdin -hide_banner -loglevel error -y -f lavfi -i "color=c=0x071c36:s=1920x1080:r=24:d=5.85" \
+  -vf "drawbox=x=605:y=367:w=710:h=3:color=0xdac289:t=fill,drawtext=fontfile=$FONT:text='UNITED SHIPPING SERVICES':fontcolor=white:fontsize=65:x=(w-text_w)/2:y=425,drawtext=fontfile=$REGULAR:text='SPECIALISED SUPPLY AND SOURCING':fontcolor=0xdac289:fontsize=29:x=(w-text_w)/2:y=550,drawtext=fontfile=$REGULAR:text='Singapore':fontcolor=0xc9d9e7:fontsize=24:x=(w-text_w)/2:y=635,fade=t=in:st=0:d=0.95,fade=t=out:st=5.12:d=0.73,format=yuv420p" \
+  -an -r 24 -c:v libx264 -preset veryfast -crf 20 -pix_fmt yuv420p -t 5.85 "$D/scene01.mp4"
+ffmpeg -nostdin -hide_banner -loglevel error -y -ss 2 -i "$D/scene01.mp4" -frames:v 1 -q:v 2 /app/media/utdss-film-poster.jpg
 clip 02 "https://videos.pexels.com/video-files/5846709/5846709-hd_1920_1080_25fps.mp4" "NOT EVERY REQUIREMENT IS SIMPLE" "Technical needs deserve a closer look"
 clip 03 "https://videos.pexels.com/video-files/6285685/6285685-uhd_3840_2160_30fps.mp4" "PRECISION BEGINS WITH DETAILS" "NSN   /   MPN   /   Specifications"
 clip 04 "https://videos.pexels.com/video-files/31751330/13528046_3840_2160_25fps.mp4" "ACROSS INDUSTRIES" "Maritime  /  Industrial  /  Energy  /  Aviation"
@@ -66,4 +69,4 @@ python3 "$D/piano.py"
 ffmpeg -nostdin -hide_banner -loglevel error -y -i "$D/silent.mp4" -i "$D/piano.wav" \
   -map 0:v:0 -map 1:a:0 -c:v copy -c:a aac -b:a 192k -ar 48000 -shortest -movflags +faststart "/app/media/utdss-corporate-film-v2.mp4"
 ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1 "/app/media/utdss-corporate-film-v2.mp4"
-echo "UTDSS CINEMATIC FILM GENERATED IN FULL HD WITH REAL STOCK FOOTAGE; NO VOICEOVER"
+echo "UTDSS CINEMATIC FILM GENERATED IN FULL HD: ORIGINAL BRAND OPENING, LICENSED STOCK CLIPS, NO NAMED OPENING VESSEL AND NO VOICEOVER"
