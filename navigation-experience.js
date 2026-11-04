@@ -55,6 +55,8 @@ if(primaryHeader&&primaryNav&&!primaryHeader.querySelector('.utdss-menu-toggle')
 if(primaryHeader&&primaryNav&&!primaryNav.dataset.utdssDropdowns){
  primaryNav.dataset.utdssDropdowns='ready';
  const definitions={
+  '/':[['Website homepage','/'],['Explore industries','/#sectors'],['Request a Quotation','/#quote']],
+  '#quote':[['Request a Quotation','/#quote'],['Smart Sourcing Desk','/sourcing.html'],['Contact details','/contact.html']],
   '/about.html':[['Our company','/about.html'],['Who we are','/about.html#about-story'],['Our approach','/about.html#about-approach'],['Sectors we support','/about.html#about-sectors']],
   '/services.html':[['All services','/services.html'],['Maritime','/maritime.html'],['Defence & Institutional','/defence.html'],['Energy & Offshore','/energy.html'],['Industrial','/industrial.html'],['Aviation Support','/aviation.html']],
   '/products.html':[['Supply categories','/products.html'],['Maritime','/maritime.html'],['Industrial Supply','/industrial.html'],['Smart Sourcing Desk','/sourcing.html']],
@@ -69,7 +71,7 @@ if(primaryHeader&&primaryNav&&!primaryNav.dataset.utdssDropdowns){
  for(const link of [...primaryNav.children]){
    if(link.tagName!=='A')continue;
    const raw=link.getAttribute('href')||'';
-   const path=raw==='#sectors'?'#sectors':new URL(link.href,location.href).pathname;
+   const path=raw==='#sectors'?'#sectors':raw==='#quote'?'#quote':new URL(link.href,location.href).pathname;
    const entries=definitions[path];
    if(!entries)continue;
    const item=document.createElement('div');
