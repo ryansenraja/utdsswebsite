@@ -204,3 +204,14 @@ header nav a:hover{text-decoration:underline;text-decoration-color:#d0a253;text-
 @media(prefers-reduced-motion:no-preference){.utdss-editorial.ed-motion [data-ed-reveal]{opacity:0;transform:translateY(18px);transition:opacity .65s ease,transform .65s ease}.utdss-editorial.ed-motion [data-ed-reveal].ed-visible{opacity:1;transform:none}}
 @media(max-width:850px){.utdss-editorial .ed-intro-grid{grid-template-columns:1fr;gap:25px}.utdss-editorial .ed-card-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.utdss-editorial .ed-cta-inner{align-items:flex-start;flex-direction:column}}
 @media(max-width:620px){.utdss-editorial .ed-shell{width:min(100% - 36px,1180px)}.utdss-editorial .ed-section{padding-block:55px}.utdss-editorial .ed-hero{min-height:410px}.utdss-editorial .ed-hero .ed-shell{padding-block:60px}.utdss-editorial .ed-card-grid,.utdss-editorial .ed-category-list,.utdss-editorial .ed-process{grid-template-columns:1fr}.utdss-editorial .ed-card{padding:23px}.utdss-editorial .ed-statement{padding:24px}.utdss-editorial .ed-actions{align-items:stretch}.utdss-editorial .ed-actions .ed-button{width:100%}}
+
+
+/* Shared navigation refinements for editorial and sector pages */
+body>header nav[aria-label="Primary navigation"]{align-items:center;gap:9px 16px}
+body>header nav[aria-label="Primary navigation"] a{line-height:1.4;padding:8px 0;border-bottom:2px solid transparent;transition:color .18s,border-color .18s}
+body>header nav[aria-label="Primary navigation"] a:hover,
+body>header nav[aria-label="Primary navigation"] a[aria-current="page"]{color:#0b6196;border-bottom-color:#c49b56}
+body>header nav[aria-label="Primary navigation"] a:focus-visible{outline:3px solid #c49b56;outline-offset:4px}
+.utdss-editorial .ed-card a{display:inline-block;margin-top:18px;font-size:13px;font-weight:800;color:#135b8a;text-underline-offset:4px}
+.utdss-editorial .ed-card a:hover{text-decoration:underline}
+@media(max-width:880px){body>header nav[aria-label="Primary navigation"]{width:100%;overflow-x:auto;flex-wrap:nowrap;scrollbar-width:thin;padding-bottom:8px}body>header nav[aria-label="Primary navigation"] a{white-space:nowrap;flex-shrink:0}}
