@@ -13,6 +13,7 @@ COPY configure-assistant.mjs /tmp/configure-assistant.mjs
 COPY website-language.js /app/website-language.js
 COPY site-enhancements.css site-enhancements.js /app/
 COPY navigation-experience.js /app/navigation-experience.js
+COPY premium-quickstart.css premium-quickstart.js /app/
 COPY rfq-experience.css /app/rfq-experience.css
 COPY utdss-favicon.svg /app/utdss-favicon.svg
 COPY generate-favicons.py /tmp/generate-favicons.py
