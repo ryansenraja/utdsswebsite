@@ -271,35 +271,64 @@ const serviceKnowledge={
  payment:'Our team will need to confirm applicable payment and commercial terms for your enquiry. You can contact us at Utdss@singnet.com.',
  contact:'You can reach the UTDSS team at Utdss@singnet.com. Complete the website quotation form to prepare an email in Outlook or your default email application.'
 };
+/* Context-aware guided mode. It is not a substitute for the live AI service. */
 function contextualGuidance(question,prior){
- const original=question.trim(),t=original.toLowerCase();
- const earlier=(prior||[]).filter(m=>m.role==='user').map(m=>m.content);
- const previous=earlier.length?earlier[earlier.length-1].toLowerCase():'';
- const lastReply=(prior||[]).filter(m=>m.role==='assistant').at(-1)?.content.toLowerCase()||'';
- if(/^(how are you|how's it going|are you there|can you hear me)[!? .]*$/.test(t))return "I'm here and ready to help. What would you like to know about UTDSS or a sourcing requirement?";
- if(/^(who are you|are you a real person|are you human|are you ai)[!? .]*$/.test(t))return "I'm UTDSS's virtual sourcing assistant. I can help explain our services, identify the details for an enquiry and guide you to the right page. I'm not a human employee, and I can't confirm live stock or submit orders.";
- if(/^(help|help me|i need help|can you help me|i have a question)[!? .]*$/.test(t))return "Of course. Is your question about a product, a quotation, delivery or an existing order?";
- if(/^(yes|yeah|yep|sure|okay|ok|correct|that's right)[!? .]*$/.test(t)){
-   if(/(part number|model|nsn|mpn)/.test(lastReply))return "Great — please send the part number or model, exactly as shown on the product label or document.";
-   if(/(quantity|how many)/.test(lastReply))return "Thanks. How many units or sets are required?";
-   if(/(deliver|destination|location)/.test(lastReply))return "Please share the delivery city or country, and any required date if you have one.";
-   if(/(product|item)/.test(lastReply))return "What product or item are you looking for? A brief description is fine if you don't have the part number.";
-   return "What would you like help with next?";
+ const value=question.trim();
+ const text=value.toLowerCase().replace(/\\s+/g,' ').trim();
+ const priorMessages=Array.isArray(prior)?prior:[];
+ const userTurns=priorMessages.filter(m=>m.role==='user').map(m=>String(m.content||''));
+ const assistantTurns=priorMessages.filter(m=>m.role==='assistant').map(m=>String(m.content||''));
+ const lastAssistant=(assistantTurns.at(-1)||'').toLowerCase();
+ const recentUser=userTurns.slice(-7).join(' ');
+ const recent=(recentUser+' '+value).toLowerCase();
+ const hasSourcingContext=/\\b(part|part number|product|item|model|nsn|mpn|quantity|quote|quotation|sourc|delivery|equipment|suppl|units|pcs|sets)\\b/i.test(recentUser+' '+lastAssistant);
+ const quantityMatch=recent.match(/\\b(\\d{1,6})\\s*(pcs|pieces|units|sets|ea|each|items)\\b/i);
+ const shortQuantity=/^\\d{1,6}$/.test(text) && /\\b(quantity|how many|units|pieces|sets|pcs)\\b/.test(lastAssistant);
+ const destinationMatch=recent.match(/\\b(?:deliver(?:y)? to|ship to|destination|send to)\\s+([a-z][a-z\\s-]{2,35})/i);
+ const countryOnly=/^(singapore|malaysia|indonesia|japan|india|china|usa|united states|united kingdom|uk|australia|thailand|vietnam|philippines|hong kong)\\.?$/i.test(text);
+ const partOnly=/^[a-z0-9]{2,8}[-/][a-z0-9/-]{3,28}$/i.test(value);
+ const asksForPart=/\\b(part number|model|nsn|mpn|reference)\\b/.test(lastAssistant);
+ const asksForQty=/\\b(quantity|how many|units|pieces|sets|pcs)\\b/.test(lastAssistant);
+ const asksForDestination=/\\b(deliver|destination|ship to|location|which country|where should)\\b/.test(lastAssistant);
+ const hello=/^(hi|hello|hey|good morning|good afternoon|good evening)[!?. ]*$/i.test(text);
+ if(hello)return userTurns.length?'Hello again. What would you like help with next?':"Hello! I can help you find sourcing information, understand UTDSS services or prepare an enquiry. What are you looking for?";
+ if(/^(how are you|how's it going|are you there|can you hear me)[!? .]*$/.test(text))return "I'm here and ready to help. What can I assist you with today?";
+ if(/^(who are you|are you a real person|are you human|are you ai)[!? .]*$/.test(text))return "I'm UTDSS's virtual assistant, not a human representative. I can explain our services and help you organise an enquiry, but I can't verify live stock, order status or prices.";
+ if(/^(help|help me|i need help|can you help me|i have a question)[!? .]*$/.test(text))return "Sure. Is this about a product, a quotation, delivery, or something else?";
+ if(/^(thank you|thanks|thank you so much|cheers)[!?. ]*$/.test(text))return "You're welcome. Is there anything else you'd like to check?";
+ if(/^(what can you do|how can you help)[!? .]*$/.test(text))return "I can explain our sectors, help identify the details needed for a product enquiry, and guide you to the Smart Sourcing Desk. A UTDSS team member must confirm price, availability and delivery terms.";
+ if(/^(yes|yeah|yep|sure|okay|ok|correct|that's right)[!? .]*$/.test(text)){
+   if(asksForPart)return "Please share the part number or model as it appears on the product or technical document.";
+   if(asksForQty)return "How many units or sets do you need?";
+   if(asksForDestination)return "Which city or country should the items be delivered to?";
+   return "Understood. What would you like to do next?";
  }
- if(/^(no|nope|not yet|i don't know|not sure|unsure)[!? .]*$/.test(t)){
-   if(/(part number|model|nsn|mpn)/.test(lastReply))return "That's fine. Describe the item, what it is used for and the quantity needed. The team can review the enquiry without a part number, although additional details may be required.";
-   return "That's fine. Tell me what you know so far, and I'll help you identify the next useful detail.";
+ if(/^(no|nope|not yet|i don't know|not sure|unsure)[!? .]*$/.test(text)){
+   if(asksForPart)return "No problem. Describe the item and what it's used for, even if you don't have the exact part number.";
+   if(asksForQty)return "That's fine. You can provide an estimated quantity later. What item are you looking for?";
+   return "That's okay. Tell me what you know, and we can work from there.";
  }
- const isDetail=/^([a-z]{2,6}[-\d]{3,}[\w-]*|\d{1,6}\s*(pcs|pieces|units|sets|each|ea)|singapore|malaysia|indonesia|china|usa|united states|uk|united kingdom|japan|india)$/i.test(original);
- const previousSourcing=/product|item|part|model|quote|quotation|delivery|sourc|quantit|units|pcs|equipment|supplier/i.test(previous+' '+lastReply);
- if(isDetail&&previousSourcing){
-   const recent=[...earlier,original].join(' ').toLowerCase();
-   if(!/\b\d+\s*(pcs|pieces|units|sets|each|ea)\b/.test(recent))return "Thank you, I've noted that detail for this conversation. What quantity do you need?";
-   if(!/singapore|malaysia|indonesia|china|usa|united states|uk|united kingdom|japan|india|deliver to|destination|ship to/.test(recent))return "Got it. Where should the items be delivered?";
-   return "Thanks, that helps. You can prepare the enquiry in the Smart Sourcing Desk and send it through your email application. Our team will verify availability, pricing and delivery.";
+ if(/^(can you|could you)\\s+(get|find|source|supply)\\s+(it|that|this)\\??$/i.test(text)&&hasSourcingContext)
+   return "I can help prepare a sourcing request for the item we've discussed. The team needs to check the exact part and availability before confirming whether it can be supplied.";
+ if(/^(how much|what(?:'s| is) the price|price\\??|cost\\??)$/i.test(text)&&hasSourcingContext)
+   return "I don't have live pricing for that item. You can request a quotation with the part details and quantity; the team will confirm the price.";
+ if(/^(how long|when can it arrive|when will it arrive|lead time\\??)$/i.test(text)&&hasSourcingContext)
+   return "The lead time isn't confirmed here. Which delivery destination and required date should the team review?";
+ if(hasSourcingContext&&(shortQuantity||(/^\\d{1,6}\\s*(pcs|pieces|units|sets|ea|each|items)$/i.test(text)))){
+   if(countryOnly||destinationMatch)return "Thanks, I've noted that in this chat. The UTDSS team can review the complete enquiry in the Smart Sourcing Desk.";
+   return "Thanks, I've noted the quantity for this conversation. Where should the items be delivered?";
  }
- if(/^(i need|i want|i'm looking for|looking for)\s+(something|a product|some items)[!?. ]*$/.test(t))return "I can help. What type of item are you looking for, and what will it be used for?";
- if(/^(what can you do|how can you help)[!? .]*$/.test(t))return "I can explain UTDSS services, help organise product details and guide you through preparing a quotation enquiry. For stock, pricing, certifications or delivery commitments, the UTDSS team must confirm them.";
+ if(hasSourcingContext&&(countryOnly||(/^\\b(?:deliver(?:y)? to|ship to)\\s+[\\w\\s,-]+$/i.test(text)))){
+   if(quantityMatch)return "Thanks. You've shared a quantity and delivery destination. You can now prepare the sourcing enquiry in the Smart Sourcing Desk; the team will verify pricing, stock and lead time.";
+   return "Got it. What quantity should the team consider?";
+ }
+ if(hasSourcingContext&&partOnly&&asksForPart){
+   if(quantityMatch)return "Thanks for the part number. Where should the items be delivered?";
+   return "Thanks for the part number. How many units are required?";
+ }
+ if(/^(i need|i want|i'm looking for|looking for)\\s+(something|a product|some items)[!?. ]*$/.test(text))return "What kind of item are you looking for, or what is it used for?";
+ if(/^(i already told you|i said that|you asked that already|you keep repeating)[!?. ]*$/.test(text))
+   return "You're right, I shouldn't keep asking for the same information. I can work with the details you've already provided. What would you like to clarify next?";
  return null;
 }
 function guidedAnswer(question,prior){
